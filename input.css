@@ -1,0 +1,30 @@
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@custom-variant dark (&:where(.dark, .dark *));
+
+html,
+body {
+    height: 100%;
+    overflow: hidden;
+    /* Hide global scroll */
+}
+
+main {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    /* Smooth scrolling on iOS */
+}
+
+main::-webkit-scrollbar {
+    width: 0;
+    height: 0;
+}
+
+main {
+    scrollbar-width: none;
+    /* Firefox */
+}

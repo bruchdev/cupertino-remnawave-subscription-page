@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="ru" class="scroll-smooth">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title id="page-title">Subscription</title>
+    <link href="output.css" rel="stylesheet" />
+    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+
+    <script>
+        document.documentElement.classList.toggle(
+            "dark",
+            localStorage.theme === "dark" ||
+            (!("theme" in localStorage) && window.matchMedia("(prefers-color-scheme: dark)").matches)
+        );
+    </script>
+
+</head>
+
+<body class="bg-gray-50 dark:bg-[#121212] text-gray-900 dark:text-gray-300 min-h-screen flex flex-col">
+
+    <header
+        class="fixed top-0 left-0 right-0 z-40 w-full bg-white dark:bg-[#1c1c1e] border-b border-gray-300 dark:border-white/10 flex-shrink-0">
+        <div class="max-w-3xl mx-auto px-6 relative flex items-center py-4">
+            <h1 class="text-2xl font-semibold select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+                Подписка
+            </h1>
+            <div class="ml-auto flex items-center space-x-3">
+                <button aria-label="toggle dark mode"
+                    class="text-blue-600 dark:text-blue-400 hover:bg-blue-100 dark:hover:bg-gray-700 rounded-lg p-2 transition"
+                    onclick="toggleDarkMode()">
+                    <span class="iconify" data-icon="mdi:theme-light-dark" style="width:24px; height:24px;"></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main class="pt-20 pb-20 flex-1 overflow-y-auto">
+        <section id="page-apps" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-6">
+            <nav id="platform-tabs"
+                class="bg-white dark:bg-[#1c1c1e] rounded-xl shadow-md dark:shadow-black/50 flex overflow-hidden select-none"
+                role="tablist" aria-label="App selector">
+            </nav>
+
+            <!-- Platforms -->
+            <div class="w-full mt-6">
+                <div onclick="openPickerModal()"
+                    class="w-full bg-white rounded-xl px-4 py-4 flex justify-between items-center shadow-md text-gray-900 dark:text-gray-200 text-base font-medium dark:bg-[#1c1c1e]/90 dark:backdrop-blur-md dark:shadow-lg hover:shadow-lg hover:bg-gray-50 dark:hover:bg-[#2c2c2e]/80 dark:active:bg-[#2c2c2e]/90 cursor-pointer">
+
+                    <!-- Left static label -->
+                    <span class="text-gray-700 dark:text-gray-300 font-semibold">Приложение</span>
+
+                    <!-- Right: selected app name + icon -->
+                    <div id="selected-app" class="flex items-center space-x-2">
+                        <!-- Icon container (will be populated dynamically) -->
+                        <div id="selected-app-icon" class="w-5 h-5"></div>
+
+                        <!-- App name -->
+                        <span id="selected-app-name" class="text-gray-600 dark:text-gray-400"></span>
+
+                        <!-- Chevron icon -->
+                        <svg class="w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
+                            stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                            <path d="M9 5l7 7-7 7" />
+                        </svg>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div id="pickerModal"
+                class="fixed inset-0 bg-black bg-opacity-30 backdrop-blur-sm hidden flex justify-center items-center z-50">
+                <div
+                    class="bg-white dark:bg-[#1c1c1e] rounded-3xl w-full max-w-md p-6 shadow-lg dark:shadow-black/50 transition transform scale-90 opacity-0">
+                    <div class="flex justify-between items-center mb-4">
+                        <h3 class="text-lg font-semibold text-gray-900 dark:text-gray-200">Выберите приложение</h3>
+                        <button onclick="closePickerModal()" aria-label="Закрыть"
+                            class="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white font-bold text-2xl leading-none">×</button>
+                    </div>
+                    <ul></ul>
+                </div>
+            </div>
+
+            <div id="setupStepsContainer" class="mt-8 flex-grow space-y-10 w-full">
+
+            </div>
+        </section>
+
+        <section id="page-settings" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-6">
+            <p>Hello</p>
+        </section>
+
+        <section id="page-profile" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-6">
+            <!-- Content for Profile page -->
+            <p>Profile Page</p>
+        </section>
+    </main>
+
+
+    <footer
+        class="fixed bottom-0 left-0 right-0 bg-white dark:bg-[#1c1c1e] border-t border-gray-300 dark:border-white/10 z-30">
+        <div id="footer-nav"
+            class="max-w-3xl mx-auto px-6 flex justify-center gap-x-[64px] py-4 text-gray-600 dark:text-gray-400 text-sm">
+
+            <button class="tab-item w-16 flex flex-col items-center justify-center transition-all" data-tab="profile"
+                data-icon-active="heroicons-outline:user" data-icon-inactive="heroicons-outline:user"
+                aria-current="false">
+                <span class="iconify block leading-none transition-transform duration-300"
+                    data-icon="heroicons-outline:user" style="font-size:24px;"></span>
+                <span
+                    class="tab-label text-xs mt-1 opacity-0 translate-y-2 pointer-events-none transition-all duration-300">Profile</span>
+            </button>
+
+            <button class="tab-item w-16 flex flex-col items-center justify-center font-semibold transition-all"
+                data-tab="apps" data-icon-active="heroicons-outline:device-phone-mobile"
+                data-icon-inactive="heroicons-outline:device-phone-mobile" aria-current="true">
+                <span class="iconify block leading-none scale-110 transition-transform duration-300"
+                    data-icon="heroicons-outline:device-phone-mobile" style="font-size:24px;"></span>
+                <span
+                    class="tab-label text-xs mt-1 opacity-100 translate-y-0 pointer-events-auto transition-all duration-300">Apps</span>
+            </button>
+
+            <button class="tab-item w-16 flex flex-col items-center justify-center transition-all" data-tab="settings"
+                data-icon-active="heroicons-outline:cog" data-icon-inactive="heroicons-outline:cog"
+                aria-current="false">
+                <span class="iconify block leading-none transition-transform duration-300"
+                    data-icon="heroicons-outline:cog" style="font-size:24px;"></span>
+                <span
+                    class="tab-label text-xs mt-1 opacity-0 translate-y-2 pointer-events-none transition-all duration-300">Settings</span>
+            </button>
+
+        </div>
+    </footer>
+
+    <script>
+        let appsConfig = null;
+        let data = null;
+
+        async function loadAppsConfig() {
+            if (appsConfig !== null) {
+                console.log('already loaded')
+                return appsConfig;
+            }
+
+            try {
+                const response = await fetch('/assets/app-config.json');
+                if (!response.ok) {
+                    console.warn('App config not found, using empty config');
+                    appsConfig = { ios: [], android: [], pc: [] };
+                    return appsConfig;
+                }
+                const text = await response.text();
+
+                if (text.trim().startsWith('<')) {
+                    console.warn('Received HTML instead of JSON - config file not found');
+                    appsConfig = { ios: [], android: [], pc: [] };
+                    return appsConfig;
+                }
+
+                appsConfig = JSON.parse(text);
+                console.log('Apps config loaded successfully:', appsConfig);
+                return appsConfig;
+            } catch (error) {
+                console.error('Failed to load apps config:', error);
+                appsConfig = { ios: [], android: [], pc: [] };
+                return appsConfig;
+            }
+        };
+
+        (async () => {
+            data = await loadAppsConfig();
+
+            if (!data) {
+                console.warn('Invalid config structure:', data);
+                return;
+            }
+            loadDefaults(data);
+        })();
+
+        function loadDefaults(data) {
+            renderPlatforms();
+            let platform = detectPlatform();
+            selectPlatform(platform);
+        };
+
+        function renderPlatforms() {
+            const availablePlatforms = [];
+            const container = document.getElementById('platform-tabs');
+
+            const platformNames = {
+                'ios': 'iOS',
+                'android': 'Android',
+                'windows': 'Windows',
+                'mac': 'Mac'
+            };
+
+            Object.keys(data).forEach(platform => {
+                if (Array.isArray(data[platform]) && data[platform].length > 0) {
+                    availablePlatforms.push(platform);
+                }
+            });
+
+            availablePlatforms.forEach(platform => {
+                const apps = data[platform];
+                if (Array.isArray(apps) && apps.length > 0) {
+                    const button = document.createElement('button');
+                    button.setAttribute('role', 'tab');
+                    button.setAttribute('aria-selected', 'false');
+                    button.setAttribute('id', `tab-${platform}`);
+                    button.setAttribute('tabindex', '0');
+                    button.className =
+                        'flex-1 py-3 text-center font-semibold text-gray-600 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700 focus:outline-none';
+                    button.textContent = platformNames[platform] || platform.charAt(0).toUpperCase() + platform.slice(1);
+                    button.onclick = () => selectPlatform(platform);
+                    container.appendChild(button);
+                }
+            });
+
+
+        };
+
+        function selectPlatform(platform) {
+            const tabs = document.querySelectorAll('nav button');
+
+            tabs.forEach((tab) => {
+                const isSelected = tab.id === 'tab-' + platform;
+                tab.classList.toggle('bg-blue-600', isSelected);
+                tab.classList.toggle('text-white', isSelected);
+                tab.classList.toggle('text-gray-600', !isSelected);
+                tab.classList.toggle('hover:bg-gray-100', !isSelected);
+                tab.setAttribute('aria-selected', isSelected);
+                tab.tabIndex = isSelected ? 0 : -1;
+            });
+            populateAppListForPlatform(data, platform);
+            let apps = data[platform] || [];
+            selectApp(apps[0], platform);
+        };
+
+        function toggleDarkMode() {
+            const html = document.documentElement;
+            const isDark = html.classList.toggle('dark');
+            if (isDark) {
+                localStorage.theme = 'dark';
+            } else {
+                localStorage.theme = 'light';
+            }
+        }
+
+        function detectPlatform() {
+            const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+            console.log(userAgent);
+            if (/android/i.test(userAgent)) {
+                console.log('Detected platform: Android')
+                return 'android';
+            }
+
+            if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+                console.log('Detected platform: iOS')
+                return 'ios';
+            }
+
+            if (/Win/.test(navigator.platform) || /Linux/.test(navigator.platform)) {
+                console.log('Detected platform: Windows')
+                return 'windows'; // Windows
+            }
+
+            if (/Mac/.test(navigator.platform)) {
+                console.log('Detected platform: Mac')
+                return 'mac'; // Windows
+            }
+
+            return 'android'; // Default fallback
+        };
+
+        function openPickerModal() {
+            const modal = document.getElementById('pickerModal');
+            modal.classList.remove('hidden');
+            // Animate in
+            setTimeout(() => {
+                const dialog = modal.querySelector('div');
+                dialog.classList.remove('scale-90', 'opacity-0');
+                dialog.classList.add('scale-100', 'opacity-100');
+            }, 10);
+        }
+
+        function closePickerModal() {
+            const modal = document.getElementById('pickerModal');
+
+            if (modal.classList.contains('hidden')) return;
+
+            const dialog = modal.querySelector('div');
+            // Animate out
+            dialog.classList.add('scale-90', 'opacity-0');
+            dialog.classList.remove('scale-100', 'opacity-100');
+            dialog.addEventListener('transitionend', () => {
+                modal.classList.add('hidden');
+            }, { once: true });
+        }
+
+        function populateAppListForPlatform(data, platform) {
+            let apps = data[platform] || [];
+            console.log(apps);
+            const modal = document.getElementById('pickerModal');
+            const appList = modal.querySelector('ul');
+
+            appList.innerHTML = ''; // Clear previous list items
+
+            apps.forEach(app => {
+                const item = document.createElement('li');
+                item.className = 'flex items-center px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700 cursor-pointer space-x-2';
+                item.innerHTML = `<img src="${app.iconUrl}" alt="${app.name} icon" class="w-5 h-5" /><span>${app.name}</span>`;
+                item.onclick = () => {
+                    selectApp(app, platform);
+                    appDropdown.classList.add('hidden');
+                };
+                appList.appendChild(item);
+            });
+        };
+
+        // Set selected app
+        function selectApp(app, platform) {
+            const selectedAppIcon = document.getElementById('selected-app-icon');
+            const selectedAppName = document.getElementById('selected-app-name');
+            selectedAppIcon.innerHTML = `<img src="${app.iconUrl}" alt="${app.name} icon" class="w-5 h-5" />`;
+            selectedAppName.textContent = app.name;
+
+            renderAppSteps(app, platform);
+            closePickerModal();
+        }
+
+        function renderAppSteps(app, platform, lang = "ru") {
+            const container = document.getElementById('setupStepsContainer');
+            container.innerHTML = ''; // Clear previous steps
+
+            const stepTitles = {
+                installationStep: { en: 'Install the App', fa: 'نصب برنامه', ru: 'Установка приложения' },
+                addSubscriptionStep: { en: 'Add Subscription', fa: 'افزودن اشتراک', ru: 'Добавить подписку' },
+                connectAndUseStep: { en: 'Connect and Use', fa: 'اتصال و استفاده', ru: 'Подключение и использование' },
+            };
+
+            const steps = Object.keys(app).filter(key => key.endsWith('Step'));
+
+            steps.forEach((stepKey, index) => {
+                const stepData = app[stepKey];
+                if (!stepData) return; // safety check
+
+                const card = document.createElement('div');
+                card.className = 'w-full p-4 rounded-2xl shadow bg-white dark:bg-gray-800';
+
+                // Step title
+                const title = stepTitles[stepKey]?.[lang] || `Step ${index + 1}`;
+
+                // Step description
+                const description = stepData.description?.[lang] || '';
+
+                let html = `
+            <h3 class="text-lg font-semibold mb-2">Step ${index + 1}: ${title}</h3>
+            <p class="text-gray-700 dark:text-gray-300 mb-4">${description}</p>`;
+
+                // Step buttons
+                if (Array.isArray(stepData.buttons)) {
+                    stepData.buttons.forEach(btn => {
+                        const btnText = btn.buttonText?.[lang] || 'Open';
+                        html += `
+                    <a href="${btn.buttonLink}" target="_blank" rel="noopener noreferrer">
+                        <button class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 mr-2">
+                            ${btnText}
+                        </button>
+                    </a>`;
+                    });
+                }
+
+                // Add "Subscribe" button if this is addSubscriptionStep and urlScheme exists
+                if (stepKey === 'addSubscriptionStep' && app.urlScheme) {
+                    const encodedUrl = encodeURIComponent(window.location.href);
+                    const subscribeText =
+                        lang === 'fa' ? 'اشتراک' :
+                            lang === 'en' ? 'Subscribe' :
+                                'Подписаться';
+
+                    html += `
+                <a href="${app.urlScheme}${encodedUrl}">
+                    <button class="bg-green-600 text-white px-4 py-2 rounded hover:bg-green-700">
+                        ${subscribeText}
+                    </button>
+                </a>`;
+                }
+
+                card.innerHTML = html;
+                container.appendChild(card);
+            });
+        }
+
+
+
+    </script>
+
+    <script defer>
+        document.addEventListener('DOMContentLoaded', () => {
+            const tabs = document.querySelectorAll('.tab-item');
+            const pages = document.querySelectorAll('.tab-page');
+
+            tabs.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    tabs.forEach(t => {
+                        t.classList.remove('text-blue-600', 'font-semibold');
+                        const icon = t.querySelector('.iconify');
+                        icon.classList.remove('scale-110', '-translate-y-1');
+                        icon.dataset.icon = t.dataset.iconInactive;
+
+                        const label = t.querySelector('.tab-label');
+                        label.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
+                        label.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
+
+                        t.setAttribute('aria-current', 'false');
+                    });
+
+                    pages.forEach(p => p.classList.add('hidden'));
+
+                    tab.classList.add('text-blue-600', 'font-semibold');
+                    const icon = tab.querySelector('.iconify');
+                    icon.classList.add('scale-110', '-translate-y-1');
+                    icon.dataset.icon = tab.dataset.iconActive;
+
+                    const label = tab.querySelector('.tab-label');
+                    label.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
+                    label.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
+
+                    tab.setAttribute('aria-current', 'true');
+
+                    const selectedPage = tab.dataset.tab;
+                    document.getElementById(`page-${selectedPage}`).classList.remove('hidden');
+                });
+            });
+
+            // Ensure default tab is selected after rendering
+            setTimeout(() => {
+                document.querySelector('.tab-item[data-tab="apps"]')?.click();
+            }, 0);
+        });
+
+    </script>
+</body>
