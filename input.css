@@ -2,27 +2,30 @@
 
 @custom-variant dark (&:where(.dark, .dark *));
 
-html,
-body {
+
+html, body {
     height: 100%;
-    overflow: hidden;
-    /* Hide global scroll */
+    overflow: hidden; /* This is crucial for controlling global scroll */
+    margin: 0; /* Tailwind Preflight handles this, but explicit is fine */
+    padding: 0; /* Tailwind Preflight handles this, but explicit is fine */
+}
+
+body {
+    display: flex;
+    flex-direction: column;
 }
 
 main {
+    /* These styles make the main content area itself scrollable and hide its scrollbar */
     overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-    /* Smooth scrolling on iOS */
+    -webkit-overflow-scrolling: touch; /* For iOS smooth scrolling */
+    scrollbar-width: none; /* For Firefox */
 }
 
+/* For Webkit browsers (Chrome, Safari, Edge) to hide scrollbar */
 main::-webkit-scrollbar {
     width: 0;
     height: 0;
-}
-
-main {
-    scrollbar-width: none;
-    /* Firefox */
 }
 
 /* Base CSS Variables (Default values, typically for Light theme) */

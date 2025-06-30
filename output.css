@@ -215,14 +215,8 @@
   .top-0 {
     top: calc(var(--spacing) * 0);
   }
-  .right-0 {
-    right: calc(var(--spacing) * 0);
-  }
   .bottom-0 {
     bottom: calc(var(--spacing) * 0);
-  }
-  .left-0 {
-    left: calc(var(--spacing) * 0);
   }
   .z-10 {
     z-index: 10;
@@ -395,9 +389,6 @@
       margin-inline-end: calc(calc(var(--spacing) * 3) * calc(1 - var(--tw-space-x-reverse)));
     }
   }
-  .overflow-y-auto {
-    overflow-y: auto;
-  }
   .scroll-smooth {
     scroll-behavior: smooth;
   }
@@ -530,21 +521,24 @@
     }
   }
 }
-html,
-body {
+html, body {
   height: 100%;
   overflow: hidden;
+  margin: 0;
+  padding: 0;
+}
+body {
+  display: flex;
+  flex-direction: column;
 }
 main {
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
 }
 main::-webkit-scrollbar {
   width: 0;
   height: 0;
-}
-main {
-  scrollbar-width: none;
 }
 :root {
   --color-bg-dark: hsl(0 0% 93%);
