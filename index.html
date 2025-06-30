@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="ru" class="scroll-smooth">
+<html lang="en" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8" />
@@ -89,7 +89,7 @@
         </section>
 
 
-        <section id="page-profile" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-6">
+        <section id="page-profile" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-4 justify-center items-center">
             <div class="card bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
                 <h2 class="text-2xl font-bold text-center mb-6">User Profile</h2>
 
@@ -113,7 +113,6 @@
                     <p id="display_expire_date" class="text-lg font-semibold">2025-12-31</p>
                 </div>
             </div>
-
         </section>
     </main>
 
@@ -153,6 +152,28 @@
     </footer>
 
     <script>
+        const translations = {
+            en: {
+                subscription_page_title: "My Translated Page",
+                welcome_message: "Welcome to our website!",
+                about_text: "Learn more about our services here.",
+                save_button: "Save Changes",
+                choose_language: "Choose Language:",
+                lang_en: "English",
+                lang_de: "German",
+                lang_es: "Spanish"
+            },
+            ru: {
+                subscription_page_title: "Моя подписка",
+                welcome_message: "¡Bienvenido a nuestro sitio web!",
+                about_text: "Conozca más sobre nuestros servicios aquí.",
+                save_button: "Guardar cambios",
+                choose_language: "Elegir idioma:",
+                lang_en: "Inglés",
+                lang_de: "Alemán",
+                lang_es: "Español"
+            }
+        };
         let appsConfig = null;
         let data = null;
 
@@ -234,6 +255,7 @@
                 console.warn('Invalid config structure:', data);
                 return;
             }
+            displayData(data);
             loadDefaults(data);
         })();
 
@@ -655,119 +677,17 @@
         function displayData(data) {
             console.log('Displaying data:', data);
 
-            const loadingSpinner = document.getElementById('loading-spinner');
-            if (loadingSpinner) {
-                loadingSpinner.classList.add('hidden');
-            }
-
-            // Сохраняем данные в глобальных переменных для переводов
-            window.currentUserStatus = data.user_status;
-            window.currentExpiresAt = data.expires_at;
-            window.currentTrafficData = {
-                used: data.traffic_used,
-                limit: data.traffic_limit
-            };
-            window.currentTrafficResetStrategy = data.traffic_reset_strategy;
-
             // Отображаем информацию о пользователе
             if (data.username) {
                 const usernameLabel = document.getElementById('display_username');
-                usernameLabel.textContent = username ? data.username : 'empty';
+                usernameLabel.textContent = data.username ? data.username : 'empty';
             }
+        }
 
-            if (data.user_status) {
-                const statusElement = document.getElementById('display-user-status');
-                if (statusElement) {
-                    const statusText = getTranslation(`status_${data.user_status.toLowerCase()}`) || data.user_status;
-                    statusElement.textContent = statusText;
-                    statusElement.className = `badge badge-${data.user_status.toLowerCase()}`;
-                }
-            }
-
-            // Обработка бессрочной подписки
-            const isPermanent = data.expires_at && new Date(data.expires_at).getFullYear() >= 2099;
-
-            if (data.expires_at) {
-                const expiresEl = document.getElementById('display-expires-at');
-                if (expiresEl) {
-                    if (isPermanent) {
-                        expiresEl.textContent = getTranslation('permanent');
-                    } else {
-                        expiresEl.textContent = formatDate(data.expires_at);
-                    }
-                }
-            }
-
-            // Скрываем поле "Дней осталось" для бессрочной подписки
-            const daysLeftField = document.getElementById('days-left-field');
-            if (daysLeftField) {
-                if (isPermanent) {
-                    daysLeftField.style.display = 'none';
-                } else {
-                    daysLeftField.style.display = 'flex';
-                    const daysLeftEl = document.getElementById('display-days-left');
-                    if (daysLeftEl && data.days_left !== undefined) {
-                        daysLeftEl.textContent = data.days_left;
-                    }
-                }
-            }
-
-            // Обработка трафика
-            const isUnlimited = data.traffic_limit === 0;
-
-            const trafficEl = document.getElementById('display-traffic');
-            if (trafficEl) {
-                if (isUnlimited) {
-                    trafficEl.textContent = getTranslation('unlimited');
-                } else {
-                    trafficEl.textContent = `${formatBytes(data.traffic_used)} / ${formatBytes(data.traffic_limit)}`;
-                }
-            }
-
-            // Скрываем поле "Сброс трафика" для безлимитного трафика
-            const trafficResetField = document.getElementById('traffic-reset-field');
-            if (trafficResetField) {
-                if (isUnlimited) {
-                    trafficResetField.style.display = 'none';
-                } else {
-                    trafficResetField.style.display = 'flex';
-                    if (data.traffic_reset_strategy) {
-                        const resetStrategyEl = document.getElementById('display-traffic-reset-strategy');
-                        if (resetStrategyEl) {
-                            const strategyText = getTranslation(`reset_${data.traffic_reset_strategy.toLowerCase()}`) || data.traffic_reset_strategy;
-                            resetStrategyEl.textContent = strategyText;
-                        }
-                    }
-                }
-            }
-
-            // Сохраняем ссылку подписки для использования в links-section
-            if (data.subscription_url) {
-                window.subscriptionUrlForCopy = data.subscription_url;
-            }
-
-            // Отображаем серверы
-            if (data.servers && Array.isArray(data.servers)) {
-                displayServers(data.servers);
-            }
-
-            // Показываем только карточку пользователя в разделе статуса
-            const userInfoCard = document.getElementById('user-info-card');
-            if (userInfoCard) userInfoCard.classList.remove('hidden');
-
-            // Показываем карточку ссылок
-            const subscriptionLinksCard = document.getElementById('subscription-links-card');
-            if (subscriptionLinksCard) subscriptionLinksCard.classList.remove('hidden');
-
-            if (data.user_status === 'ACTIVE' && data.apps && (data.apps.ios?.length > 0 || data.apps.android?.length > 0 || data.apps.pc?.length > 0)) {
-                window.appsData = data;
-            }
-
-            // ДОБАВЛЕНО: После загрузки данных переходим в приложения
-            setTimeout(() => {
-                setPage('navbar-apps', 'apps-section');
-                applyTranslations();
-            }, 200);
+        function getTranslation(key) {
+            return translations[currentLanguage] && translations[currentLanguage][key]
+                ? translations[currentLanguage][key]
+                : key;
         }
     </script>
 
