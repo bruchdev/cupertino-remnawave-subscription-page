@@ -1,9 +1,5 @@
 @import "tailwindcss";
 
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
 @custom-variant dark (&:where(.dark, .dark *));
 
 html,
@@ -27,4 +23,160 @@ main::-webkit-scrollbar {
 main {
     scrollbar-width: none;
     /* Firefox */
+}
+
+/* Base CSS Variables (Default values, typically for Light theme) */
+:root {
+    /* Backgrounds */
+    --color-bg-dark: hsl(0 0% 93%);
+    /* Lighter for light theme */
+    --color-bg: hsl(0 0% 98%);
+    --color-bg-light: hsl(0 0% 95%);
+
+    /* Text Colors */
+    --color-text: hsl(0 0% 10%);
+    /* Darker for light theme */
+    --color-text-muted: hsl(0 0% 40%);
+
+    /* UI Elements */
+    --color-highlight: hsl(0 0% 85%);
+    --color-border: hsl(0 0% 75%);
+    --color-border-muted: hsl(0 0% 90%);
+
+    /* Semantic Colors (adjusted lightness for light theme) */
+    --color-primary: hsl(210 90% 45%);
+    /* <--- NEW PRIMARY: Nice Blue for light theme */
+    --color-secondary: hsl(0 0% 45%);
+    --color-danger: hsl(0 0% 35%);
+    --color-warning: hsl(0 0% 40%);
+    --color-success: hsl(0 0% 38%);
+    --color-info: hsl(0 0% 33%);
+    --color-red: hsl(0 90% 40%);
+    /* <--- Moved original red here */
+
+    /* If you still need a 'light blue' separate from primary, define it here */
+    --color-blue-light: hsl(210 90% 85%);
+    /* Lighter shade of primary blue */
+
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+/* Dark Theme Variables */
+html[data-theme='dark'] {
+    /* Backgrounds (Darker for dark theme) */
+    --color-bg-dark: hsl(0 0% 2%);
+    --color-bg: hsl(0 0% 10%);
+    --color-bg-light: hsl(0 0% 20%);
+
+    /* Text Colors (Lighter for dark theme) */
+    --color-text: hsl(0 0% 96%);
+    --color-text-muted: hsl(0 0% 71%);
+
+    /* UI Elements (adjusted lightness for dark theme) */
+    --color-highlight: hsl(0 0% 40%);
+    --color-border: hsl(0 0% 29%);
+    --color-border-muted: hsl(0 0% 19%);
+
+    /* Semantic Colors (adjusted lightness for dark theme) */
+    --color-primary: hsl(210 90% 60%);
+    /* <--- NEW PRIMARY: Nice Blue for dark theme */
+    --color-secondary: hsl(0 0% 62%);
+    --color-danger: hsl(0 0% 64%);
+    --color-warning: hsl(0 0% 57%);
+    --color-success: hsl(0 0% 59%);
+    --color-info: hsl(0 0% 65%);
+    --color-red: hsl(0 90% 65%);
+    /* <--- Moved original red here for dark theme */
+
+    /* If you still need a 'light blue' separate from primary, define it here */
+    --color-blue-light: hsl(210 90% 40%);
+    /* Lighter shade of primary blue for dark theme */
+}
+
+/* Apply CSS variables to elements using @apply */
+body {
+    @apply bg-[var(--color-bg-dark)] text-[var(--color-text)] min-h-screen flex flex-col;
+}
+
+.card {
+    @apply px-6 py-4 mb-4 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border-muted)] text-[var(--color-text)] shadow;
+}
+
+.btn-primary {
+    /* This button will now be blue because --color-primary is blue */
+    @apply px-4 py-2 rounded-md font-semibold bg-[var(--color-primary)] text-[var(--color-bg)] hover:brightness-120 cursor-pointer;
+}
+
+.btn-icon {
+    /* This icon will now be blue because --color-primary is blue */
+    @apply px-4 py-2 rounded-md font-semibold text-[var(--color-primary)] hover:brightness-120 cursor-pointer;
+}
+
+.btn-secondary {
+    @apply px-4 py-2 rounded-md font-semibold bg-[var(--color-secondary)] text-[var(--color-bg)] hover:brightness-110;
+}
+
+/* If you need a button with the specific red color, you can add it: */
+.btn-red {
+    @apply px-4 py-2 rounded-md font-semibold bg-[var(--color-red)] text-[var(--color-bg)] hover:brightness-120 cursor-pointer;
+}
+
+.text-muted {
+    @apply text-[var(--color-text-muted)];
+}
+
+/* Example with specific background/border */
+.section-dark {
+    @apply bg-[var(--color-bg-dark)] border-[var(--color-border-muted)];
+}
+
+.app-header {
+    @apply bg-[var(--color-bg)] shadow-sm;
+}
+
+.footer {
+    @apply p-1 text-center fixed bottom-0 left-0 right-0 z-10 shadow-sm text-[var(--color-text)] bg-[var(--color-bg)];
+}
+
+.app-picker {
+    @apply p-4 rounded-md shadow bg-[var(--color-bg)] border border-[var(--color-border-muted)] text-[var(--color-text)] hover:text-[var(--color-text)] hover:bg-[var(--color-highlight)] flex justify-between cursor-pointer;
+}
+
+.app-list-modal {
+    @apply bg-[var(--color-bg)];
+}
+
+#platform-tabs {
+    @apply rounded-md shadow flex overflow-hidden border border-[var(--color-border-muted)];
+}
+
+.tab-item {
+    @apply flex-grow text-center cursor-pointer;
+    /* Basic layout and styling */
+    @apply text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-highlight)];
+    /* Text color, hover effect */
+}
+
+.tab-item.active-tab {
+    @apply bg-[var(--color-primary)] text-[var(--color-bg)] font-semibold;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}
+
+.footer-tab-item {
+    transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+    @apply text-[var(--color-text-muted)] cursor-pointer
+}
+
+.footer-tab-item.active-tab {
+    @apply text-[var(--color-primary)] font-semibold;
+}
+
+.app-list li {
+    @apply flex items-center px-4 py-4 cursor-pointer space-x-4 border-b border-[var(--color-border-muted)] hover:bg-[var(--color-highlight)];
+}
+
+/* Remove the border from the very last list item */
+.app-list li:last-child {
+    @apply border-b-0;
+    /* Use border-b-0 to remove the bottom border */
 }
