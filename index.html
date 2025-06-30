@@ -20,9 +20,9 @@
 </head>
 
 <body>
-    <header class="app-header fixed z-10 w-full flex-shrink-0">
-        <div class="max-w-3xl mx-auto px-6 relative flex items-center py-4">
-            <h1 class="text-lg font-semibold select-none absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2">
+    <header class="app-header ticky top-0 z-10 w-full flex-shrink-0">
+        <div class="max-w-3xl mx-auto px-6 flex items-center justify-center items-center py-4">
+            <h1 class="text-lg font-semibold">
                 Подписка
             </h1>
             <div class="ml-auto flex items-center space-x-3">
@@ -33,7 +33,7 @@
         </div>
     </header>
 
-    <main class="pt-20 pb-20 flex-1 overflow-y-auto">
+    <main class="pb-20 flex-1 overflow-y-auto">
         <section id="page-apps" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-4">
             <!-- Контейнер платформ -->
             <nav id="platform-tabs" class="platform-tabs" role="tablist" aria-label="OS selector">
@@ -90,27 +90,27 @@
 
 
         <section id="page-profile" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-4 justify-center items-center">
-            <div class="card bg-white p-8 rounded-lg shadow-md w-full max-w-sm">
+            <div class="card bg-white p-8 rounded-lg shadow-md w-full max-w-sm mb-4 mt-4">
                 <h2 class="text-2xl font-bold text-center mb-6">User Profile</h2>
 
                 <div class="mb-4">
                     <p class="text-muted text-sm mb-1">Username:</p>
-                    <p id="display_username" class="text-lg font-semibold">User123</p>
+                    <p id="display_username" class="text-lg font-semibold">username</p>
                 </div>
 
                 <div class="mb-4">
                     <p class="text-muted text-sm mb-1">User Status:</p>
-                    <p id="display status" class="text-lg font-semibold status-active">Active</p>
+                    <p id="display status" class="text-lg font-semibold status-active">user-status</p>
                 </div>
 
                 <div class="mb-4">
                     <p class="text-muted text-sm mb-1">Subscription Status:</p>
-                    <p id="display_sub_status" class="text-lg font-semibold status-active">Premium Active</p>
+                    <p id="display_sub_status" class="text-lg font-semibold status-active">sub-status</p>
                 </div>
 
                 <div class="mb-4">
                     <p class="text-muted text-sm mb-1">Expiration Date:</p>
-                    <p id="display_expire_date" class="text-lg font-semibold">2025-12-31</p>
+                    <p id="display_expire_date" class="text-lg font-semibold">year</p>
                 </div>
             </div>
         </section>
@@ -682,13 +682,13 @@
                 const usernameLabel = document.getElementById('display_username');
                 usernameLabel.textContent = data.username ? data.username : 'empty';
             }
+
+            if (data.user_status) {
+                const usernameLabel = document.getElementById('display_user_status');
+                usernameLabel.textContent = data.user_status ? data.user_status : 'empty';
+            }
         }
 
-        function getTranslation(key) {
-            return translations[currentLanguage] && translations[currentLanguage][key]
-                ? translations[currentLanguage][key]
-                : key;
-        }
     </script>
 
 </body>
