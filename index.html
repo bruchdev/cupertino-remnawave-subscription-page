@@ -343,8 +343,6 @@
                     container.appendChild(button);
                 }
             });
-
-
         };
 
         function selectPlatform(platform) {
@@ -450,7 +448,7 @@
 
         function renderAppSteps(app, platform, lang = "ru") {
             const container = document.getElementById('setupStepsContainer');
-            container.innerHTML = '';
+            container.innerHTML = ''
 
             const stepTitles = {
                 installationStep: { en: 'Install the App', fa: 'نصب برنامه', ru: 'Установка приложения' },
@@ -465,60 +463,64 @@
                 if (!stepData) return;
 
                 const card = document.createElement('div');
-                card.className = 'w-full card';
+                card.className = 'card';
 
                 // Step title
                 const title = stepTitles[stepKey]?.[lang] || `Step ${index + 1}`;
+                const cardTitle = document.createElement('h1');
+                cardTitle.textContent = title;
+                card.appendChild(cardTitle);
 
                 // Step description
                 const description = stepData.description?.[lang] || '';
-
-                let html = `<h3 class="text-lg font-semibold mb-2">${title}</h3>
-                            <p class="mb-4">${description}</p>`;
+                const cardDescription = document.createElement('p');
+                cardDescription.textContent = description;
+                card.appendChild(cardDescription);
 
                 // Step buttons
-                if (Array.isArray(stepData.buttons)) {
-                    stepData.buttons.forEach(btn => {
-                        const btnText = btn.buttonText?.[lang] || 'Open';
+                if (Array.isArray(stepData.buttons) && stepData.buttons && stepData.buttons.length > 0) {
+                    stepData.buttons.forEach(buttonInfo => {
+                        const button = document.createElement('a');
+                        button.className = 'card-btn';
+                        button.href = buttonInfo.buttonLink;
+                        button.target = '_blank';
+                        button.rel = 'noopener noreferrer';
 
-                        html += `<a href="${btn.buttonLink}" target="_blank" rel="noopener noreferrer">
-                                    <button class="card-btn">
-                                        ${btnText}
-                                    </button>
-                                </a>`;
+                        const btnText = buttonInfo.buttonText?.[lang] || 'Open';
+                        button.textContent = btnText;
+                        card.appendChild(button);
                     });
                 }
 
-                // Add "Subscribe" button if this is addSubscriptionStep and urlScheme exists
-                if (stepKey === 'addSubscriptionStep' && app.urlScheme) {
+                if (stepKey === 'addSubscriptionStep') {
+                    const subscriptionButton = document.createElement('a');
+                    subscriptionButton.className = 'card-btn';
 
-                    let subscriptionUrl
-
-                    if (!app.urlScheme) {
-                        html += `
-                        <p>
-                            Import url into app
-                        </p>`;
-                    }
+                    let url = '#';
 
                     if (app.urlScheme && data.subscription_url) {
-                        subscriptionUrl = data.subscription_url;
+                        let subscriptionUrl = data.subscription_url;
+
+                        if (app.isNeedBase64Encoding) {
+                            subscriptionUrl = btoa(subscriptionUrl);
+                        } else {
+                            subscriptionUrl = encodeURIComponent(subscriptionUrl);
+                        }
+
+                        url = app.urlScheme + subscriptionUrl;
                     }
 
-                    const subscribeText =
-                        lang === 'fa' ? 'اشتراک' :
-                            lang === 'en' ? 'Subscribe' :
-                                'Подписаться';
+                    subscriptionButton.href = url;
+                    if (url !== '#') {
+                        subscriptionButton.target = '_blank';
+                        subscriptionButton.rel = 'noopener noreferrer';
+                    }
+                    subscriptionButton.textContent = "Подписаться";
 
-                    html += `
-                        <a href="${app.urlScheme}${subscriptionUrl}">
-                            <button class="card-btn">
-                                ${subscribeText}
-                            </button>
-                        </a>`;
+                    card.appendChild(subscriptionButton);
                 }
 
-                card.innerHTML = html;
+
                 container.appendChild(card);
             });
         }
@@ -670,6 +672,11 @@
                         daysLeftLabel.textContent = data.days_left;
                     }
                 }
+            }
+
+            // Сохраняем ссылку подписки для использования в links-section
+            if (data.subscription_url) {
+                window.subscriptionUrlForCopy = data.subscription_url;
             }
         }
     </script>

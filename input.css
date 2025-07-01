@@ -116,13 +116,13 @@
     }
 
     .card {
-        @apply px-6 py-4 mb-4 rounded-lg;
+        @apply px-6 py-4 mb-4 rounded-lg flex flex-col w-full;
         @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
         @apply border border-cupertino-light-border dark:border-cupertino-dark-border;
     }
 
     .card-btn {
-        @apply w-full px-4 py-2 rounded-md font-semibold mt-2 cursor-pointer;
+        @apply w-full px-4 py-2 rounded-md font-semibold mt-2 cursor-pointer text-center;
         @apply bg-cupertino-light-primary dark:bg-cupertino-dark-primary;
         @apply text-cupertino-dark-text dark:text-cupertino-light-text font-semibold;
         @apply hover:bg-cupertino-light-primary-hover dark:hover:bg-cupertino-dark-primary-hover;
