@@ -98,9 +98,10 @@
 
 @layer components {
     .app-header {
-        @apply w-full h-18 flex justify-center shadow-sm;
+        @apply w-full h-18 flex justify-center;
         @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
         @apply text-cupertino-light-text dark:text-cupertino-dark-text;
+        @apply border-b border-cupertino-light-border dark:border-cupertino-dark-border;
     }
 
     .app-header .nav {
@@ -129,7 +130,10 @@
     }
 
     .app-footer {
-        @apply w-full fixed bottom-0 h-18 z-10 flex justify-center shadow-sm bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
+        @apply w-full fixed bottom-0 h-18 z-10 flex justify-center;
+        @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
+        @apply border-t border-cupertino-light-border dark:border-cupertino-dark-border;
+
     }
 
     .footer-nav {
@@ -181,7 +185,7 @@
     }
 
     .app-picker {
-        @apply p-4 mt-2 rounded-md shadow border flex justify-between items-center cursor-pointer;
+        @apply p-4 mt-2 rounded-md border flex justify-between items-center cursor-pointer;
         @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
         @apply border border-cupertino-light-border dark:border-cupertino-dark-border;
         @apply hover:bg-cupertino-light-bg-light dark:hover:bg-cupertino-dark-bg-light;
