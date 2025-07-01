@@ -310,7 +310,6 @@
             renderPlatforms();
             let platform = detectPlatform();
             selectPlatform(platform);
-            selectDefaultAppForPlatform(platform);
         };
 
         function renderPlatforms() {
@@ -356,6 +355,7 @@
                 tab.tabIndex = isSelected ? 0 : -1;
             });
             populateAppListForPlatform(data, platform);
+            selectDefaultAppForPlatform(platform);
         };
 
         function selectDefaultAppForPlatform(platform) {
@@ -363,8 +363,6 @@
             console.log("First app:" + apps[0].name);
             selectApp(apps[0], platform);
         }
-
-
 
         function detectPlatform() {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -379,14 +377,9 @@
                 return 'ios';
             }
 
-            if (/Win/.test(navigator.platform) || /Linux/.test(navigator.platform)) {
-                console.log('Detected platform: Windows')
+            if (/Win/.test(userAgent) || /Linux/.test(userAgent) || /Mac/.test(userAgent)) {
+                console.log('Detected platform: PC')
                 return 'windows'; // Windows
-            }
-
-            if (/Mac/.test(navigator.platform)) {
-                console.log('Detected platform: Mac')
-                return 'mac'; // Windows
             }
 
             return 'android'; // Default fallback
@@ -498,13 +491,12 @@
 
                 if (stepKey === 'addSubscriptionStep') {
                     console.log("creating subscription button for app " + app.name)
-                    console.log(data.subscription_url);
-                    console.log(app.urlScheme);
+
 
                     const subscriptionButton = document.createElement('a');
                     subscriptionButton.className = 'card-btn';
 
-                    let url = '';
+                    let url = '#';
                     if (app.urlScheme && data.subscription_url) {
                         console.log("creating url for app " + app.name)
                         let subscriptionUrl = data.subscription_url;
@@ -514,8 +506,12 @@
                         } else {
                             subscriptionUrl = encodeURIComponent(subscriptionUrl);
                         }
-                        url = app.urlScheme + subscriptionUrl;
+                        console.log("Subscription url is: " + subscriptionUrl);
+                        console.log("App url is: " + app.urlScheme);
+                        url = app.urlScheme.concat(subscriptionUrl);
+                        console.log("final url is: " + url);
                     }
+
 
                     subscriptionButton.href = url;
                     subscriptionButton.textContent = "Подписаться";
@@ -591,36 +587,6 @@
                 return value * (units[unit] || 1);
             };
 
-            const servers = [];
-            if (response.links && Array.isArray(response.links)) {
-                response.links.forEach((link) => {
-                    try {
-                        let serverName = getTranslation('server_label');
-                        let flag = '';
-
-                        const hashMatch = link.match(/#(.+)$/);
-                        if (hashMatch) {
-                            const hashPart = decodeURIComponent(hashMatch[1]);
-
-                            serverName = hashPart.replace(/[\u{1F1E6}-\u{1F1FF}][\u{1F1E6}-\u{1F1FF}]/gu, '').trim() || serverName;
-
-                            const flagMatches = hashPart.match(/[\u{1F1E6}-\u{1F1FF}][\u{1F1E6}-\u{1F1FF}]/gu);
-                            if (flagMatches && flagMatches.length > 0) {
-                                flag = flagMatches[0];
-                            }
-                        }
-
-                        servers.push({
-                            name: serverName,
-                            flag: flag,
-                            fullUrl: link
-                        });
-                    } catch (error) {
-                        console.error('Error parsing server link:', error);
-                    }
-                });
-            }
-
             return {
                 username: user.username,
                 user_status: user.userStatus,
@@ -631,7 +597,7 @@
                 traffic_reset_strategy: user.trafficLimitStrategy,
                 subscription_url: response.subscriptionUrl,
                 cryptoLink: response.happ?.cryptoLink,
-                servers: servers,
+                // servers: servers,
                 apps: appsConfig
             };
         }
