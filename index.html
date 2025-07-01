@@ -497,7 +497,9 @@
                     subscriptionButton.className = 'card-btn';
 
                     let url = '#';
-                    if (app.urlScheme && data.subscription_url) {
+                    console.log("Subscription url is: " + data.subscription_url);
+                    console.log("App url is: " + app.urlScheme);
+                    if (app.urlScheme) {
                         console.log("creating url for app " + app.name)
                         let subscriptionUrl = data.subscription_url;
 
