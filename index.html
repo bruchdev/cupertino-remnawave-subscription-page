@@ -496,8 +496,7 @@
                     const subscriptionButton = document.createElement('a');
                     subscriptionButton.className = 'card-btn';
 
-                    let url = '#';
-
+                    let url = '';
                     if (app.urlScheme && data.subscription_url) {
                         let subscriptionUrl = data.subscription_url;
 
@@ -506,15 +505,11 @@
                         } else {
                             subscriptionUrl = encodeURIComponent(subscriptionUrl);
                         }
-
+                        console.log(app.urlScheme);
                         url = app.urlScheme + subscriptionUrl;
                     }
 
                     subscriptionButton.href = url;
-                    if (url !== '#') {
-                        subscriptionButton.target = '_blank';
-                        subscriptionButton.rel = 'noopener noreferrer';
-                    }
                     subscriptionButton.textContent = "Подписаться";
 
                     card.appendChild(subscriptionButton);
