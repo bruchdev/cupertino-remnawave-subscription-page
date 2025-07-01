@@ -310,6 +310,7 @@
             renderPlatforms();
             let platform = detectPlatform();
             selectPlatform(platform);
+            selectDefaultAppForPlatform(platform);
         };
 
         function renderPlatforms() {
@@ -355,9 +356,13 @@
                 tab.tabIndex = isSelected ? 0 : -1;
             });
             populateAppListForPlatform(data, platform);
-            let apps = data[platform] || [];
-            selectApp(apps[0], platform);
         };
+
+        function selectDefaultAppForPlatform(platform) {
+            let apps = data[platform];
+            console.log("First app:" + apps[0].name);
+            selectApp(apps[0], platform);
+        }
 
 
 
@@ -428,7 +433,6 @@
                     <span>${app.name}</span>`;
                 item.onclick = () => {
                     selectApp(app, platform);
-                    appDropdown.classList.add('hidden');
                 };
                 appList.appendChild(item);
             });
@@ -493,11 +497,16 @@
                 }
 
                 if (stepKey === 'addSubscriptionStep') {
+                    console.log("creating subscription button for app " + app.name)
+                    console.log(data.subscription_url);
+                    console.log(app.urlScheme);
+
                     const subscriptionButton = document.createElement('a');
                     subscriptionButton.className = 'card-btn';
 
                     let url = '';
                     if (app.urlScheme && data.subscription_url) {
+                        console.log("creating url for app " + app.name)
                         let subscriptionUrl = data.subscription_url;
 
                         if (app.isNeedBase64Encoding) {
@@ -505,7 +514,6 @@
                         } else {
                             subscriptionUrl = encodeURIComponent(subscriptionUrl);
                         }
-                        console.log(app.urlScheme);
                         url = app.urlScheme + subscriptionUrl;
                     }
 
