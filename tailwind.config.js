@@ -1,6 +1,7 @@
 module.exports = {
   content: ["./index.html"],
-  darkMode: ['media'],
+  safelist: ['font-inter'],
+  darkMode: ['class'],
   theme: {
     extend: {},
   },

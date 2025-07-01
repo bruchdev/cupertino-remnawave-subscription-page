@@ -6,14 +6,10 @@
     "@tailwindcss/cli": "^4.1.11"
   },
   "devDependencies": {
-    "@tailwindcss/postcss": "^4.1.11",
-    "autoprefixer": "^10.4.21",
-    "postcss": "^8.5.6",
-    "postcss-cli": "^11.0.1",
     "tailwindcss": "^4.1.11"
   },
   "scripts": {
-    "dev": "postcss ./input.css -o ./output.css --watch",
-    "build": "postcss ./input.css -o ./output.css"
+    "dev": "npx @tailwindcss/cli -i ./input.css -o ./output.css --watch",
+    "build": "npx @tailwindcss/cli -i ./input.css -o ./output.css"
   }
 }

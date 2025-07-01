@@ -1,185 +1,218 @@
+@import url('https://fonts.googleapis.com/css2?family=Libertinus+Math&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
 @import "tailwindcss";
-
 @custom-variant dark (&:where(.dark, .dark *));
 
+@layer base {
 
-html, body {
-    height: 100%;
-    overflow: hidden; /* This is crucial for controlling global scroll */
-    margin: 0; /* Tailwind Preflight handles this, but explicit is fine */
-    padding: 0; /* Tailwind Preflight handles this, but explicit is fine */
+    html,
+    body {
+        height: 100%;
+        overflow: hidden;
+        margin: 0;
+        padding: 0;
+        @apply text-cupertino-light-text dark:text-cupertino-dark-text;
+        @apply flex flex-col bg-cupertino-light-bg-dark dark:bg-cupertino-dark-bg-dark;
+    }
+
+    main {
+        flex: 1;
+        overflow-y: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+    }
+
+    main::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+    }
+
+    h1 {
+        @apply text-2xl font-semibold;
+    }
 }
 
-body {
-    display: flex;
-    flex-direction: column;
+@theme {
+    /* Fonts */
+    --font-roboto: "Roboto", sans-serif;
+    --font-libertinus: "Libertinus Math", sans-serif;
+
+    /* Light theme colors */
+    --color-cupertino-light-bg-dark: hsl(0 0% 95%);
+    --color-cupertino-light-bg: hsl(0 0% 90%);
+    --color-cupertino-light-bg-light: hsl(0 0% 85%);
+    --color-cupertino-light-text: hsl(0 0% 10%);
+    --color-cupertino-light-text-muted: hsl(0 0% 40%);
+
+    /* New Light Theme Colors */
+    --color-cupertino-light-border: hsl(0 0% 75%);
+    /* General border color */
+    --color-cupertino-light-border-dark: hsl(0 0% 65%);
+    /* Darker border for emphasis */
+    --color-cupertino-light-primary: hsl(200 90% 40%);
+    /* Primary action color (e.g., buttons) */
+    --color-cupertino-light-primary-hover: hsl(200 90% 35%);
+    /* Primary hover state */
+    --color-cupertino-light-secondary: hsl(220 15% 50%);
+    /* Secondary action color */
+    --color-cupertino-light-success: hsl(120 70% 40%);
+    /* Success messages/indicators */
+    --color-cupertino-light-warning: hsl(40 90% 50%);
+    /* Warning messages/indicators */
+    --color-cupertino-light-error: hsl(0 80% 55%);
+    /* Error messages/indicators */
+    --color-cupertino-light-shadow: hsla(0 0% 0% / 0.1);
+    /* Subtle shadow for light theme */
+    --color-cupertino-light-divider: hsl(0 0% 80%);
+    /* For subtle lines/dividers */
+
+    /* Dark theme colors */
+    --color-cupertino-dark-bg-dark: hsl(0 0% 5%);
+    --color-cupertino-dark-bg: hsl(0 0% 10%);
+    --color-cupertino-dark-bg-light: hsl(0 0% 15%);
+    --color-cupertino-dark-text: hsl(0 0% 90%);
+    --color-cupertino-dark-text-muted: hsl(0 0% 71%);
+    --color-cupertino-dark-text-blue: hsl(200 70% 60%);
+
+    /* New Dark Theme Colors */
+    --color-cupertino-dark-border: hsl(0 0% 25%);
+    /* General border color */
+    --color-cupertino-dark-border-light: hsl(0 0% 35%);
+    /* Lighter border for emphasis */
+    --color-cupertino-dark-primary: hsl(200 80% 60%);
+    /* Primary action color */
+    --color-cupertino-dark-primary-hover: hsl(200 70% 80%);
+    /* Primary hover state */
+    --color-cupertino-dark-secondary: hsl(220 10% 40%);
+    /* Secondary action color */
+    --color-cupertino-dark-success: hsl(120 60% 50%);
+    /* Success messages/indicators */
+    --color-cupertino-dark-warning: hsl(40 80% 60%);
+    /* Warning messages/indicators */
+    --color-cupertino-dark-error: hsl(0 70% 65%);
+    /* Error messages/indicators */
+    --color-cupertino-dark-shadow: hsla(0 0% 100% / 0.1);
+    /* Subtle shadow for dark theme */
+    --color-cupertino-dark-divider: hsl(0 0% 20%);
+    /* For subtle lines/dividers */
 }
 
-main {
-    /* These styles make the main content area itself scrollable and hide its scrollbar */
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch; /* For iOS smooth scrolling */
-    scrollbar-width: none; /* For Firefox */
+@layer components {
+    .app-header {
+        @apply w-full h-18 flex justify-center shadow-sm;
+        @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
+        @apply text-cupertino-light-text dark:text-cupertino-dark-text;
+    }
+
+    .app-header .nav {
+        @apply relative flex items-center w-full max-w-3xl px-4;
+    }
+
+    .app-header .btn-icon {
+        @apply absolute right-4 top-1/2 -translate-y-1/2 p-3 cursor-pointer;
+    }
+
+    .app-header .iconify {
+        @apply h-8 w-8;
+    }
+
+    .card {
+        @apply px-6 py-4 mb-4 rounded-lg;
+        @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
+        @apply border border-cupertino-light-border dark:border-cupertino-dark-border;
+    }
+
+    .card-btn {
+        @apply w-full px-4 py-2 rounded-md font-semibold mt-2 cursor-pointer;
+        @apply bg-cupertino-light-primary dark:bg-cupertino-dark-primary;
+        @apply text-cupertino-dark-text dark:text-cupertino-light-text font-semibold;
+        @apply hover:bg-cupertino-light-primary-hover dark:hover:bg-cupertino-dark-primary-hover;
+    }
+
+    .app-footer {
+        @apply w-full fixed bottom-0 h-18 z-10 flex justify-center shadow-sm bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
+    }
+
+    .footer-nav {
+        @apply relative flex justify-between items-center max-w-3xl px-4 h-full;
+    }
+
+    .footer-button {
+        transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
+        @apply cursor-pointer w-16 flex flex-col items-center justify-between text-center transition-all p-1 px-6 mx-6;
+    }
+
+    .footer-button .iconify {
+        @apply scale-110 block leading-none transition-transform duration-300;
+        @apply text-cupertino-light-text-muted dark:text-cupertino-dark-text-muted;
+    }
+
+    .footer-button .tab-label {
+        @apply text-cupertino-light-text dark:text-cupertino-dark-text text-xs mt-1 opacity-0 translate-y-2 pointer-events-none transition-all duration-300;
+    }
+
+    .footer-button.active .iconify,
+    .footer-button.active .tab-label {
+        @apply text-cupertino-light-primary dark:text-cupertino-dark-primary;
+    }
+
+    .footer-button.active .iconify {
+        @apply scale-150 -translate-y-1 font-semibold;
+    }
+
+    .footer-button.active .tab-label {
+        @apply opacity-100 translate-y-0 pointer-events-auto font-bold;
+    }
+
+    .platform-tabs {
+        @apply flex justify-between gap-2;
+    }
+
+    .tab-item {
+        @apply py-4 flex-1 cursor-pointer rounded-lg;
+        @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
+        @apply border border-cupertino-light-border dark:border-cupertino-dark-border;
+        @apply hover:bg-cupertino-light-bg-light dark:hover:bg-cupertino-dark-bg-light;
+    }
+
+    .tab-item.active-tab {
+        @apply text-cupertino-light-text dark:text-cupertino-light-text font-semibold;
+        @apply bg-cupertino-light-primary dark:bg-cupertino-dark-primary;
+        @apply hover:bg-cupertino-light-primary-hover dark:hover:bg-cupertino-dark-primary-hover;
+    }
+
+    .app-picker {
+        @apply p-4 mt-2 rounded-md shadow border flex justify-between items-center cursor-pointer;
+        @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
+        @apply border border-cupertino-light-border dark:border-cupertino-dark-border;
+        @apply hover:bg-cupertino-light-bg-light dark:hover:bg-cupertino-dark-bg-light;
+    }
+
+    .picker-modal {
+        @apply fixed antialiased inset-0 flex justify-center items-center opacity-0 pointer-events-none transition-opacity duration-300 ease-out z-999;
+        @apply bg-stone-800/75;
+    }
+
+    .app-list-modal {
+        @apply p-5 rounded-lg w-9/12 sm:w-7/12 md:w-5/12 lg:w-3/12 scale-95 transition-transform duration-300 ease-out;
+        @apply bg-cupertino-light-bg-dark dark:bg-cupertino-dark-bg-dark;
+    }
+
+    .app-list li {
+        @apply flex items-center px-4 py-4 cursor-pointer space-x-4 rounded-lg;
+        @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
+        @apply hover:bg-cupertino-light-bg-light dark:hover:bg-cupertino-dark-bg-light;
+        @apply border border-cupertino-light-border dark:border-cupertino-dark-border;
+    }
 }
 
-/* For Webkit browsers (Chrome, Safari, Edge) to hide scrollbar */
-main::-webkit-scrollbar {
-    width: 0;
-    height: 0;
-}
-
-/* Base CSS Variables (Default values, typically for Light theme) */
-:root {
-    /* Backgrounds */
-    --color-bg-dark: hsl(0 0% 93%);
-    /* Lighter for light theme */
-    --color-bg: hsl(0 0% 98%);
-    --color-bg-light: hsl(0 0% 95%);
-
-    /* Text Colors */
-    --color-text: hsl(0 0% 10%);
-    /* Darker for light theme */
-    --color-text-muted: hsl(0 0% 40%);
-
-    /* UI Elements */
-    --color-highlight: hsl(0 0% 85%);
-    --color-border: hsl(0 0% 75%);
-    --color-border-muted: hsl(0 0% 90%);
-
-    /* Semantic Colors (adjusted lightness for light theme) */
-    --color-primary: hsl(210 90% 45%);
-    /* <--- NEW PRIMARY: Nice Blue for light theme */
-    --color-secondary: hsl(0 0% 45%);
-    --color-danger: hsl(0 0% 35%);
-    --color-warning: hsl(0 0% 40%);
-    --color-success: hsl(0 0% 38%);
-    --color-info: hsl(0 0% 33%);
-    --color-red: hsl(0 90% 40%);
-    /* <--- Moved original red here */
-
-    /* If you still need a 'light blue' separate from primary, define it here */
-    --color-blue-light: hsl(210 90% 85%);
-    /* Lighter shade of primary blue */
-
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-/* Dark Theme Variables */
-html[data-theme='dark'] {
-    /* Backgrounds (Darker for dark theme) */
-    --color-bg-dark: hsl(0 0% 2%);
-    --color-bg: hsl(0 0% 10%);
-    --color-bg-light: hsl(0 0% 20%);
-
-    /* Text Colors (Lighter for dark theme) */
-    --color-text: hsl(0 0% 96%);
-    --color-text-muted: hsl(0 0% 71%);
-
-    /* UI Elements (adjusted lightness for dark theme) */
-    --color-highlight: hsl(0 0% 40%);
-    --color-border: hsl(0 0% 29%);
-    --color-border-muted: hsl(0 0% 19%);
-
-    /* Semantic Colors (adjusted lightness for dark theme) */
-    --color-primary: hsl(210 90% 60%);
-    /* <--- NEW PRIMARY: Nice Blue for dark theme */
-    --color-secondary: hsl(0 0% 62%);
-    --color-danger: hsl(0 0% 64%);
-    --color-warning: hsl(0 0% 57%);
-    --color-success: hsl(0 0% 59%);
-    --color-info: hsl(0 0% 65%);
-    --color-red: hsl(0 90% 65%);
-    /* <--- Moved original red here for dark theme */
-
-    /* If you still need a 'light blue' separate from primary, define it here */
-    --color-blue-light: hsl(210 90% 40%);
-    /* Lighter shade of primary blue for dark theme */
-}
-
-/* Apply CSS variables to elements using @apply */
-body {
-    @apply bg-[var(--color-bg-dark)] text-[var(--color-text)] min-h-screen flex flex-col;
-}
-
-.card {
-    @apply px-6 py-4 mb-4 rounded-lg bg-[var(--color-bg)] border border-[var(--color-border-muted)] text-[var(--color-text)] shadow;
-}
-
-.btn-primary {
-    /* This button will now be blue because --color-primary is blue */
+/* .btn-primary {
     @apply px-4 py-2 rounded-md font-semibold bg-[var(--color-primary)] text-[var(--color-bg)] hover:brightness-120 cursor-pointer;
 }
 
 .btn-icon {
-    /* This icon will now be blue because --color-primary is blue */
     @apply px-4 py-2 rounded-md font-semibold text-[var(--color-primary)] hover:brightness-120 cursor-pointer;
 }
 
 .btn-secondary {
     @apply px-4 py-2 rounded-md font-semibold bg-[var(--color-secondary)] text-[var(--color-bg)] hover:brightness-110;
-}
-
-/* If you need a button with the specific red color, you can add it: */
-.btn-red {
-    @apply px-4 py-2 rounded-md font-semibold bg-[var(--color-red)] text-[var(--color-bg)] hover:brightness-120 cursor-pointer;
-}
-
-.text-muted {
-    @apply text-[var(--color-text-muted)];
-}
-
-/* Example with specific background/border */
-.section-dark {
-    @apply bg-[var(--color-bg-dark)] border-[var(--color-border-muted)];
-}
-
-.app-header {
-    @apply bg-[var(--color-bg)] shadow-sm;
-}
-
-.footer {
-    @apply p-1 text-center shadow-sm text-[var(--color-text)] bg-[var(--color-bg)];
-}
-
-.app-picker {
-    @apply p-4 rounded-md shadow bg-[var(--color-bg)] border border-[var(--color-border-muted)] text-[var(--color-text)] hover:text-[var(--color-text)] hover:bg-[var(--color-highlight)] flex justify-between cursor-pointer;
-}
-
-.app-list-modal {
-    @apply bg-[var(--color-bg)];
-}
-
-#platform-tabs {
-    @apply rounded-md shadow flex overflow-hidden border border-[var(--color-border-muted)];
-}
-
-.tab-item {
-    @apply flex-grow text-center cursor-pointer;
-    /* Basic layout and styling */
-    @apply text-[var(--color-text-muted)] hover:text-[var(--color-text)] hover:bg-[var(--color-highlight)];
-    /* Text color, hover effect */
-}
-
-.tab-item.active-tab {
-    @apply bg-[var(--color-primary)] text-[var(--color-bg)] font-semibold;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
-}
-
-.footer-tab-item {
-    transition: opacity 0.3s ease, transform 0.3s ease, color 0.3s ease;
-    @apply text-[var(--color-text-muted)] cursor-pointer
-}
-
-.footer-tab-item.active-tab {
-    @apply text-[var(--color-primary)] font-semibold;
-}
-
-.app-list li {
-    @apply flex items-center px-4 py-4 cursor-pointer space-x-4 border-b border-[var(--color-border-muted)] hover:bg-[var(--color-highlight)];
-}
-
-/* Remove the border from the very last list item */
-.app-list li:last-child {
-    @apply border-b-0;
-    /* Use border-b-0 to remove the bottom border */
 }

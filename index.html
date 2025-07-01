@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
+<html lang="ru" class="scroll-smooth">
 
 <head>
     <meta charset="UTF-8" />
@@ -7,150 +7,124 @@
     <title id="page-title">Subscription</title>
     <link href="output.css" rel="stylesheet" />
     <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
-
-    <script>
-        (function () {
-            const storedTheme = localStorage.getItem("theme");
-            const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
-
-            const theme = storedTheme ?? (prefersDark ? "dark" : "light");
-            document.documentElement.setAttribute("data-theme", theme);
-        })();
-    </script>
 </head>
 
 <body>
-    <header class="app-header sticky top-0 z-10 w-full flex-shrink-0">
-        <div class="max-w-3xl mx-auto px-6 flex items-center justify-center items-center py-4">
-            <h1 class="text-lg font-semibold">
+    <header class="app-header">
+        <div class="nav">
+            <!-- Title centered horizontally and vertically -->
+            <h1 class="flex-grow text-center text-2xl font-bold">
                 Подписка
             </h1>
-            <div class="ml-auto flex items-center space-x-3">
-                <button aria-label="toggle dark mode" class="btn-icon" onclick="toggleDarkMode()">
-                    <span class="iconify" data-icon="mdi:theme-light-dark" style="width:24px; height:24px;"></span>
-                </button>
-            </div>
+
+            <!-- Icon pinned to the right, vertically centered -->
+            <button id="toggleDark" aria-label="toggle dark mode" class="btn-icon" onclick="toggleDarkMode()">
+                <span class="iconify" data-icon="mdi:theme-light-dark"></span>
+            </button>
         </div>
     </header>
 
-    <main class="flex-1">
-        <section id="page-apps" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-4">
+    <main class="pt-4">
+        <section id="page-apps" class="tab-page flex flex-col flex-grow max-w-3xl mx-auto px-6 w-full pb-36">
             <!-- Контейнер платформ -->
-            <nav id="platform-tabs" class="platform-tabs" role="tablist" aria-label="OS selector">
+            <nav id="platform-tabs" class="platform-tabs" role="tablist">
             </nav>
 
             <!-- Приложение -->
-            <div class="w-full mb-4 mt-4">
-                <div onclick="openPickerModal()" class="app-picker">
+            <div class="app-picker" onclick="openPickerModal()">
+                <span class="font-semibold">Приложение</span>
 
-                    <!-- Left static label -->
-                    <span class="font-semibold">Приложение</span>
+                <!-- Right: selected app name + icon -->
+                <div id="selected-app" class="flex items-center space-x-2">
+                    <div id="selected-app-icon" class="w-5 h-5"></div>
 
-                    <!-- Right: selected app name + icon -->
-                    <div id="selected-app" class="flex items-center space-x-2">
-                        <div id="selected-app-icon" class="w-5 h-5"></div>
+                    <!-- App name -->
+                    <span id="selected-app-name"></span>
 
-                        <!-- App name -->
-                        <span id="selected-app-name"></span>
-
-                        <!-- Chevron icon -->
-                        <svg class="w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
-                            stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
-                            <path d="M9 5l7 7-7 7" />
-                        </svg>
-                    </div>
-
+                    <!-- Chevron icon -->
+                    <svg class="w-5 h-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor"
+                        stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 5l7 7-7 7" />
+                    </svg>
                 </div>
+
             </div>
 
             <!-- Modal -->
-            <div id="pickerModal"
-                class="fixed inset-0 bg-opacity-30 backdrop-blur-sm hidden flex justify-center items-center z-50">
-                <div
-                    class="app-list-modal mx-4 rounded-3xl w-full max-w-md p-6 shadow-lg  transition transform scale-90 opacity-0">
+            <div class="picker-modal" id="pickerModal" aria-hidden="true">
+                <div id="app-list-modal" class="app-list-modal">
                     <div class="flex justify-between items-center mb-4">
                         <h3 class="text-lg font-semibold">Выберите приложение</h3>
-                        <span
-                            class="p-2 iconify block leading-none scale-110 transition-transform duration-300 cursor-pointer"
-                            onclick="closePickerModal()" data-icon="heroicons-outline:device-phone-mobile"
-                            style="font-size:24px;"></span>
+                        <span class="p-2 iconify block leading-none transition-transform duration-300 cursor-pointer"
+                            onclick="closePickerModal()" data-icon="heroicons:x-circle" style="font-size:40px;"></span>
                     </div>
-                    <ul class="app-list"></ul>
+                    <ul class="app-list gap-2 flex flex-col"></ul>
                 </div>
             </div>
 
-            <div id="setupStepsContainer" class="mt-8 w-full">
+            <div id="setupStepsContainer" class="mt-8 mb-4 w-full">
 
             </div>
         </section>
 
-        <section id="page-settings" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full py-6">
+        <section id="page-settings" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full">
             <p>Hello</p>
         </section>
 
 
-        <section id="page-profile" class="tab-page flex flex-col max-w-3xl mx-auto px-6 w-full justify-center items-center">
-            <div class="card bg-white p-8 rounded-lg shadow-md w-full max-w-sm mb-4 mt-4">
-                <h2 class="text-2xl font-bold text-center mb-6">User Profile</h2>
+        <section id="page-profile" class="tab-page flex flex-col flex-grow max-w-3xl mx-auto px-6 w-full pb-36">
+            <div class="card">
 
-                <div class="mb-4">
-                    <p class="text-muted text-sm mb-1">Username:</p>
-                    <p id="display_username" class="text-lg font-semibold">username</p>
+                <div class="mb-4" id="usernameContainer">
+                    <p class="text-muted text-sm mb-1">Юзернейм:</p>
+                    <p id="usernameLabel" class="text-lg font-semibold">username</p>
                 </div>
 
-                <div class="mb-4">
-                    <p class="text-muted text-sm mb-1">User Status:</p>
-                    <p id="display_user_status" class="text-lg font-semibold status-active">user-status</p>
+                <div class="mb-4" id="userStatusContainer">
+                    <p class="text-muted text-sm mb-1">Статус:</p>
+                    <p id="userStatusLabel" class="text-lg font-semibold status-active">user-status</p>
                 </div>
 
-                <div class="mb-4">
-                    <p class="text-muted text-sm mb-1">Subscription Status:</p>
-                    <p id="display_sub_status" class="text-lg font-semibold status-active">sub-status</p>
+                <div class="mb-4" id="expiresAtContainer">
+                    <p class="text-muted text-sm mb-1">Дата окончания подписки:</p>
+                    <p id="expiresAtLabel" class="text-lg font-semibold">year</p>
                 </div>
 
-                <div class="mb-4">
-                    <p class="text-muted text-sm mb-1">Expiration Date:</p>
-                    <p id="display_expire_date" class="text-lg font-semibold">year</p>
+                <div class="mb-4" id="daysLeftContainer">
+                    <p class="text-muted text-sm mb-1">Осталось дней:</p>
+                    <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
                 </div>
             </div>
+
         </section>
     </main>
 
-    <footer class="footer sticky bottom-0 z-10 w-full flex-shrink-0 text-center shadow-sm text-[var(--color-text)] bg-[var(--color-bg)]">
-        <div id="footer-nav"
-            class="max-w-3xl mx-auto px-6 flex justify-center gap-x-[64px] py-4 text-gray-600 dark:text-gray-400 text-sm">
+    <footer class="app-footer">
+        <div class="footer-nav">
 
-            <button class="footer-tab-item w-16 flex flex-col items-center justify-center transition-all "
-                data-tab="profile" data-icon-active="heroicons-outline:user" data-icon-inactive="heroicons-outline:user"
-                aria-current="false">
-                <span class="iconify block leading-none transition-transform duration-300"
-                    data-icon="heroicons-outline:user" style="font-size:24px;"></span>
-                <span
-                    class="tab-label text-xs mt-1 opacity-0 translate-y-2 pointer-events-none transition-all duration-300">Profile</span>
+            <button class="footer-button" data-tab="profile" aria-current="false">
+                <span class="iconify" data-icon="heroicons-outline:user" style="font-size:24px;"></span>
+                <span class="tab-label">Profile</span>
             </button>
 
-            <button class="footer-tab-item w-16 flex flex-col items-center justify-center font-semibold transition-all"
-                data-tab="apps" data-icon-active="heroicons-outline:device-phone-mobile"
-                data-icon-inactive="heroicons-outline:device-phone-mobile" aria-current="true">
-                <span class="iconify block leading-none scale-110 transition-transform duration-300"
-                    data-icon="heroicons-outline:device-phone-mobile" style="font-size:24px;"></span>
-                <span
-                    class="tab-label text-xs mt-1 opacity-100 translate-y-0 pointer-events-auto transition-all duration-300">Apps</span>
+            <button class="footer-button" data-tab="apps" aria-current="true">
+                <span class="iconify" data-icon="heroicons-outline:device-phone-mobile" style="font-size:24px;"></span>
+                <span class="tab-label">Apps</span>
             </button>
 
-            <button class="footer-tab-item w-16 flex flex-col items-center justify-center transition-all"
-                data-tab="settings" data-icon-active="heroicons-outline:cog" data-icon-inactive="heroicons-outline:cog"
-                aria-current="false">
-                <span class="iconify block leading-none transition-transform duration-300"
-                    data-icon="heroicons-outline:cog" style="font-size:24px;"></span>
-                <span
-                    class="tab-label text-xs mt-1 opacity-0 translate-y-2 pointer-events-none transition-all duration-300">Settings</span>
+            <button class="footer-button" data-tab="settings" aria-current="false">
+                <span class="iconify" data-icon="heroicons-outline:cog" style="font-size:24px;"></span>
+                <span class="tab-label">Settings</span>
             </button>
 
         </div>
     </footer>
 
     <script>
+        // === GLOBAL VARIABLES ===
+        let appsConfig = null;
+        let data = null;
+
         const translations = {
             en: {
                 subscription_page_title: "My Translated Page",
@@ -173,10 +147,7 @@
                 lang_es: "Español"
             }
         };
-        let appsConfig = null;
-        let data = null;
 
-        // SVG иконки для приложений
         const appIcons = {
             'happ': `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M13.4,19.6l-7.9,7.9L5,30.4h6.6L13.4,19.6z" />
@@ -215,6 +186,83 @@
             <path fill-rule="evenodd" clip-rule="evenodd" d="M11.007 22C6.01025 22 0.413848 19.6085 0.0141045 14.2017C-0.0891418 12.8053 0.393020 11.8257 0.853709 10.8897C0.907577 10.7802 0.961152 10.6714 1.01346 10.5625C0.347223 7.78979 -0.385635 1.82844 2.01282 0.164802C3.51185 -0.874970 7.00960 3.28412 8.00897 4.84377C9.00832 4.32389 10.5074 4.32389 11.0070 4.32389C12.0064 4.32389 12.5061 4.32389 14.0051 4.84377C15.1710 3.11082 18.0026 -0.251107 20.0013 0.164802C22.0654 0.594314 21.4010 6.70141 21.1077 9.39799C21.0459 9.96537 21.0006 10.3818 21.0006 10.5625C21.0864 10.7409 21.1721 10.9040 21.2553 11.0623C21.6571 11.8266 22.0000 12.4790 22.0000 14.2017C22.0000 16.2813 19.0019 22.0000 11.0070 22.0000ZM8.86995 16.1663C8.39444 16.9904 6.84049 16.9834 5.39910 16.1507C3.95771 15.3180 3.17471 13.9749 3.65022 13.1507C4.12573 12.3266 5.67969 12.3336 7.12107 13.1663C8.56246 13.9990 9.34546 15.3421 8.86995 16.1663ZM18.0871 13.1507C18.5626 13.9749 17.7796 15.3180 16.3382 16.1507C14.8968 16.9834 13.3429 16.9904 12.8674 16.1663C12.3919 15.3421 13.1749 13.9990 14.6163 13.1663C16.0576 12.3336 17.6116 12.3266 18.0871 13.1507ZM11.0070 19.1585C10.0077 19.1585 8.14148 17.6696 9.50800 17.6585H12.5061C14.0051 17.6585 12.0064 19.1585 11.0070 19.1585Z"/>
         </svg>`
         };
+
+        // === Theme Switching Control ===
+        function applyThemeAndSaveToLocalStorage(theme) {
+            if (theme === 'dark') {
+                if (document.documentElement.classList.contains('dark')) {
+                    return
+                }
+                document.documentElement.classList.add("dark");
+                console.log("Applying theme: " + theme)
+            } else {
+                document.documentElement.classList.remove("dark");
+                console.log("Applying theme: " + theme)
+            }
+            localStorage.setItem("theme", theme);
+        }
+
+        document.addEventListener("DOMContentLoaded", () => {
+            const storedTheme = localStorage.getItem("theme");
+
+            let themeToApply;
+            if (storedTheme) {
+                console.log('Found theme in local storage: ' + localStorage.getItem('theme'))
+                themeToApply = storedTheme;
+            } else {
+                const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+                themeToApply = prefersDark ? "dark" : "light";
+            }
+
+            applyThemeAndSaveToLocalStorage(themeToApply);
+        });
+
+        function toggleDarkMode() {
+            const isDarkTheme = document.documentElement.classList.contains("dark");
+            let newTheme;
+
+            if (isDarkTheme) {
+                newTheme = 'light';
+            } else {
+                newTheme = 'dark';
+            }
+
+            applyThemeAndSaveToLocalStorage(newTheme)
+        }
+
+        <!-- Footer navigation -->
+        document.addEventListener('DOMContentLoaded', () => {
+            const buttons = document.querySelectorAll('.footer-button');
+            const pages = document.querySelectorAll('.tab-page');
+
+            buttons.forEach(tab => {
+                tab.addEventListener('click', () => {
+                    // Hide all labels
+                    deactivateAllFooterTabs(buttons);
+
+                    // Hide all pages
+                    pages.forEach(p => p.classList.add('hidden'));
+
+                    // Activate current tab
+                    tab.classList.add('active');
+
+                    // Show page
+                    const selectedPage = tab.dataset.tab;
+                    document.getElementById(`page-${selectedPage}`).classList.remove('hidden');
+                });
+            });
+
+            setTimeout(() => {
+                document.querySelector('.footer-button[data-tab="apps"]')?.click();
+            }, 0);
+        });
+
+        function deactivateAllFooterTabs(tabs) {
+            tabs.forEach(tab => {
+                tab.classList.remove('active');
+            });
+
+        }
 
         async function loadAppsConfig() {
             if (appsConfig !== null) {
@@ -289,8 +337,7 @@
                     button.setAttribute('aria-selected', 'false');
                     button.setAttribute('id', `tab-${platform}`);
                     button.setAttribute('tabindex', '0');
-                    button.className =
-                        'tab-item flex-1 py-3 bg-[var(--color-bg)] cursor-pointer';
+                    button.className = "tab-item";
                     button.textContent = platformNames[platform] || platform.charAt(0).toUpperCase() + platform.slice(1);
                     button.onclick = () => selectPlatform(platform);
                     container.appendChild(button);
@@ -314,28 +361,7 @@
             selectApp(apps[0], platform);
         };
 
-        function toggleDarkMode() {
-            const currentTheme = localStorage.getItem("theme");
-            console.log("current theme: " + currentTheme)
 
-            if (currentTheme === "dark") {
-                console.log("Switching to light")
-                setLightTheme();
-            } else {
-                console.log("Switching to dark")
-                setDarkTheme();
-            }
-        }
-
-        function setLightTheme() {
-            document.documentElement.setAttribute('data-theme', 'light');
-            localStorage.theme = "light";
-        }
-
-        function setDarkTheme() {
-            document.documentElement.setAttribute('data-theme', 'dark');
-            localStorage.theme = "dark";
-        }
 
         function detectPlatform() {
             const userAgent = navigator.userAgent || navigator.vendor || window.opera;
@@ -363,37 +389,25 @@
             return 'android'; // Default fallback
         };
 
+        // === Modal ===
+        const modal = document.getElementById('pickerModal');
+        const dialog = document.getElementById('app-list-modal');
+        let isOpeningModal = false;
+
         function openPickerModal() {
-            const modal = document.getElementById('pickerModal');
-            modal.classList.remove('hidden');
-            // Animate in
-            setTimeout(() => {
-                const dialog = modal.querySelector('div');
-                dialog.classList.remove('scale-90', 'opacity-0');
-                dialog.classList.add('scale-100', 'opacity-100');
-            }, 10);
-        }
+            modal.classList.remove('opacity-0', "pointer-events-none");
+            modal.classList.add('opacity-100', "pointer-events-auto");
+        };
 
         function closePickerModal() {
-            const modal = document.getElementById('pickerModal');
-
-            if (modal.classList.contains('hidden')) return;
-
-            const dialog = modal.querySelector('div');
-            // Animate out
-            dialog.classList.add('scale-90', 'opacity-0');
-            dialog.classList.remove('scale-100', 'opacity-100');
-            dialog.addEventListener('transitionend', () => {
-                modal.classList.add('hidden');
-            }, { once: true });
+            modal.classList.add('opacity-0', "pointer-events-none");
+            modal.classList.remove('opacity-100');
         }
 
         // Close modal when click outside
         document.addEventListener('DOMContentLoaded', () => {
-            const pickerModal = document.getElementById('pickerModal');
-
-            pickerModal.addEventListener('click', (event) => {
-                if (event.target === pickerModal) {
+            modal.addEventListener('click', (event) => {
+                if (event.target === modal) {
                     closePickerModal();
                 }
             });
@@ -436,7 +450,7 @@
 
         function renderAppSteps(app, platform, lang = "ru") {
             const container = document.getElementById('setupStepsContainer');
-            container.innerHTML = ''; // Clear previous steps
+            container.innerHTML = '';
 
             const stepTitles = {
                 installationStep: { en: 'Install the App', fa: 'نصب برنامه', ru: 'Установка приложения' },
@@ -448,7 +462,7 @@
 
             steps.forEach((stepKey, index) => {
                 const stepData = app[stepKey];
-                if (!stepData) return; // safety check
+                if (!stepData) return;
 
                 const card = document.createElement('div');
                 card.className = 'w-full card';
@@ -459,111 +473,56 @@
                 // Step description
                 const description = stepData.description?.[lang] || '';
 
-                let html = `
-            <h3 class="text-lg font-semibold mb-2">${title}</h3>
-            <p class="mb-4">${description}</p>`;
+                let html = `<h3 class="text-lg font-semibold mb-2">${title}</h3>
+                            <p class="mb-4">${description}</p>`;
 
                 // Step buttons
                 if (Array.isArray(stepData.buttons)) {
                     stepData.buttons.forEach(btn => {
                         const btnText = btn.buttonText?.[lang] || 'Open';
-                        html += `
-                    <a href="${btn.buttonLink}" target="_blank" rel="noopener noreferrer">
-                        <button class="btn-primary w-full mt-2">
-                            ${btnText}
-                        </button>
-                    </a>`;
+
+                        html += `<a href="${btn.buttonLink}" target="_blank" rel="noopener noreferrer">
+                                    <button class="card-btn">
+                                        ${btnText}
+                                    </button>
+                                </a>`;
                     });
                 }
 
                 // Add "Subscribe" button if this is addSubscriptionStep and urlScheme exists
                 if (stepKey === 'addSubscriptionStep' && app.urlScheme) {
-                    const encodedUrl = encodeURIComponent(window.location.href);
+
+                    let subscriptionUrl
+
+                    if (!app.urlScheme) {
+                        html += `
+                        <p>
+                            Import url into app
+                        </p>`;
+                    }
+
+                    if (app.urlScheme && data.subscription_url) {
+                        subscriptionUrl = data.subscription_url;
+                    }
+
                     const subscribeText =
                         lang === 'fa' ? 'اشتراک' :
                             lang === 'en' ? 'Subscribe' :
                                 'Подписаться';
 
                     html += `
-                <a href="${app.urlScheme}${encodedUrl}">
-                    <button class="btn-primary w-full mt-4">
-                        ${subscribeText}
-                    </button>
-                </a>`;
+                        <a href="${app.urlScheme}${subscriptionUrl}">
+                            <button class="card-btn">
+                                ${subscribeText}
+                            </button>
+                        </a>`;
                 }
 
                 card.innerHTML = html;
                 container.appendChild(card);
             });
         }
-    </script>
 
-    <!-- Footer navigation -->
-    <script defer>
-        document.addEventListener('DOMContentLoaded', () => {
-            const tabs = document.querySelectorAll('.footer-tab-item');
-            const pages = document.querySelectorAll('.tab-page');
-
-            tabs.forEach(tab => {
-                tab.addEventListener('click', () => {
-                    // Hide all labels
-                    deactivateAllFooterTabs(tabs);
-
-                    // Hide all pages
-                    pages.forEach(p => p.classList.add('hidden'));
-
-                    // Activate current tab
-                    activateFooterTab(tab)
-
-                    // Show page
-                    const selectedPage = tab.dataset.tab;
-                    document.getElementById(`page-${selectedPage}`).classList.remove('hidden');
-                });
-            });
-
-            // Ensure default tab is selected after rendering
-            setTimeout(() => {
-                document.querySelector('.footer-tab-item[data-tab="apps"]')?.click();
-            }, 0);
-        });
-
-        function activateFooterTab(tab) {
-            // Mark tab as active
-            tab.classList.add('active-tab');
-            tab.setAttribute('aria-selected', 'true');
-            tab.setAttribute('aria-current', 'true');
-
-            // Resize icon
-            const icon = tab.querySelector('.iconify');
-            icon.classList.add('scale-110', '-translate-y-1');
-
-            // Show label
-            const label = tab.querySelector('.tab-label');
-            label.classList.remove('opacity-0', 'translate-y-2', 'pointer-events-none');
-            label.classList.add('opacity-100', 'translate-y-0', 'pointer-events-auto');
-        }
-
-        function deactivateAllFooterTabs(tabs) {
-            tabs.forEach(t => {
-                // Mark tab as inactive
-                t.classList.remove('active-tab');
-                t.setAttribute('aria-selected', 'false');
-                t.setAttribute('aria-current', 'false');
-
-                // Resize icon
-                const icon = t.querySelector('.iconify');
-                icon.classList.remove('scale-110', '-translate-y-1');
-
-                // Hide label
-                const label = t.querySelector('.tab-label');
-                label.classList.add('opacity-0', 'translate-y-2', 'pointer-events-none');
-                label.classList.remove('opacity-100', 'translate-y-0', 'pointer-events-auto');
-            });
-
-        }
-    </script>
-
-    <script>
         async function loadSubscriptionData() {
             try {
                 const appsConfigPromise = loadAppsConfig();
@@ -580,7 +539,6 @@
                 displayData(formattedData);
             } catch (error) {
                 console.error('Ошибка загрузки данных:', error);
-                displayError('Ошибка при загрузке данных подписки: ' + error.message);
             }
         }
 
@@ -676,18 +634,44 @@
         function displayData(data) {
             console.log('Displaying data:', data);
 
-            // Отображаем информацию о пользователе
+            // Username
             if (data.username) {
-                const usernameLabel = document.getElementById('display_username');
+                const usernameLabel = document.getElementById('usernameLabel');
                 usernameLabel.textContent = data.username ? data.username : 'empty';
             }
-
+            // User status
             if (data.user_status) {
-                const usernameLabel = document.getElementById('display_user_status');
-                usernameLabel.textContent = data.user_status ? data.user_status : 'empty';
+                const userStatusLabel = document.getElementById('userStatusLabel');
+                userStatusLabel.textContent = data.user_status ? data.user_status : 'empty';
+            }
+
+            // Expiration Date
+            const isPermanent = data.expires_at && new Date(data.expires_at).getFullYear() >= 2099;
+            if (data.expires_at) {
+                const expiresAtLabel = document.getElementById('expiresAtLabel');
+                if (expiresAtLabel) {
+                    if (isPermanent) {
+                        expiresAtLabel.textContent = 'never';
+                    } else {
+                        expiresAtLabel.textContent = data.expires_at;
+                    }
+                }
+            }
+
+            // Days left
+            const daysLeftContainer = document.getElementById('daysLeftContainer');
+            if (daysLeftContainer) {
+                if (isPermanent) {
+                    daysLeftContainer.style.display = 'none';
+                } else {
+                    daysLeftContainer.style.display = 'flex';
+                    const daysLeftLabel = document.getElementById('daysLeftLabel');
+                    if (daysLeftLabel && data.days_left !== undefined) {
+                        daysLeftLabel.textContent = data.days_left;
+                    }
+                }
             }
         }
-
     </script>
 
 </body>
