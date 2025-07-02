@@ -10,7 +10,6 @@
       "Courier New", monospace;
     --color-gray-400: oklch(70.7% 0.022 261.325);
     --color-gray-500: oklch(55.1% 0.027 264.364);
-    --color-gray-800: oklch(27.8% 0.033 256.848);
     --color-stone-800: oklch(26.8% 0.007 34.298);
     --spacing: 0.25rem;
     --container-3xl: 48rem;
@@ -711,7 +710,9 @@
     --tw-scale-z: 95%;
     scale: var(--tw-scale-x) var(--tw-scale-y);
     border-radius: var(--radius-lg);
-    padding: calc(var(--spacing) * 5);
+    padding-top: calc(var(--spacing) * 4);
+    padding-right: calc(var(--spacing) * 5);
+    padding-left: calc(var(--spacing) * 5);
     transition-property: transform, translate, scale, rotate;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
@@ -772,7 +773,10 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    padding: calc(var(--spacing) * 2);
     text-align: center;
+    font-size: var(--text-xs);
+    line-height: var(--tw-leading, var(--text-xs--line-height));
     color: var(--color-cupertino-light-text-muted);
     &:where(.dark, .dark *) {
       color: var(--color-cupertino-dark-text-muted);
@@ -789,6 +793,12 @@
         }
       }
     }
+  }
+  .show-all-apps.reverse {
+    flex-direction: column-reverse;
+  }
+  .show-all-apps.reverse #showAllAppsIcon {
+    transform: rotate(180deg);
   }
 }
 @property --tw-leading {

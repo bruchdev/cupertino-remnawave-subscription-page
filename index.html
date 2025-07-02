@@ -29,7 +29,7 @@
             <!-- Контейнер платформ -->
             <nav id="platform-tabs" class="platform-tabs" role="tablist">
             </nav>
-            
+
             <!-- Приложение -->
             <div class="app-picker" onclick="openPickerModal()">
                 <span class="font-semibold">Приложение</span>
@@ -428,8 +428,18 @@
 
         function toggleShowAllApps() {
             showingAllApps = !showingAllApps;
-            document.getElementById('showAllAppsLabel').textContent = showingAllApps ? "Show only featured" : "Show all apps";
-            document.getElementById('showAllAppsIcon').classList.toggle('rotate-270', showingAllApps);
+            const container = document.querySelector('.show-all-apps');
+            const label = document.getElementById('showAllAppsLabel');
+
+            container.classList.toggle('reverse');
+            if (container.classList.contains('reverse')) {
+                label.textContent = 'Show only featured apps';
+            } else {
+                label.textContent = 'Show all apps';
+            }
+
+            // document.getElementById('showAllAppsLabel').textContent = showingAllApps ? "Show only featured" : "Show all apps";
+            //document.getElementById('showAllAppsIcon').classList.toggle('rotate-270', showingAllApps);
             populateAppListForPlatform(data, selectedPlatform, showingAllApps);
         }
 
