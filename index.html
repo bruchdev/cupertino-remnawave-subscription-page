@@ -490,17 +490,14 @@
                 }
 
                 if (stepKey === 'addSubscriptionStep') {
-                    console.log("creating subscription button for app " + app.name)
-
-
                     const subscriptionButton = document.createElement('a');
                     subscriptionButton.className = 'card-btn';
+                    
+                    // Разобраться где брать subscriptionUrl
+                    const fullURL = window.location.href;
 
                     let url = '#';
-                    console.log("Subscription url is: " + data.subscription_url);
-                    console.log("App url is: " + app.urlScheme);
-                    if (app.urlScheme) {
-                        console.log("creating url for app " + app.name)
+                    if (app.urlScheme && fullURL) {
                         let subscriptionUrl = data.subscription_url;
 
                         if (app.isNeedBase64Encoding) {
@@ -508,12 +505,8 @@
                         } else {
                             subscriptionUrl = encodeURIComponent(subscriptionUrl);
                         }
-                        console.log("Subscription url is: " + subscriptionUrl);
-                        console.log("App url is: " + app.urlScheme);
-                        url = app.urlScheme.concat(subscriptionUrl);
-                        console.log("final url is: " + url);
+                        url = app.urlScheme.concat(fullURL);
                     }
-
 
                     subscriptionButton.href = url;
                     subscriptionButton.textContent = "Подписаться";
@@ -643,11 +636,6 @@
                         daysLeftLabel.textContent = data.days_left;
                     }
                 }
-            }
-
-            // Сохраняем ссылку подписки для использования в links-section
-            if (data.subscription_url) {
-                window.subscriptionUrlForCopy = data.subscription_url;
             }
         }
     </script>
