@@ -29,14 +29,14 @@
             <!-- Контейнер платформ -->
             <nav id="platform-tabs" class="platform-tabs" role="tablist">
             </nav>
-
+            
             <!-- Приложение -->
             <div class="app-picker" onclick="openPickerModal()">
                 <span class="font-semibold">Приложение</span>
 
                 <!-- Right: selected app name + icon -->
-                <div id="selected-app" class="flex items-center space-x-2">
-                    <div id="selected-app-icon" class="w-5 h-5"></div>
+                <div id="selected-app" class="flex items-center gap-2">
+                    <div id="selected-app-icon"></div>
 
                     <!-- App name -->
                     <span id="selected-app-name"></span>
@@ -58,7 +58,20 @@
                         <span class="p-2 iconify block leading-none transition-transform duration-300 cursor-pointer"
                             onclick="closePickerModal()" data-icon="heroicons:x-circle" style="font-size:40px;"></span>
                     </div>
-                    <ul class="app-list gap-2 flex flex-col"></ul>
+                    <div class="flex flex-col justify-center items-center">
+                        <div id="appList" class="app-list gap-2 flex flex-col w-full">
+                            <!-- Adding apps inside with JS -->
+                        </div>
+
+                        <div class="show-all-apps" onclick="toggleShowAllApps()">
+                            <span id="showAllAppsLabel">Show all apps</span>
+                            <svg id="showAllAppsIcon" class="flex w-5 h-5 rotate-90" fill="none" stroke="currentColor"
+                                stroke-width="2" viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M9 5l7 7-7 7" />
+                            </svg>
+                        </div>
+                    </div>
+
                 </div>
             </div>
 
@@ -124,6 +137,9 @@
         // === GLOBAL VARIABLES ===
         let appsConfig = null;
         let data = null;
+        let selectedPlatform = null;
+        let selectedApp = null;
+        let showingAllApps = false;
 
         const translations = {
             en: {
@@ -346,6 +362,7 @@
         };
 
         function selectPlatform(platform) {
+            selectedPlatform = platform;
             const tabs = document.querySelectorAll('nav button');
 
             tabs.forEach((tab) => {
@@ -354,7 +371,7 @@
                 tab.classList.toggle('active-tab', isSelected);
                 tab.tabIndex = isSelected ? 0 : -1;
             });
-            populateAppListForPlatform(data, platform);
+            populateAppListForPlatform(data, selectedPlatform, showingAllApps);
             selectDefaultAppForPlatform(platform);
         };
 
@@ -388,7 +405,7 @@
         // === Modal ===
         const modal = document.getElementById('pickerModal');
         const dialog = document.getElementById('app-list-modal');
-        let isOpeningModal = false;
+
 
         function openPickerModal() {
             modal.classList.remove('opacity-0', "pointer-events-none");
@@ -409,24 +426,46 @@
             });
         });
 
-        function populateAppListForPlatform(data, platform) {
-            let apps = data[platform] || [];
-            console.log(apps);
+        function toggleShowAllApps() {
+            showingAllApps = !showingAllApps;
+            document.getElementById('showAllAppsLabel').textContent = showingAllApps ? "Show only featured" : "Show all apps";
+            document.getElementById('showAllAppsIcon').classList.toggle('rotate-270', showingAllApps);
+            populateAppListForPlatform(data, selectedPlatform, showingAllApps);
+        }
+
+        function populateAppListForPlatform(data, platform, showingAllApps) {
+            let allApps = data[platform] || [];
             const modal = document.getElementById('pickerModal');
-            const appList = modal.querySelector('ul');
+            const appList = document.getElementById('appList');
+
+            console.log("Rendering all apps:" + showingAllApps)
+
+            const appsToRender = showingAllApps ? allApps : allApps.filter(app => app.isFeatured);
 
             appList.innerHTML = ''; // Clear previous list items
 
-            apps.forEach(app => {
-                const item = document.createElement('li');
-                item.className = 'list-item';
+            appsToRender.forEach(app => {
+                const item = document.createElement('div');
+                item.className = 'items-modal-app';
                 const iconToDisplay = appIcons[app.name.toLowerCase()];
-                item.innerHTML = `
-                    <span class="inline-block w-5 h-5 leading-none text-current">${iconToDisplay ? iconToDisplay : ''}</span>
-                    <span>${app.name}</span>`;
+
+                const iconSpan = document.createElement('span');
+                iconSpan.className = 'inline-flex';
+                if (iconToDisplay) {
+                    iconSpan.innerHTML = iconToDisplay;
+                }
+
+                const nameSpan = document.createElement('span');
+                nameSpan.textContent = app.name;
+
+                item.appendChild(iconSpan);
+                item.appendChild(nameSpan);
+
+
                 item.onclick = () => {
                     selectApp(app, platform);
                 };
+
                 appList.appendChild(item);
             });
         };
@@ -492,7 +531,7 @@
                 if (stepKey === 'addSubscriptionStep') {
                     const subscriptionButton = document.createElement('a');
                     subscriptionButton.className = 'card-btn';
-                    
+
                     // Разобраться где брать subscriptionUrl
                     const fullURL = window.location.href;
 

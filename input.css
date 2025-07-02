@@ -42,28 +42,16 @@
     --color-cupertino-light-bg-light: hsl(0 0% 85%);
     --color-cupertino-light-text: hsl(0 0% 10%);
     --color-cupertino-light-text-muted: hsl(0 0% 40%);
-
-    /* New Light Theme Colors */
     --color-cupertino-light-border: hsl(0 0% 75%);
-    /* General border color */
     --color-cupertino-light-border-dark: hsl(0 0% 65%);
-    /* Darker border for emphasis */
     --color-cupertino-light-primary: hsl(200 90% 40%);
-    /* Primary action color (e.g., buttons) */
     --color-cupertino-light-primary-hover: hsl(200 90% 35%);
-    /* Primary hover state */
     --color-cupertino-light-secondary: hsl(220 15% 50%);
-    /* Secondary action color */
     --color-cupertino-light-success: hsl(120 70% 40%);
-    /* Success messages/indicators */
     --color-cupertino-light-warning: hsl(40 90% 50%);
-    /* Warning messages/indicators */
     --color-cupertino-light-error: hsl(0 80% 55%);
-    /* Error messages/indicators */
     --color-cupertino-light-shadow: hsla(0 0% 0% / 0.1);
-    /* Subtle shadow for light theme */
     --color-cupertino-light-divider: hsl(0 0% 80%);
-    /* For subtle lines/dividers */
 
     /* Dark theme colors */
     --color-cupertino-dark-bg-dark: hsl(0 0% 5%);
@@ -71,29 +59,16 @@
     --color-cupertino-dark-bg-light: hsl(0 0% 15%);
     --color-cupertino-dark-text: hsl(0 0% 90%);
     --color-cupertino-dark-text-muted: hsl(0 0% 71%);
-    --color-cupertino-dark-text-blue: hsl(200 70% 60%);
-
-    /* New Dark Theme Colors */
     --color-cupertino-dark-border: hsl(0 0% 25%);
-    /* General border color */
     --color-cupertino-dark-border-light: hsl(0 0% 35%);
-    /* Lighter border for emphasis */
     --color-cupertino-dark-primary: hsl(200 80% 60%);
-    /* Primary action color */
     --color-cupertino-dark-primary-hover: hsl(200 70% 80%);
-    /* Primary hover state */
     --color-cupertino-dark-secondary: hsl(220 10% 40%);
-    /* Secondary action color */
     --color-cupertino-dark-success: hsl(120 60% 50%);
-    /* Success messages/indicators */
     --color-cupertino-dark-warning: hsl(40 80% 60%);
-    /* Warning messages/indicators */
     --color-cupertino-dark-error: hsl(0 70% 65%);
-    /* Error messages/indicators */
     --color-cupertino-dark-shadow: hsla(0 0% 100% / 0.1);
-    /* Subtle shadow for dark theme */
     --color-cupertino-dark-divider: hsl(0 0% 20%);
-    /* For subtle lines/dividers */
 }
 
 @layer components {
@@ -151,7 +126,7 @@
     }
 
     .footer-button .tab-label {
-        @apply  mt-1 opacity-0 translate-y-2 pointer-events-none transition-all duration-300;
+        @apply mt-1 opacity-0 translate-y-2 pointer-events-none transition-all duration-300;
         @apply text-cupertino-light-text dark:text-cupertino-dark-text text-xs;
     }
 
@@ -186,7 +161,7 @@
     }
 
     .app-picker {
-        @apply p-4 mt-2 rounded-md border flex justify-between items-center cursor-pointer;
+        @apply p-4 mt-2 rounded-md border flex justify-between cursor-pointer;
         @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
         @apply border border-cupertino-light-border dark:border-cupertino-dark-border;
         @apply hover:bg-cupertino-light-bg-light dark:hover:bg-cupertino-dark-bg-light;
@@ -202,10 +177,17 @@
         @apply bg-cupertino-light-bg-dark dark:bg-cupertino-dark-bg-dark;
     }
 
-    .app-list li {
-        @apply flex items-center px-4 py-4 cursor-pointer space-x-4 rounded-lg;
+    .items-modal-app {
+        @apply flex items-center justify-center w-full p-4 rounded-lg cursor-pointer gap-2;
         @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
         @apply hover:bg-cupertino-light-bg-light dark:hover:bg-cupertino-dark-bg-light;
         @apply border border-cupertino-light-border dark:border-cupertino-dark-border;
+    }
+
+    .show-all-apps {
+        @apply text-center mt-4 cursor-pointer flex flex-col justify-center items-center;
+        @apply text-cupertino-light-text-muted dark:text-cupertino-dark-text-muted;
+        @apply hover:text-cupertino-light-text dark:hover:text-cupertino-dark-text;
+
     }
 }
