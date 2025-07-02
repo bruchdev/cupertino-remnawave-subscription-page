@@ -484,6 +484,9 @@
       function closePickerModal() {
         modal.classList.add("opacity-0", "pointer-events-none");
         modal.classList.remove("opacity-100");
+        if (showingAllApps) {
+          toggleShowAllApps();
+        }
       }
 
       // Close modal when click outside
