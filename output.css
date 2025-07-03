@@ -383,12 +383,6 @@
     width: 0;
     height: 0;
   }
-  h1 {
-    font-size: var(--text-2xl);
-    line-height: var(--tw-leading, var(--text-2xl--line-height));
-    --tw-font-weight: var(--font-weight-semibold);
-    font-weight: var(--font-weight-semibold);
-  }
 }
 @layer components {
   .app-header {
@@ -411,7 +405,7 @@
       border-color: var(--color-cupertino-dark-border);
     }
   }
-  .app-header .nav {
+  .app-header .header-container {
     position: relative;
     display: flex;
     width: 100%;
@@ -450,6 +444,12 @@
     &:where(.dark, .dark *) {
       border-color: var(--color-cupertino-dark-border);
     }
+  }
+  .card .title {
+    font-size: var(--text-2xl);
+    line-height: var(--tw-leading, var(--text-2xl--line-height));
+    --tw-font-weight: var(--font-weight-semibold);
+    font-weight: var(--font-weight-semibold);
   }
   .card-btn {
     margin-top: calc(var(--spacing) * 2);
@@ -589,11 +589,6 @@
     font-weight: var(--font-weight-bold);
     opacity: 100%;
   }
-  .platform-tabs {
-    display: flex;
-    justify-content: space-between;
-    gap: calc(var(--spacing) * 2);
-  }
   .tab-item {
     flex: 1;
     cursor: pointer;
@@ -626,7 +621,7 @@
   .tab-item.active-tab {
     --tw-font-weight: var(--font-weight-semibold);
     font-weight: var(--font-weight-semibold);
-    color: var(--color-cupertino-light-text);
+    color: var(--color-cupertino-dark-text);
     &:where(.dark, .dark *) {
       color: var(--color-cupertino-light-text);
     }

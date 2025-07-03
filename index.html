@@ -9,9 +9,14 @@
   </head>
 
   <body>
-    <header class="app-header">
-      <div class="nav">
-        <h1 class="flex-grow text-center text-2xl font-bold">Подписка</h1>
+    <header class="app-header flex">
+      <div class="header-container">
+        <h1
+          class="flex-grow text-center text-2xl font-bold"
+          data-i18n="subscription_page_title"
+        >
+          Подписка
+        </h1>
         <button
           id="toggleDark"
           aria-label="toggle dark mode"
@@ -29,39 +34,44 @@
         class="tab-page mx-auto flex w-full max-w-3xl flex-grow flex-col px-6 pb-36"
       >
         <!-- Контейнер платформ -->
-        <nav id="platform-tabs" class="platform-tabs" role="tablist"></nav>
+        <nav id="apps-navbar" class="flex w-full flex-col">
+          <ul id="platform-tabs" class="flex w-full gap-2" role="tablist">
+            <!--  Platforms -->
+          </ul>
 
-        <!-- Приложение -->
-        <div class="app-picker" onclick="openPickerModal()">
-          <span class="font-semibold" data-i18n="app">Приложение</span>
+          <!-- Приложение -->
+          <div class="app-picker" onclick="openPickerModal()">
+            <span class="font-semibold" data-i18n="app">Приложение</span>
+            <!-- Right: selected app name + icon -->
+            <div id="selected-app" class="flex items-center gap-2">
+              <div id="selected-app-icon"></div>
 
-          <!-- Right: selected app name + icon -->
-          <div id="selected-app" class="flex items-center gap-2">
-            <div id="selected-app-icon"></div>
+              <!-- App name -->
+              <span id="selected-app-name"></span>
 
-            <!-- App name -->
-            <span id="selected-app-name"></span>
-
-            <!-- Chevron icon -->
-            <svg
-              class="h-5 w-5 text-gray-400 dark:text-gray-500"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-              viewBox="0 0 24 24"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <path d="M9 5l7 7-7 7" />
-            </svg>
+              <!-- Chevron icon -->
+              <svg
+                class="h-5 w-5 text-gray-400 dark:text-gray-500"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                viewBox="0 0 24 24"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+              >
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
           </div>
-        </div>
+        </nav>
 
         <!-- Modal -->
         <div class="picker-modal" id="pickerModal" aria-hidden="true">
           <div id="app-list-modal" class="app-list-modal">
             <div class="mb-4 flex items-center justify-between">
-              <h3 class="text-lg font-semibold" data-i18n="select_an_app">Выберите приложение</h3>
+              <h3 class="text-lg font-semibold" data-i18n="select_an_app">
+                Выберите приложение
+              </h3>
               <span
                 class="iconify block cursor-pointer p-2 leading-none transition-transform duration-300"
                 onclick="closePickerModal()"
@@ -75,7 +85,9 @@
               </div>
 
               <div class="show-all-apps" onclick="toggleShowAllApps()">
-                <span id="showAllAppsLabel" data-i18n="show_all_apps">Показать все приложения</span>
+                <span id="showAllAppsLabel" data-i18n="show_all_apps"
+                  >Показать все приложения</span
+                >
                 <svg
                   id="showAllAppsIcon"
                   class="flex h-5 w-5 rotate-90"
@@ -93,18 +105,31 @@
           </div>
         </div>
 
-        <div id="setupStepsContainer" class="mt-8 mb-4 w-full"></div>
+        <ul id="setupStepsContainer" class="mt-8 mb-4 w-full">
+          <!-- Steps for each app -->
+        </ul>
       </section>
 
       <section
         id="page-settings"
         class="tab-page mx-auto flex w-full max-w-3xl flex-col px-6"
-
       >
-        <nav id="languages" class="platform-tabs" role="tablist">
-            <button class="tab-item" id="button-ru" onclick="changeLanguage('ru')">Русский</button>
-            <button class="tab-item" id="button-en" onclick="changeLanguage('en')">English</>
-        </nav>
+        <ul id="languages" class="flex gap-2">
+          <button
+            class="tab-item"
+            id="button-ru"
+            onclick="changeLanguage('ru')"
+          >
+            Русский
+          </button>
+          <button
+            class="tab-item"
+            id="button-en"
+            onclick="changeLanguage('en')"
+          >
+            English
+          </button>
+        </ul>
       </section>
 
       <section
@@ -138,34 +163,40 @@
     </main>
 
     <footer class="app-footer">
-      <div class="footer-nav">
-        <button class="footer-button" data-tab="profile" aria-current="false">
-          <span
-            class="iconify"
-            data-icon="heroicons-outline:user"
-            style="font-size: 24px"
-          ></span>
-          <span class="tab-label" data-i18n="profile">Профиль</span>
-        </button>
+      <nav class="footer-nav">
+        <ul class="flex">
+          <button class="footer-button" data-tab="profile" aria-current="false">
+            <span
+              class="iconify"
+              data-icon="heroicons-outline:user"
+              style="font-size: 24px"
+            ></span>
+            <span class="tab-label" data-i18n="profile">Профиль</span>
+          </button>
 
-        <button class="footer-button" data-tab="apps" aria-current="true">
-          <span
-            class="iconify"
-            data-icon="heroicons-outline:device-phone-mobile"
-            style="font-size: 24px"
-          ></span>
-          <span class="tab-label" data-i18n="apps">Приложения</span>
-        </button>
+          <button class="footer-button" data-tab="apps" aria-current="true">
+            <span
+              class="iconify"
+              data-icon="heroicons-outline:device-phone-mobile"
+              style="font-size: 24px"
+            ></span>
+            <span class="tab-label" data-i18n="apps">Приложения</span>
+          </button>
 
-        <button class="footer-button" data-tab="settings" aria-current="false">
-          <span
-            class="iconify"
-            data-icon="heroicons-outline:cog"
-            style="font-size: 24px"
-          ></span>
-          <span class="tab-label" data-i18n="settings">Настройки</span>
-        </button>
-      </div>
+          <button
+            class="footer-button"
+            data-tab="settings"
+            aria-current="false"
+          >
+            <span
+              class="iconify"
+              data-icon="heroicons-outline:cog"
+              style="font-size: 24px"
+            ></span>
+            <span class="tab-label" data-i18n="settings">Настройки</span>
+          </button>
+        </ul>
+      </nav>
     </footer>
 
     <script>
@@ -179,7 +210,7 @@
 
       const translations = {
         en: {
-          subscription_page_title: "My Translated Page",
+          subscription_page_title: "My subscription",
           download_apk: "Download APK",
           show_all_apps: "Show all apps",
           show_only_featured_apps: "Show only featured apps",
@@ -208,15 +239,13 @@
           apps: "Приложения",
           app: "Приложение",
           profile: "Профиль",
-          username_label: "Юзернейм",
+          username_label: "Имя пользователя",
           subscribe: "Добавить подписку",
           select_an_app: "Выберите приложение",
           // Steps
           installationStep: "Установите приложение",
           addSubscriptionStep: "Добавьте подписку",
           connectAndUseStep: "Подключитесь и используйте",
-
-
         },
       };
 
@@ -289,9 +318,11 @@
           }
           document.documentElement.classList.add("dark");
           console.log("Applying theme: " + theme);
-        } else {
+        } else if (theme === "light") {
+          if (!document.documentElement.classList.contains("dark")) {
+            return;
+          }
           document.documentElement.classList.remove("dark");
-          //console.log("Applying theme: " + theme);
         }
         localStorage.setItem("theme", theme);
       }
@@ -302,7 +333,7 @@
         let themeToApply;
         if (storedTheme) {
           console.log(
-            "Found theme in local storage: " + localStorage.getItem("theme"),
+            "Theme in local storage: " + localStorage.getItem("theme"),
           );
           themeToApply = storedTheme;
         } else {
@@ -326,6 +357,56 @@
         }
 
         applyThemeAndSaveToLocalStorage(newTheme);
+      }
+
+      // === Localization ===
+      function getTranslation(key) {
+        return translations[currentLanguage][key]
+          ? translations[currentLanguage][key]
+          : key;
+      }
+
+      function changeLanguage(key) {
+        localStorage.setItem("language", key);
+        currentLanguage = key;
+        const buttons = document
+          .getElementById("languages")
+          .querySelectorAll("button");
+        buttons.forEach((button) => {
+          const isSelected = button.id === "button-" + key;
+          button.classList.toggle("active-tab", isSelected);
+        });
+        console.log("changing language to: " + currentLanguage);
+        applyTranslations();
+      }
+
+      // Load saved language
+      document.addEventListener("DOMContentLoaded", () => {
+        const storedLanguage = localStorage.getItem("language");
+
+        let newLanguage;
+        if (storedLanguage) {
+          console.log(
+            "Language in local storage: " + localStorage.getItem("language"),
+          );
+          currentLanguage = storedLanguage;
+        } else {
+          currentLanguage = "ru"; // TODO: detect system language
+        }
+      });
+
+      function applyTranslations() {
+        document.querySelectorAll("[data-i18n]").forEach((element) => {
+          const key = element.getAttribute("data-i18n");
+          const translation = getTranslation(key);
+          if (element.tagName === "INPUT" && element.type === "text") {
+            element.placeholder = translation;
+          } else {
+            element.textContent = translation;
+          }
+        });
+        // Trigger steps refresh
+        selectApp(selectedApp, selectedPlatform);
       }
 
       // === Footer navigation ===
@@ -599,83 +680,89 @@
       }
 
       function renderAppSteps(app, platform) {
-        const container = document.getElementById("setupStepsContainer");
-        container.innerHTML = "";
-
+        // Removing old steps
+        document.getElementById("setupStepsContainer").innerHTML = "";
 
         const steps = Object.keys(app).filter((key) => key.endsWith("Step"));
 
-        steps.forEach((stepKey, index) => {
-          const stepData = app[stepKey];
-
-          if (!stepData) return;
-
-          const card = document.createElement("div");
-          card.className = "card";
-
-          // Step title
-          let title = null;
-          if(stepKey.startsWith("additional")){
-            title = stepData.title?.[currentLanguage]
-          } else {
-            title = getTranslation(stepKey);
-          }
-
-          const cardTitle = document.createElement("h1");
-          cardTitle.textContent = title;
-          card.appendChild(cardTitle);
-
-          // Step description
-          const description = stepData.description?.[currentLanguage] || "";
-          const cardDescription = document.createElement("p");
-          cardDescription.textContent = description;
-          card.appendChild(cardDescription);
-
-          // Step buttons
-          if (
-            Array.isArray(stepData.buttons) &&
-            stepData.buttons &&
-            stepData.buttons.length > 0
-          ) {
-            stepData.buttons.forEach((buttonInfo) => {
-              const button = document.createElement("a");
-              button.className = "card-btn";
-              button.href = buttonInfo.buttonLink;
-              button.target = "_blank";
-              button.rel = "noopener noreferrer";
-
-              const btnText = buttonInfo.buttonText?.[currentLanguage] || "Открыть";
-              button.textContent = btnText;
-              card.appendChild(button);
-            });
-          }
-
-          if (stepKey === "addSubscriptionStep") {
-            const subscriptionButton = document.createElement("a");
-            subscriptionButton.className = "card-btn";
-            // Разобраться где брать subscriptionUrl
-            const fullURL = window.location.href;
-
-            let url = "#";
-            if (app.urlScheme && fullURL) {
-              let subscriptionUrl = data.subscription_url;
-
-              if (app.isNeedBase64Encoding) {
-                subscriptionUrl = btoa(subscriptionUrl);
-              } else {
-                subscriptionUrl = encodeURIComponent(subscriptionUrl);
-              }
-              url = app.urlScheme.concat(fullURL);
-            }
-
-            subscriptionButton.href = url;
-            subscriptionButton.textContent = getTranslation("subscribe");
-
-            card.appendChild(subscriptionButton);
-          }
-
-          container.appendChild(card);
+        steps.forEach((stepKey) => {
+          renderStep(app, platform, stepKey);
         });
+      }
+
+      function renderStep(app, platform, stepKey) {
+        const stepData = app[stepKey];
+        if (!stepData) return;
+
+        const container = document.getElementById("setupStepsContainer");
+
+        const stepCard = document.createElement("div");
+        stepCard.className = "card";
+
+        // Step title
+        let title = null;
+        if (stepKey.startsWith("additional")) {
+          title = stepData.title?.[currentLanguage];
+        } else {
+          title = getTranslation(stepKey);
+        }
+
+        const cardTitle = document.createElement("div");
+        cardTitle.textContent = title;
+        cardTitle.classList = "title";
+        stepCard.appendChild(cardTitle);
+
+        // Step description
+        const cardDescription = document.createElement("p");
+        cardDescription.textContent =
+          stepData.description?.[currentLanguage] || "";
+        stepCard.appendChild(cardDescription);
+
+        // Step buttons
+        if (
+          Array.isArray(stepData.buttons) &&
+          stepData.buttons &&
+          stepData.buttons.length > 0
+        ) {
+          stepData.buttons.forEach((buttonInfo) => {
+            const button = document.createElement("a");
+            button.className = "card-btn";
+            button.href = buttonInfo.buttonLink;
+            button.target = "_blank";
+            button.rel = "noopener noreferrer";
+
+            const btnText =
+              buttonInfo.buttonText?.[currentLanguage] || "Открыть";
+            button.textContent = btnText;
+            stepCard.appendChild(button);
+          });
+        }
+
+        if (stepKey === "addSubscriptionStep") {
+          const subscriptionButton = document.createElement("a");
+          subscriptionButton.className = "card-btn";
+          // Разобраться где брать subscriptionUrl
+          const fullURL = window.location.href;
+
+          let url = "#";
+          if (app.urlScheme && fullURL) {
+            let subscriptionUrl = data.subscription_url;
+
+            if (app.isNeedBase64Encoding) {
+              subscriptionUrl = btoa(subscriptionUrl);
+            } else {
+              subscriptionUrl = encodeURIComponent(subscriptionUrl);
+            }
+            url = app.urlScheme.concat(fullURL);
+          }
+
+          subscriptionButton.href = url;
+          subscriptionButton.textContent = getTranslation("subscribe");
+
+          stepCard.appendChild(subscriptionButton);
+        }
+
+        container.appendChild(stepCard);
       }
 
       async function loadSubscriptionData() {
@@ -714,7 +801,7 @@
 
       function formatApiData(apiData, appsConfig) {
         if (!apiData.response || !apiData.response.isFound) {
-          throw new Error("Подписка не найдена");
+          throw new Error("Subscription not found");
         }
 
         const response = apiData.response;
@@ -757,8 +844,6 @@
       }
 
       function displayData(data) {
-        console.log("Displaying data:", data);
-
         // Username
         if (data.username) {
           const usernameLabel = document.getElementById("usernameLabel");
@@ -800,53 +885,6 @@
           }
         }
       }
-
-      function getTranslation(key) {
-        return translations[currentLanguage][key] ? translations[currentLanguage][key] : key;
-      }
-
-      function changeLanguage(key) {
-        localStorage.setItem("language", key)
-        currentLanguage = key;
-        const buttons = document.getElementById('languages').querySelectorAll('button');
-        buttons.forEach(button => {
-          const isSelected = button.id === "button-" + key;
-          console.log(isSelected);
-          button.classList.toggle("active-tab", isSelected);
-        });
-        console.log('changing language to: ' + currentLanguage);
-        applyTranslations();
-      }
-
-      // Close modal when click outside
-      document.addEventListener("DOMContentLoaded", () => {
-        const storedLanguage = localStorage.getItem("language");
-
-        let newLanguage;
-        if (storedLanguage) {
-          console.log(
-            "Found language in local storage: " + localStorage.getItem("language"),
-          );
-          currentLanguage = storedLanguage;
-        } else {
-          currentLanguage = "ru"; // TODO: detect system language
-        }
-      });
-
-      function applyTranslations() {
-          document.querySelectorAll('[data-i18n]').forEach(element => {
-              const key = element.getAttribute('data-i18n');
-              const translation = getTranslation(key);
-              if (element.tagName === 'INPUT' && element.type === 'text') {
-                  element.placeholder = translation;
-              } else {
-                  element.textContent = translation;
-              }
-          });
-          // Trigger steps refresh
-          selectApp(selectedApp, selectedPlatform);
-      }
-
     </script>
   </body>
 </html>
