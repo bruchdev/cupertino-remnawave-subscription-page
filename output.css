@@ -1,5 +1,5 @@
 /*! tailwindcss v4.1.11 | MIT License | https://tailwindcss.com */
-@import url('https://fonts.googleapis.com/css2?family=Libertinus+Math&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Libertinus+Math&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap");
 @layer properties;
 @layer theme, base, components, utilities;
 @layer theme {
@@ -269,9 +269,6 @@
   .rotate-90 {
     rotate: 90deg;
   }
-  .rotate-270 {
-    rotate: 270deg;
-  }
   .cursor-pointer {
     cursor: pointer;
   }
@@ -520,11 +517,12 @@
     margin-inline: calc(var(--spacing) * 6);
     display: flex;
     width: calc(var(--spacing) * 16);
+    --tw-translate-y: calc(var(--spacing) * 1.75);
+    translate: var(--tw-translate-x) var(--tw-translate-y);
     cursor: pointer;
     flex-direction: column;
     align-items: center;
     justify-content: space-between;
-    padding: calc(var(--spacing) * 1);
     padding-inline: calc(var(--spacing) * 6);
     text-align: center;
     transition-property: all;
@@ -533,13 +531,13 @@
   }
   .footer-button .iconify {
     display: block;
-    --tw-scale-x: 110%;
-    --tw-scale-y: 110%;
-    --tw-scale-z: 110%;
+    --tw-scale-x: 125%;
+    --tw-scale-y: 125%;
+    --tw-scale-z: 125%;
     scale: var(--tw-scale-x) var(--tw-scale-y);
     --tw-leading: 1;
     line-height: 1;
-    transition-property: transform, translate, scale, rotate;
+    transition-property: all;
     transition-timing-function: var(--tw-ease, var(--default-transition-timing-function));
     transition-duration: var(--tw-duration, var(--default-transition-duration));
     --tw-duration: 300ms;
@@ -574,7 +572,7 @@
     }
   }
   .footer-button.active .iconify {
-    --tw-translate-y: calc(var(--spacing) * -1);
+    --tw-translate-y: calc(var(--spacing) * -2);
     translate: var(--tw-translate-x) var(--tw-translate-y);
     --tw-scale-x: 150%;
     --tw-scale-y: 150%;
@@ -601,6 +599,7 @@
     cursor: pointer;
     border-radius: var(--radius-lg);
     padding-block: calc(var(--spacing) * 4);
+    text-align: center;
     background-color: var(--color-cupertino-light-bg);
     &:where(.dark, .dark *) {
       background-color: var(--color-cupertino-dark-bg);
