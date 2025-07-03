@@ -24,10 +24,6 @@
     width: 0;
     height: 0;
   }
-
-  h1 {
-    @apply text-2xl font-semibold;
-  }
 }
 
 @theme {
@@ -78,7 +74,7 @@
     @apply border-cupertino-light-border dark:border-cupertino-dark-border border-b;
   }
 
-  .app-header .nav {
+  .app-header .header-container {
     @apply relative flex w-full max-w-3xl items-center px-4;
   }
 
@@ -94,6 +90,10 @@
     @apply mb-4 flex w-full flex-col rounded-lg px-6 py-4;
     @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
     @apply border-cupertino-light-border dark:border-cupertino-dark-border border;
+  }
+
+  .card .title {
+    @apply text-2xl font-semibold;
   }
 
   .card-btn {
@@ -144,10 +144,6 @@
     @apply pointer-events-auto translate-y-0 font-bold opacity-100;
   }
 
-  .platform-tabs {
-    @apply flex justify-between gap-2;
-  }
-
   .tab-item {
     @apply flex-1 cursor-pointer rounded-lg py-4 text-center;
     @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
@@ -156,7 +152,7 @@
   }
 
   .tab-item.active-tab {
-    @apply text-cupertino-light-text dark:text-cupertino-light-text font-semibold;
+    @apply text-cupertino-dark-text dark:text-cupertino-light-text font-semibold;
     @apply bg-cupertino-light-primary dark:bg-cupertino-dark-primary;
     @apply hover:bg-cupertino-light-primary-hover dark:hover:bg-cupertino-dark-primary-hover;
   }
