@@ -118,11 +118,11 @@
       opacity 0.3s ease,
       transform 0.3s ease,
       color 0.3s ease;
-    @apply mx-6 flex w-16 cursor-pointer flex-col items-center justify-between p-1 px-6 text-center transition-all;
+    @apply mx-6 flex w-16 translate-y-1.75 cursor-pointer flex-col items-center justify-between px-6 text-center transition-all;
   }
 
   .footer-button .iconify {
-    @apply block scale-110 leading-none transition-transform duration-300;
+    @apply block scale-125 leading-none transition-all duration-300;
     @apply text-cupertino-light-text-muted dark:text-cupertino-dark-text-muted;
   }
 
@@ -137,7 +137,7 @@
   }
 
   .footer-button.active .iconify {
-    @apply -translate-y-1 scale-150 font-semibold;
+    @apply -translate-y-2 scale-150 font-semibold;
   }
 
   .footer-button.active .tab-label {
@@ -149,7 +149,7 @@
   }
 
   .tab-item {
-    @apply flex-1 cursor-pointer rounded-lg py-4;
+    @apply flex-1 cursor-pointer rounded-lg py-4 text-center;
     @apply bg-cupertino-light-bg dark:bg-cupertino-dark-bg;
     @apply border-cupertino-light-border dark:border-cupertino-dark-border border;
     @apply hover:bg-cupertino-light-bg-light dark:hover:bg-cupertino-dark-bg-light;
