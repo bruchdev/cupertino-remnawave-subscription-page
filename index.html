@@ -5,89 +5,108 @@
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title id="page-title">Subscription</title>
     <link href="output.css" rel="stylesheet" />
-    <script src="https://code.iconify.design/2/2.2.1/iconify.min.js"></script>
+    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
   </head>
 
-  <body>
-    <header class="app-header flex">
-      <div class="header-container">
-        <h1
-          class="flex-grow text-center text-2xl font-bold"
-          data-i18n="subscription_page_title"
-        >
-          Подписка
-        </h1>
+  <body class="stone-bg-dark stone-text">
+    <header
+      class="stone-border flex h-18 w-full justify-center border-b bg-stone-200 backdrop-blur-md dark:bg-stone-900"
+    >
+      <div class="relative flex w-full max-w-2xl items-center justify-between px-4">
+        <h1 class="text-center text-2xl font-bold" data-i18n="subscription_page_title">Подписка</h1>
         <button
           id="toggleDark"
-          aria-label="toggle dark mode"
-          class="btn-icon"
+          aria-label="Toggle dark mode"
+          class="cursor-pointer rounded-lg p-2"
           onclick="toggleDarkMode()"
         >
-          <span class="iconify" data-icon="mdi:theme-light-dark"></span>
+          <span class="iconify h-7 w-7" data-icon="mdi:theme-light-dark"></span>
         </button>
       </div>
     </header>
 
-    <main class="pt-4">
-      <section
-        id="page-apps"
-        class="tab-page mx-auto flex w-full max-w-3xl flex-grow flex-col px-6 pb-36"
-      >
-        <!-- Контейнер платформ -->
-        <nav id="apps-navbar" class="flex w-full flex-col">
-          <ul id="platform-tabs" class="flex w-full gap-2" role="tablist">
-            <!--  Platforms -->
-          </ul>
+    <main class="flex justify-center pb-18">
+      <section id="page-apps" class="tab-page section">
+        <!-- Контейнер систем -->
+        <nav class="stone-border stone-bg flex w-full flex-col gap-1 rounded-lg border p-2">
+          <!-- Select os -->
+          <div
+            class="hover:bg-primary-light cursor-pointer rounded-lg py-4 md:px-4"
+            data-toggle="modal"
+            data-target="#selectOSModal"
+          >
+            <div class="pointer-events-none flex justify-between">
+              <span class="font-semibold" data-i18n="os">Система</span>
+              <!-- Right: selected app name + icon -->
+              <div id="selected-os" class="flex items-center gap-1 md:gap-3">
+                <span id="selected-os-icon"></span>
+                <span id="selected-os-name"></span>
 
-          <!-- Приложение -->
-          <div class="app-picker" onclick="openPickerModal()">
-            <span class="font-semibold" data-i18n="app">Приложение</span>
-            <!-- Right: selected app name + icon -->
-            <div id="selected-app" class="flex items-center gap-2">
-              <div id="selected-app-icon"></div>
+                <!-- Chevron icon -->
+                <svg
+                  class="h-5 w-5 text-gray-400 dark:text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </div>
+          </div>
+          <hr class="stone-border" />
+          <!-- Select app -->
+          <div
+            class="hover:bg-primary-light cursor-pointer rounded-lg py-4 md:px-4"
+            data-toggle="modal"
+            data-target="#selectAppModal"
+          >
+            <div class="pointer-events-none flex justify-between">
+              <span class="font-semibold" data-i18n="app">Приложение</span>
+              <!-- Right: selected app name + icon -->
+              <div id="selected-app" class="flex items-center gap-0.5 md:gap-3">
+                <div id="selected-app-icon"></div>
 
-              <!-- App name -->
-              <span id="selected-app-name"></span>
+                <!-- App name -->
+                <span id="selected-app-name"></span>
 
-              <!-- Chevron icon -->
-              <svg
-                class="h-5 w-5 text-gray-400 dark:text-gray-500"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                viewBox="0 0 24 24"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-              >
-                <path d="M9 5l7 7-7 7" />
-              </svg>
+                <!-- Chevron icon -->
+                <svg
+                  class="h-5 w-5 text-gray-400 dark:text-gray-500"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                  viewBox="0 0 24 24"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"
+                >
+                  <path d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
             </div>
           </div>
         </nav>
 
-        <!-- Modal -->
-        <div class="picker-modal" id="pickerModal" aria-hidden="true">
-          <div id="app-list-modal" class="app-list-modal">
-            <div class="mb-4 flex items-center justify-between">
-              <h3 class="text-lg font-semibold" data-i18n="select_an_app">
-                Выберите приложение
-              </h3>
-              <span
-                class="iconify block cursor-pointer p-2 leading-none transition-transform duration-300"
-                onclick="closePickerModal()"
-                data-icon="heroicons:x-circle"
-                style="font-size: 40px"
-              ></span>
+        <!-- app modal -->
+        <div class="modal" id="selectAppModal" role="dialog" aria-modal="true" aria-hidden="true">
+          <div id="app-list-modal" class="modal-body">
+            <div class="mb-2 flex items-center justify-center p-4">
+              <h3 class="text-lg font-semibold" data-i18n="select_an_app">Приложения</h3>
             </div>
-            <div class="flex flex-col items-center justify-center">
-              <div id="appList" class="app-list flex w-full flex-col gap-2">
+
+            <div class="flex flex-col items-center justify-center px-4">
+              <div id="appList" class="app-list flex w-full flex-col gap-2 px-2">
                 <!-- Adding apps inside with JS -->
               </div>
 
-              <div class="show-all-apps" onclick="toggleShowAllApps()">
-                <span id="showAllAppsLabel" data-i18n="show_all_apps"
-                  >Показать все приложения</span
-                >
+              <div
+                class="show-all-apps mt-4 flex cursor-pointer flex-col items-center justify-center p-2 text-center text-xs text-neutral-500"
+                onclick="toggleShowAllApps()"
+              >
+                <span id="showAllAppsLabel" data-i18n="show_all_apps"> Показать все приложения </span>
                 <svg
                   id="showAllAppsIcon"
                   class="flex h-5 w-5 rotate-90"
@@ -105,37 +124,34 @@
           </div>
         </div>
 
-        <ul id="setupStepsContainer" class="mt-8 mb-4 w-full">
+        <!-- OS modal -->
+        <div class="modal" id="selectOSModal" role="dialog" aria-modal="true" aria-hidden="true">
+          <div id="app-list-modal" class="modal-body">
+            <div class="flex items-center justify-center p-4">
+              <h3 class="text-lg font-semibold" data-i18n="select_an_os">Системы</h3>
+            </div>
+
+            <div class="flex flex-col items-center justify-center">
+              <div id="osList" class="app-list flex w-full flex-col gap-2 p-4 pt-0">
+                <!-- OS list -->
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <ul id="setupStepsContainer" class="mt-4 w-full">
           <!-- Steps for each app -->
         </ul>
       </section>
 
-      <section
-        id="page-settings"
-        class="tab-page mx-auto flex w-full max-w-3xl flex-col px-6"
-      >
+      <section id="page-settings" class="tab-page section">
         <ul id="languages" class="flex gap-2">
-          <button
-            class="tab-item"
-            id="button-ru"
-            onclick="changeLanguage('ru')"
-          >
-            Русский
-          </button>
-          <button
-            class="tab-item"
-            id="button-en"
-            onclick="changeLanguage('en')"
-          >
-            English
-          </button>
+          <button class="tab-item" id="button-ru" onclick="changeLanguage('ru')">Русский</button>
+          <button class="tab-item" id="button-en" onclick="changeLanguage('en')">English</button>
         </ul>
       </section>
 
-      <section
-        id="page-profile"
-        class="tab-page mx-auto flex w-full max-w-3xl flex-grow flex-col px-6 pb-36"
-      >
+      <section id="page-profile" class="tab-page section">
         <div class="card">
           <div class="mb-4" id="usernameContainer">
             <p class="text-muted mb-1 text-sm" data-i18n="username_label"></p>
@@ -144,9 +160,7 @@
 
           <div class="mb-4" id="userStatusContainer">
             <p class="text-muted mb-1 text-sm">Статус:</p>
-            <p id="userStatusLabel" class="status-active text-lg font-semibold">
-              user-status
-            </p>
+            <p id="userStatusLabel" class="status-active text-lg font-semibold">user-status</p>
           </div>
 
           <div class="mb-4" id="expiresAtContainer">
@@ -162,37 +176,23 @@
       </section>
     </main>
 
-    <footer class="app-footer">
-      <nav class="footer-nav">
+    <footer
+      class="fixed bottom-0 z-40 flex h-18 w-full justify-center border-t border-stone-400 bg-stone-200/30 backdrop-blur-md dark:border-stone-700 dark:bg-stone-700/30"
+    >
+      <nav class="relative flex h-full max-w-3xl items-center justify-between px-4">
         <ul class="flex">
           <button class="footer-button" data-tab="profile" aria-current="false">
-            <span
-              class="iconify"
-              data-icon="heroicons-outline:user"
-              style="font-size: 24px"
-            ></span>
+            <span class="iconify" data-icon="heroicons-outline:user" style="font-size: 24px"></span>
             <span class="tab-label" data-i18n="profile">Профиль</span>
           </button>
 
           <button class="footer-button" data-tab="apps" aria-current="true">
-            <span
-              class="iconify"
-              data-icon="heroicons-outline:device-phone-mobile"
-              style="font-size: 24px"
-            ></span>
+            <span class="iconify" data-icon="heroicons-outline:device-phone-mobile" style="font-size: 24px"></span>
             <span class="tab-label" data-i18n="apps">Приложения</span>
           </button>
 
-          <button
-            class="footer-button"
-            data-tab="settings"
-            aria-current="false"
-          >
-            <span
-              class="iconify"
-              data-icon="heroicons-outline:cog"
-              style="font-size: 24px"
-            ></span>
+          <button class="footer-button" data-tab="settings" aria-current="false">
+            <span class="iconify" data-icon="heroicons-outline:cog" style="font-size: 24px"></span>
             <span class="tab-label" data-i18n="settings">Настройки</span>
           </button>
         </ul>
@@ -210,42 +210,52 @@
 
       const translations = {
         en: {
-          subscription_page_title: "My subscription",
-          download_apk: "Download APK",
-          show_all_apps: "Show all apps",
-          show_only_featured_apps: "Show only featured apps",
-          open_in_app_store: "Open in App Store",
-          open_in_google_play: "Open in Google Play",
-          settings: "Settings",
-          apps: "Apps",
-          app: "App",
-          profile: "Profile",
-          username_label: "Username",
-          subscribe: "Add subscription",
-          select_an_app: "Select an App",
+          subscription_page_title: 'My subscription',
+          download_apk: 'Download APK',
+          show_all_apps: 'Show all apps',
+          show_only_featured_apps: 'Show only featured apps',
+          open_in_app_store: 'Open in App Store',
+          open_in_google_play: 'Open in Google Play',
+          settings: 'Settings',
+          apps: 'Apps',
+          app: 'App',
+          profile: 'Profile',
+          username_label: 'Username',
+          subscribe: 'Add subscription',
+          select_an_app: 'Select an App',
+          select_an_os: 'Select a system',
+          os: 'System',
+          pc: 'Computer',
+          ios: 'iPhone, iPad',
+          android: 'Android',
           // Steps
-          installationStep: "Install the App",
-          addSubscriptionStep: "Add subscription",
-          connectAndUseStep: "Connect and use",
+          installationStep: 'Install the App',
+          addSubscriptionStep: 'Add subscription',
+          connectAndUseStep: 'Connect and use',
         },
         ru: {
-          subscription_page_title: "Моя подписка",
-          download_apk: "Скачать APK",
-          show_all_apps: "Показать все приложения",
-          show_only_featured_apps: "Показать только рекомендованные",
-          open_in_app_store: "Открыть в App Store",
-          open_in_google_play: "Открыть в Google Play",
-          settings: "Настройки",
-          apps: "Приложения",
-          app: "Приложение",
-          profile: "Профиль",
-          username_label: "Имя пользователя",
-          subscribe: "Добавить подписку",
-          select_an_app: "Выберите приложение",
+          subscription_page_title: 'Моя подписка',
+          download_apk: 'Скачать APK',
+          show_all_apps: 'Показать все приложения',
+          show_only_featured_apps: 'Показать только рекомендованные',
+          open_in_app_store: 'Открыть в App Store',
+          open_in_google_play: 'Открыть в Google Play',
+          settings: 'Настройки',
+          apps: 'Приложения',
+          app: 'Приложение',
+          profile: 'Профиль',
+          username_label: 'Имя пользователя',
+          subscribe: 'Добавить подписку',
+          select_an_app: 'Выберите приложение',
+          select_an_os: 'Выберите систему',
+          os: 'Система',
+          pc: 'Компьютер',
+          ios: 'Айфон, Айпад',
+          android: 'Андроид',
           // Steps
-          installationStep: "Установите приложение",
-          addSubscriptionStep: "Добавьте подписку",
-          connectAndUseStep: "Подключитесь и используйте",
+          installationStep: 'Установите приложение',
+          addSubscriptionStep: 'Добавьте подписку',
+          connectAndUseStep: 'Подключитесь и используйте',
         },
       };
 
@@ -259,7 +269,7 @@
             <path d="M18.8,12.8l7.9-7.9l0.6-3.3h-6.6L18.8,12.8z" />
             </svg>`,
 
-        "sing-box": `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+        'sing-box': `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M27 20.5C27.6076 20.1302 27.9978 19.2655 28 18.6463V9C28 9 28.0078 8.59766 27.5822 8.32719L14.9796 0.450533C14.9796 0.450533 13.5 -0.5 12.0584 0.450533L0.561526 8.12545C0.0257112 8.49456 0.00389706 9.16105 0.00389706 9.16105L-6.01943e-06 18.5C-6.01943e-06 18.5 -0.0137371 19.6716 0.499994 20L13 28L13.0471 17.0006L0.88928 9.30661C0.88928 9.30661 0.3336 8.95514 1.04756 8.54689L12.5 1C13.5318 0.372263 14.5593 0.970586 14.5593 0.970586L27.1156 8.65768C27.7201 8.91105 27.2738 9.10085 27.2738 9.10085L24.425 10.9058C24.425 10.9058 24.0203 11.2628 23.537 11.0184L10.5108 2.93515L10.0302 3.25102L23.5 11.5V15C23.5 15.5 23.1385 15.7448 23.1385 15.7448L19.3613 18.2599C19.3613 18.2599 19.014 18.5106 19 18V14.5L5.58401 6.16018L5.04136 6.52891L18.0774 14.6876C18.0774 14.6876 18.4613 14.8944 18.0216 15.133L14.7019 17.1149V27C14.7019 27 14.6993 27.637 14 28C14 28 14.5208 28.1278 15.4667 27.5678L27 20.5Z"/>
             </svg>`,
 
@@ -273,7 +283,7 @@
             <path d="M10.9421 7.64677C12.8976 7.59867 14.4195 9.02113 14.4271 10.6429C14.4347 12.3814 12.9357 13.7627 11.0410 13.7695C9.14628 13.7764 7.70814 12.4433 7.64727 10.7116C7.59400 9.21354 9.22237 7.56431 10.9421 7.64677ZM12.8824 10.7528C12.8976 9.79077 12.0986 9.01425 11.0714 9.00051C10.0061 8.98677 9.06258 9.74266 9.07780 10.7253C9.09302 11.6736 9.89959 12.4227 10.9421 12.4364C12.0454 12.4433 12.8672 11.7355 12.8824 10.7528Z"/>
             </svg>`,
 
-        "clash-meta": `<svg class="w-6 h-6" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+        'clash-meta': `<svg class="w-6 h-6" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.1 35.17H5.686m9.282 2.993l-8.846 3.163M24 16.874c.801 0 2.551.256 2.551.256L37.746 6.674s3.295.341 4.754.852V31.63c-1.42.653-4.574 1.108-6.45 1.108V17.11l-7.756 7.302S25.708 23.560 24 23.560s-4.294.853-4.294.853L11.95 17.11v15.627c-1.876 0-5.03-.455-6.45-1.108V7.526c1.458-.511 4.754-.852 4.754-.852L21.45 17.13s1.75-.256 2.551-.256m.625 17.245L24 35.265l-.626-1.146M32.9 35.17h9.414m-9.282 2.993l8.846 3.163"/>
             </svg>`,
 
@@ -281,7 +291,7 @@
             <path d="M0 1.86298V3.72596H1.87780H3.75560L3.80567 17.3630L3.88078 31L18.4024 15.6987C26.3893 7.30288 32.9741 0.322916 32.9992 0.198717C33.0492 0.0993585 30.8460 -4.76837e-07 28.1169 -4.76837e-07H23.1595L16.2742 6.38381L9.38899 12.7428L9.26380 6.43349L9.13862 0.124198L4.58183 0.049679L0 -4.76837e-07V1.86298Z"/>
             </svg>`,
 
-        "clash-verge": `<svg class="w-6 h-6" viewBox="0 0 22 22" fill="currentColor">
+        'clash-verge': `<svg class="w-6 h-6" viewBox="0 0 22 22" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M11.007 22C6.01025 22 0.413848 19.6085 0.0141045 14.2017C-0.0891418 12.8053 0.393020 11.8257 0.853709 10.8897C0.907577 10.7802 0.961152 10.6714 1.01346 10.5625C0.347223 7.78979 -0.385635 1.82844 2.01282 0.164802C3.51185 -0.874970 7.00960 3.28412 8.00897 4.84377C9.00832 4.32389 10.5074 4.32389 11.0070 4.32389C12.0064 4.32389 12.5061 4.32389 14.0051 4.84377C15.1710 3.11082 18.0026 -0.251107 20.0013 0.164802C22.0654 0.594314 21.4010 6.70141 21.1077 9.39799C21.0459 9.96537 21.0006 10.3818 21.0006 10.5625C21.0864 10.7409 21.1721 10.9040 21.2553 11.0623C21.6571 11.8266 22.0000 12.4790 22.0000 14.2017C22.0000 16.2813 19.0019 22.0000 11.0070 22.0000ZM8.86995 16.1663C8.39444 16.9904 6.84049 16.9834 5.39910 16.1507C3.95771 15.3180 3.17471 13.9749 3.65022 13.1507C4.12573 12.3266 5.67969 12.3336 7.12107 13.1663C8.56246 13.9990 9.34546 15.3421 8.86995 16.1663ZM18.0871 13.1507C18.5626 13.9749 17.7796 15.3180 16.3382 16.1507C14.8968 16.9834 13.3429 16.9904 12.8674 16.1663C12.3919 15.3421 13.1749 13.9990 14.6163 13.1663C16.0576 12.3336 17.6116 12.3266 18.0871 13.1507ZM11.0070 19.1585C10.0077 19.1585 8.14148 17.6696 9.50800 17.6585H12.5061C14.0051 17.6585 12.0064 19.1585 11.0070 19.1585Z"/>
             </svg>`,
 
@@ -305,6 +315,13 @@
             <path d="M24.934 10.875c-.168-.242-.633-.754-1.036-1.133-2.89-2.726-6.75-4.035-11.066-3.762-2.043.13-3.496.567-4.95 1.485-1.241.785-1.35.848-1.448.785-.055-.035-.09-.586-.09-1.441 0-1.63.05-1.79.687-2.09 1.328-.625 3.844-1.399 5.387-1.653 1.836-.304 4.367-.265 6.133.094 1.789.363 4.277 1.414 5.742 2.422 1.215.836 1.18.73 1.148 3.352-.015 1.32-.062 2.246-.117 2.296-.058.06-.191-.062-.39-.355Z"/>
             </svg>`,
 
+        ios: '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M9.438 31.401a7 7 0 0 1-1.656-1.536a20 20 0 0 1-1.422-1.938a18.9 18.9 0 0 1-2.375-4.849c-.667-2-.99-3.917-.99-5.792c0-2.094.453-3.922 1.339-5.458a7.7 7.7 0 0 1 2.797-2.906a7.45 7.45 0 0 1 3.786-1.12q.705.002 1.51.198c.385.109.854.281 1.427.495c.729.281 1.13.453 1.266.495c.427.156.786.224 1.068.224c.214 0 .516-.068.859-.172c.193-.068.557-.188 1.078-.411c.516-.188.922-.349 1.245-.469c.495-.146.974-.281 1.401-.349a6.7 6.7 0 0 1 1.531-.063a9 9 0 0 1 2.589.557c1.359.547 2.458 1.401 3.276 2.615a6.4 6.4 0 0 0-.969.734a8.2 8.2 0 0 0-1.641 2.005a6.8 6.8 0 0 0-.859 3.359c.021 1.443.391 2.714 1.12 3.813a7.2 7.2 0 0 0 2.047 2.047c.417.281.776.474 1.12.604c-.161.5-.333.984-.536 1.464a19 19 0 0 1-1.667 3.083c-.578.839-1.031 1.464-1.375 1.88c-.536.635-1.052 1.12-1.573 1.458c-.573.38-1.25.583-1.938.583a4.4 4.4 0 0 1-1.38-.167c-.385-.13-.766-.271-1.141-.432a9 9 0 0 0-1.203-.453a6.3 6.3 0 0 0-3.099-.005c-.417.12-.818.26-1.214.432c-.557.234-.927.391-1.141.458c-.427.125-.87.203-1.318.229c-.693 0-1.339-.198-1.979-.599zm9.14-24.615c-.906.453-1.771.646-2.63.583c-.135-.865 0-1.75.359-2.719a7.3 7.3 0 0 1 1.333-2.24A7.1 7.1 0 0 1 19.812.733q1.319-.68 2.521-.734c.104.906 0 1.797-.333 2.76a8 8 0 0 1-1.333 2.344a6.8 6.8 0 0 1-2.115 1.682z"/></svg>',
+
+        android:
+          '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M32 25.333H0a18.1 18.1 0 0 1 2.948-8.094a14.95 14.95 0 0 1 4.88-4.708l.547-.302l-2.693-4.547a.683.683 0 0 1 .224-.938a.673.673 0 0 1 .922.24l2.771 4.667a16.9 16.9 0 0 1 6.453-1.198c2.172-.026 4.323.38 6.333 1.198l2.76-4.667a.67.67 0 0 1 .932-.224a.676.676 0 0 1 .214.932l-2.693 4.562l.667.37a15.2 15.2 0 0 1 4.839 4.828A19.3 19.3 0 0 1 32 25.332zm-10-5.974a1.332 1.332 0 1 0 2.664.002A1.332 1.332 0 0 0 22 19.36m-14.667 0a1.332 1.332 0 1 0 2.664.002a1.332 1.332 0 0 0-2.664-.002"/></svg>',
+
+        pc: '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><path fill="currentColor" fill-rule="evenodd" d="M8 2a1 1 0 0 0-1 1v.469h.5a2.75 2.75 0 0 1 2.75 2.75v.156H14V3a1 1 0 0 0-1-1zm-.109 11.871a2 2 0 0 0 .088-.944a2.75 2.75 0 0 0 2.271-2.708V7.625H14V13a1 1 0 0 1-1 1H8.5a1.5 1.5 0 0 1-.609-.129m4.78-9.683a.766.766 0 1 1-1.53 0a.766.766 0 0 1 1.53 0M0 6.217a1.5 1.5 0 0 1 1.5-1.5h6a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5H5.25v.75H6a.75.75 0 1 1 0 1.5H3a.75.75 0 0 1 0-1.5h.75v-.75H1.5a1.5 1.5 0 0 1-1.5-1.5z" clip-rule="evenodd"/></svg>',
+
         default: `<svg class="w-6 h-6" viewBox="0 0 22 22" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M11.007 22C6.01025 22 0.413848 19.6085 0.0141045 14.2017C-0.0891418 12.8053 0.393020 11.8257 0.853709 10.8897C0.907577 10.7802 0.961152 10.6714 1.01346 10.5625C0.347223 7.78979 -0.385635 1.82844 2.01282 0.164802C3.51185 -0.874970 7.00960 3.28412 8.00897 4.84377C9.00832 4.32389 10.5074 4.32389 11.0070 4.32389C12.0064 4.32389 12.5061 4.32389 14.0051 4.84377C15.1710 3.11082 18.0026 -0.251107 20.0013 0.164802C22.0654 0.594314 21.4010 6.70141 21.1077 9.39799C21.0459 9.96537 21.0006 10.3818 21.0006 10.5625C21.0864 10.7409 21.1721 10.9040 21.2553 11.0623C21.6571 11.8266 22.0000 12.4790 22.0000 14.2017C22.0000 16.2813 19.0019 22.0000 11.0070 22.0000ZM8.86995 16.1663C8.39444 16.9904 6.84049 16.9834 5.39910 16.1507C3.95771 15.3180 3.17471 13.9749 3.65022 13.1507C4.12573 12.3266 5.67969 12.3336 7.12107 13.1663C8.56246 13.9990 9.34546 15.3421 8.86995 16.1663ZM18.0871 13.1507C18.5626 13.9749 17.7796 15.3180 16.3382 16.1507C14.8968 16.9834 13.3429 16.9904 12.8674 16.1663C12.3919 15.3421 13.1749 13.9990 14.6163 13.1663C16.0576 12.3336 17.6116 12.3266 18.0871 13.1507ZM11.0070 19.1585C10.0077 19.1585 8.14148 17.6696 9.50800 17.6585H12.5061C14.0051 17.6585 12.0064 19.1585 11.0070 19.1585Z"/>
             </svg>`,
@@ -312,48 +329,44 @@
 
       // === Theme Switching Control ===
       function applyThemeAndSaveToLocalStorage(theme) {
-        if (theme === "dark") {
-          if (document.documentElement.classList.contains("dark")) {
+        if (theme === 'dark') {
+          if (document.documentElement.classList.contains('dark')) {
             return;
           }
-          document.documentElement.classList.add("dark");
-          console.log("Applying theme: " + theme);
-        } else if (theme === "light") {
-          if (!document.documentElement.classList.contains("dark")) {
+          document.documentElement.classList.add('dark');
+          console.log('Applying theme: ' + theme);
+        } else if (theme === 'light') {
+          if (!document.documentElement.classList.contains('dark')) {
             return;
           }
-          document.documentElement.classList.remove("dark");
+          document.documentElement.classList.remove('dark');
         }
-        localStorage.setItem("theme", theme);
+        localStorage.setItem('theme', theme);
       }
 
-      document.addEventListener("DOMContentLoaded", () => {
-        const storedTheme = localStorage.getItem("theme");
+      document.addEventListener('DOMContentLoaded', () => {
+        const storedTheme = localStorage.getItem('theme');
 
         let themeToApply;
         if (storedTheme) {
-          console.log(
-            "Theme in local storage: " + localStorage.getItem("theme"),
-          );
+          console.log('Theme in local storage: ' + localStorage.getItem('theme'));
           themeToApply = storedTheme;
         } else {
-          const prefersDark = window.matchMedia(
-            "(prefers-color-scheme: dark)",
-          ).matches;
-          themeToApply = prefersDark ? "dark" : "light";
+          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+          themeToApply = prefersDark ? 'dark' : 'light';
         }
 
         applyThemeAndSaveToLocalStorage(themeToApply);
       });
 
       function toggleDarkMode() {
-        const isDarkTheme = document.documentElement.classList.contains("dark");
+        const isDarkTheme = document.documentElement.classList.contains('dark');
         let newTheme;
 
         if (isDarkTheme) {
-          newTheme = "light";
+          newTheme = 'light';
         } else {
-          newTheme = "dark";
+          newTheme = 'dark';
         }
 
         applyThemeAndSaveToLocalStorage(newTheme);
@@ -361,45 +374,39 @@
 
       // === Localization ===
       function getTranslation(key) {
-        return translations[currentLanguage][key]
-          ? translations[currentLanguage][key]
-          : key;
+        return translations[currentLanguage][key] ? translations[currentLanguage][key] : key;
       }
 
       function changeLanguage(key) {
-        localStorage.setItem("language", key);
+        localStorage.setItem('language', key);
         currentLanguage = key;
-        const buttons = document
-          .getElementById("languages")
-          .querySelectorAll("button");
+        const buttons = document.getElementById('languages').querySelectorAll('button');
         buttons.forEach((button) => {
-          const isSelected = button.id === "button-" + key;
-          button.classList.toggle("active-tab", isSelected);
+          const isSelected = button.id === 'button-' + key;
+          button.classList.toggle('active-tab', isSelected);
         });
-        console.log("changing language to: " + currentLanguage);
+        console.log('changing language to: ' + currentLanguage);
         applyTranslations();
       }
 
       // Load saved language
-      document.addEventListener("DOMContentLoaded", () => {
-        const storedLanguage = localStorage.getItem("language");
+      document.addEventListener('DOMContentLoaded', () => {
+        const storedLanguage = localStorage.getItem('language');
 
         let newLanguage;
         if (storedLanguage) {
-          console.log(
-            "Language in local storage: " + localStorage.getItem("language"),
-          );
+          console.log('Language in local storage: ' + localStorage.getItem('language'));
           currentLanguage = storedLanguage;
         } else {
-          currentLanguage = "ru"; // TODO: detect system language
+          currentLanguage = 'ru'; // TODO: detect system language
         }
       });
 
       function applyTranslations() {
-        document.querySelectorAll("[data-i18n]").forEach((element) => {
-          const key = element.getAttribute("data-i18n");
+        document.querySelectorAll('[data-i18n]').forEach((element) => {
+          const key = element.getAttribute('data-i18n');
           const translation = getTranslation(key);
-          if (element.tagName === "INPUT" && element.type === "text") {
+          if (element.tagName === 'INPUT' && element.type === 'text') {
             element.placeholder = translation;
           } else {
             element.textContent = translation;
@@ -410,26 +417,24 @@
       }
 
       // === Footer navigation ===
-      document.addEventListener("DOMContentLoaded", () => {
-        const buttons = document.querySelectorAll(".footer-button");
-        const pages = document.querySelectorAll(".tab-page");
+      document.addEventListener('DOMContentLoaded', () => {
+        const buttons = document.querySelectorAll('.footer-button');
+        const pages = document.querySelectorAll('.tab-page');
 
         buttons.forEach((tab) => {
-          tab.addEventListener("click", () => {
+          tab.addEventListener('click', () => {
             // Hide all labels
             deactivateAllFooterTabs(buttons);
 
             // Hide all pages
-            pages.forEach((p) => p.classList.add("hidden"));
+            pages.forEach((p) => p.classList.add('hidden'));
 
             // Activate current tab
-            tab.classList.add("active");
+            tab.classList.add('active');
 
             // Show page
             const selectedPage = tab.dataset.tab;
-            document
-              .getElementById(`page-${selectedPage}`)
-              .classList.remove("hidden");
+            document.getElementById(`page-${selectedPage}`).classList.remove('hidden');
           });
         });
 
@@ -440,38 +445,36 @@
 
       function deactivateAllFooterTabs(tabs) {
         tabs.forEach((tab) => {
-          tab.classList.remove("active");
+          tab.classList.remove('active');
         });
       }
 
       async function loadAppsConfig() {
         if (appsConfig !== null) {
-          console.log("already loaded");
+          console.log('already loaded');
           return appsConfig;
         }
 
         try {
-          const response = await fetch("/assets/app-config.json");
+          const response = await fetch('/assets/app-config.json');
           if (!response.ok) {
-            console.warn("App config not found, using empty config");
+            console.warn('App config not found, using empty config');
             appsConfig = { ios: [], android: [], pc: [] };
             return appsConfig;
           }
           const text = await response.text();
 
-          if (text.trim().startsWith("<")) {
-            console.warn(
-              "Received HTML instead of JSON - config file not found",
-            );
+          if (text.trim().startsWith('<')) {
+            console.warn('Received HTML instead of JSON - config file not found');
             appsConfig = { ios: [], android: [], pc: [] };
             return appsConfig;
           }
 
           appsConfig = JSON.parse(text);
-          console.log("Apps config loaded successfully:", appsConfig);
+          console.log('Apps config loaded successfully:', appsConfig);
           return appsConfig;
         } catch (error) {
-          console.error("Failed to load apps config:", error);
+          console.error('Failed to load apps config:', error);
           appsConfig = { ios: [], android: [], pc: [] };
           return appsConfig;
         }
@@ -481,7 +484,7 @@
         data = await loadAppsConfig();
 
         if (!data) {
-          console.warn("Invalid config structure:", data);
+          console.warn('Invalid config structure:', data);
           return;
         }
         loadSubscriptionData();
@@ -495,17 +498,18 @@
         selectPlatform(platform);
       }
 
+      const platformNames = {
+        ios: 'iOS',
+        android: 'Android',
+        windows: 'Windows',
+        mac: 'Mac',
+        linux: 'Linux',
+        pc: 'PC',
+      };
+
       function renderPlatforms() {
         const availablePlatforms = [];
-        const container = document.getElementById("platform-tabs");
-
-        const platformNames = {
-          ios: "iOS",
-          android: "Android",
-          windows: "Windows",
-          mac: "Mac",
-          linux: "Linux",
-        };
+        const container = document.getElementById('osList');
 
         Object.keys(data).forEach((platform) => {
           if (Array.isArray(data[platform]) && data[platform].length > 0) {
@@ -516,16 +520,27 @@
         availablePlatforms.forEach((platform) => {
           const apps = data[platform];
           if (Array.isArray(apps) && apps.length > 0) {
-            const button = document.createElement("button");
-            button.setAttribute("role", "tab");
-            button.setAttribute("aria-selected", "false");
-            button.setAttribute("id", `tab-${platform}`);
-            button.setAttribute("tabindex", "0");
-            button.className = "tab-item";
-            button.textContent =
-              platformNames[platform] ||
-              platform.charAt(0).toUpperCase() + platform.slice(1);
-            button.onclick = () => selectPlatform(platform);
+            const button = document.createElement('button');
+            button.classList = 'modal-btn';
+            // button.textContent = getTranslation(platform) || platform.charAt(0).toUpperCase() + platform.slice(1);
+
+            const iconToDisplay = getIcon(platform);
+            const iconSpan = document.createElement('span');
+            iconSpan.className = 'inline-flex';
+            if (iconToDisplay) {
+              iconSpan.innerHTML = iconToDisplay;
+            }
+            button.appendChild(iconSpan);
+
+            const nameSpan = document.createElement('span');
+            nameSpan.textContent = getTranslation(platform) || platform.charAt(0).toUpperCase() + platform.slice(1);
+            button.appendChild(nameSpan);
+
+            button.onclick = () => {
+              selectPlatform(platform);
+              var modal = button.closest('.modal');
+              hideModal(modal);
+            };
             container.appendChild(button);
           }
         });
@@ -533,94 +548,111 @@
 
       function selectPlatform(platform) {
         selectedPlatform = platform;
-        const tabs = document.querySelectorAll("nav button");
+        // Name
+        const selectedOSName = document.getElementById('selected-os-name');
 
-        tabs.forEach((tab) => {
-          const isSelected = tab.id === "tab-" + platform;
-          tab.classList.toggle("aria-selected", isSelected);
-          tab.classList.toggle("active-tab", isSelected);
-          tab.tabIndex = isSelected ? 0 : -1;
-        });
+        const translation = getTranslation(platform);
+        selectedOSName.setAttribute('data-i18n', platform);
+        selectedOSName.textContent = translation;
+
+        // Icon
+        const selectedOsIcon = document.getElementById('selected-os-icon');
+        const iconToDisplay = getIcon(platform);
+        selectedOsIcon.innerHTML = `<span>${iconToDisplay ? iconToDisplay : ''}</span>`;
+
         populateAppListForPlatform(data, selectedPlatform, showingAllApps);
         selectDefaultAppForPlatform(platform);
       }
 
       function selectDefaultAppForPlatform(platform) {
         let apps = data[platform];
-        console.log("First app:" + apps[0].name);
+        //console.log('First app:' + apps[0].name);
         selectApp(apps[0], platform);
       }
 
       function detectPlatform() {
-        const userAgent =
-          navigator.userAgent || navigator.vendor || window.opera;
+        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
         console.log(userAgent);
         if (/android/i.test(userAgent)) {
-          console.log("Detected platform: Android");
-          return "android";
+          console.log('Detected platform: Android');
+          return 'android';
         }
 
         if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-          console.log("Detected platform: iOS");
-          return "ios";
+          console.log('Detected platform: iOS');
+          return 'ios';
         }
 
-        if (
-          /Win/.test(userAgent) ||
-          /Linux/.test(userAgent) ||
-          /Mac/.test(userAgent)
-        ) {
-          console.log("Detected platform: PC");
-          return "windows"; // Windows
+        if (/Win/.test(userAgent) || /Linux/.test(userAgent) || /Mac/.test(userAgent)) {
+          console.log('Detected platform: PC');
+          return 'pc'; // Windows
         }
 
-        return "android"; // Default fallback
+        return 'android'; // Default fallback
       }
 
-      // === Modal ===
-      const modal = document.getElementById("pickerModal");
-      const dialog = document.getElementById("app-list-modal");
+      // === Modals ===
 
-      function openPickerModal() {
-        modal.classList.remove("opacity-0", "pointer-events-none");
-        modal.classList.add("opacity-100", "pointer-events-auto");
+      // Open modal when click on button
+      document.addEventListener('click', function (e) {
+        var target = e.target.getAttribute('data-target');
+        if (target) {
+          e.preventDefault();
+          var myModal = document.querySelector(target);
+          if (myModal) {
+            showModal(myModal);
+          }
+        }
+      });
+
+      // Close modal when click outside
+      document.addEventListener('DOMContentLoaded', () => {
+        const modals = document.querySelectorAll('.modal');
+        modals.forEach((modal) => {
+          modal.addEventListener('click', (event) => {
+            if (event.target === modal) {
+              hideModal(modal);
+            }
+          });
+        });
+      });
+
+      function showModal(modal) {
+        document.body.style.overflow = 'hidden';
+        modal.classList.remove('opacity-0', 'pointer-events-none');
+        modal.classList.add('opacity-100', 'pointer-events-auto');
       }
 
-      function closePickerModal() {
-        modal.classList.add("opacity-0", "pointer-events-none");
-        modal.classList.remove("opacity-100");
+      function hideModal(modal) {
+        document.body.style.overflow = '';
+        modal.classList.remove('opacity-100');
+        modal.classList.add('opacity-0', 'pointer-events-none');
         if (showingAllApps) {
           toggleShowAllApps();
         }
       }
 
-      // Close modal when click outside
-      document.addEventListener("DOMContentLoaded", () => {
-        modal.addEventListener("click", (event) => {
-          if (event.target === modal) {
-            closePickerModal();
-          }
-        });
-      });
-
       function toggleShowAllApps() {
         showingAllApps = !showingAllApps;
-        const container = document.querySelector(".show-all-apps");
-        const label = document.getElementById("showAllAppsLabel");
+        const container = document.querySelector('.show-all-apps');
+        const label = document.getElementById('showAllAppsLabel');
+        const icon = document.getElementById('showAllAppsIcon');
 
-        container.classList.toggle("reverse");
-        if (container.classList.contains("reverse")) {
-          label.textContent = getTranslation("show_only_featured_apps");
+        container.classList.toggle('flex-col-reverse');
+        if (container.classList.contains('flex-col-reverse')) {
+          label.textContent = getTranslation('show_only_featured_apps');
+          icon.classList.toggle('rotate-270');
         } else {
-          label.textContent = getTranslation("show_all_apps");
+          label.textContent = getTranslation('show_all_apps');
+          icon.classList.toggle('rotate-270');
         }
 
         populateAppListForPlatform(data, selectedPlatform, showingAllApps);
       }
 
       function getIcon(appId) {
-        if (appId.startsWith("v2ray")) {
-          return appIcons["v2rayng"];
+        if (appId.startsWith('v2ray')) {
+          return appIcons['v2rayng'];
         }
 
         return appIcons[appId];
@@ -628,29 +660,26 @@
 
       function populateAppListForPlatform(data, platform, showingAllApps) {
         let allApps = data[platform] || [];
-        const modal = document.getElementById("pickerModal");
-        const appList = document.getElementById("appList");
+        const appList = document.getElementById('appList');
 
-        console.log("Rendering all apps:" + showingAllApps);
+        console.log('Rendering all apps:' + showingAllApps);
 
-        const appsToRender = showingAllApps
-          ? allApps
-          : allApps.filter((app) => app.isFeatured);
+        const appsToRender = showingAllApps ? allApps : allApps.filter((app) => app.isFeatured);
 
-        appList.innerHTML = ""; // Clear previous list items
+        appList.innerHTML = ''; // Clear previous list items
 
         appsToRender.forEach((app) => {
-          const item = document.createElement("div");
-          item.className = "items-modal-app";
+          const item = document.createElement('button');
+          item.className = 'modal-btn';
           const iconToDisplay = getIcon(app.id);
 
-          const iconSpan = document.createElement("span");
-          iconSpan.className = "inline-flex";
+          const iconSpan = document.createElement('span');
+          iconSpan.className = 'inline-flex';
           if (iconToDisplay) {
             iconSpan.innerHTML = iconToDisplay;
           }
 
-          const nameSpan = document.createElement("span");
+          const nameSpan = document.createElement('span');
           nameSpan.textContent = app.name;
 
           item.appendChild(iconSpan);
@@ -658,6 +687,8 @@
 
           item.onclick = () => {
             selectApp(app, platform);
+            var modal = appList.closest('.modal');
+            hideModal(modal);
           };
 
           appList.appendChild(item);
@@ -666,24 +697,25 @@
 
       // Set selected app
       function selectApp(app, platform) {
-        const selectedAppIcon = document.getElementById("selected-app-icon");
-        const selectedAppName = document.getElementById("selected-app-name");
+        const selectedAppIcon = document.getElementById('selected-app-icon');
+        const selectedAppName = document.getElementById('selected-app-name');
+
         const iconToDisplay = getIcon(app.id);
-        selectedAppIcon.innerHTML = `<span class="inline-block w-5 h-5 leading-none text-current">${
-          iconToDisplay ? iconToDisplay : ""
-        }</span>`;
+        if (iconToDisplay) {
+          selectedAppIcon.innerHTML = iconToDisplay;
+        }
+
         selectedAppName.textContent = app.name;
         selectedApp = app;
 
         renderAppSteps(app, platform);
-        closePickerModal();
       }
 
       function renderAppSteps(app, platform) {
         // Removing old steps
-        document.getElementById("setupStepsContainer").innerHTML = "";
+        document.getElementById('setupStepsContainer').innerHTML = '';
 
-        const steps = Object.keys(app).filter((key) => key.endsWith("Step"));
+        const steps = Object.keys(app).filter((key) => key.endsWith('Step'));
 
         steps.forEach((stepKey) => {
           renderStep(app, platform, stepKey);
@@ -694,57 +726,57 @@
         const stepData = app[stepKey];
         if (!stepData) return;
 
-        const container = document.getElementById("setupStepsContainer");
+        const container = document.getElementById('setupStepsContainer');
 
-        const stepCard = document.createElement("div");
-        stepCard.className = "card";
+        const stepCard = document.createElement('div');
+        stepCard.className = 'card';
 
         // Step title
         let title = null;
-        if (stepKey.startsWith("additional")) {
+        if (stepKey.startsWith('additional')) {
           title = stepData.title?.[currentLanguage];
         } else {
           title = getTranslation(stepKey);
         }
 
-        const cardTitle = document.createElement("div");
+        const cardTitle = document.createElement('div');
         cardTitle.textContent = title;
-        cardTitle.classList = "title";
+        cardTitle.classList = 'title text-xl lg:text-3xl font-semibold mb-2 text-center';
         stepCard.appendChild(cardTitle);
 
         // Step description
-        const cardDescription = document.createElement("p");
-        cardDescription.textContent =
-          stepData.description?.[currentLanguage] || "";
+        const cardDescription = document.createElement('p');
+        cardDescription.classList = 'text-stone-700 dark:text-stone-300';
+        cardDescription.textContent = stepData.description?.[currentLanguage] || '';
         stepCard.appendChild(cardDescription);
 
         // Step buttons
-        if (
-          Array.isArray(stepData.buttons) &&
-          stepData.buttons &&
-          stepData.buttons.length > 0
-        ) {
+        if (Array.isArray(stepData.buttons) && stepData.buttons && stepData.buttons.length > 0) {
+          var butonContainer = document.createElement('ul');
+          butonContainer.classList = 'flex flex-col items-center px-6 mt-4';
           stepData.buttons.forEach((buttonInfo) => {
-            const button = document.createElement("a");
-            button.className = "card-btn";
+            const button = document.createElement('a');
+            button.className = 'btn';
             button.href = buttonInfo.buttonLink;
-            button.target = "_blank";
-            button.rel = "noopener noreferrer";
+            button.target = '_blank';
+            button.rel = 'noopener noreferrer';
 
-            const btnText =
-              buttonInfo.buttonText?.[currentLanguage] || "Открыть";
+            const btnText = buttonInfo.buttonText?.[currentLanguage] || 'Открыть';
             button.textContent = btnText;
-            stepCard.appendChild(button);
+            butonContainer.appendChild(button);
           });
+          stepCard.appendChild(butonContainer);
         }
 
-        if (stepKey === "addSubscriptionStep") {
-          const subscriptionButton = document.createElement("a");
-          subscriptionButton.className = "card-btn";
+        if (stepKey === 'addSubscriptionStep') {
+          var butonContainer = document.createElement('ul');
+          butonContainer.classList = 'flex flex-col items-center px-6 mt-4';
+          const subscriptionButton = document.createElement('a');
+          subscriptionButton.className = 'btn';
           // Разобраться где брать subscriptionUrl
           const fullURL = window.location.href;
 
-          let url = "#";
+          let url = '#';
           if (app.urlScheme && fullURL) {
             let subscriptionUrl = data.subscription_url;
 
@@ -757,9 +789,10 @@
           }
 
           subscriptionButton.href = url;
-          subscriptionButton.textContent = getTranslation("subscribe");
+          subscriptionButton.textContent = getTranslation('subscribe');
 
-          stepCard.appendChild(subscriptionButton);
+          butonContainer.appendChild(subscriptionButton);
+          stepCard.appendChild(butonContainer);
         }
 
         container.appendChild(stepCard);
@@ -769,8 +802,8 @@
         try {
           const appsConfigPromise = loadAppsConfig();
 
-          const encodedPanelData = "<%= panelData %>";
-          console.log("Encoded panel data:", encodedPanelData);
+          const encodedPanelData = '<%= panelData %>';
+          console.log('Encoded panel data:', encodedPanelData);
 
           const decodedData = decodeAndParseData(encodedPanelData);
 
@@ -780,28 +813,28 @@
 
           displayData(formattedData);
         } catch (error) {
-          console.error("Ошибка загрузки данных:", error);
+          console.error('Ошибка загрузки данных:', error);
         }
       }
 
       function decodeAndParseData(encodedData) {
         try {
           const decodedString = atob(encodedData);
-          console.log("Decoded string:", decodedString);
+          console.log('Decoded string:', decodedString);
 
           const parsedData = JSON.parse(decodedString);
-          console.log("Parsed data:", parsedData);
+          console.log('Parsed data:', parsedData);
 
           return parsedData;
         } catch (error) {
-          console.error("Error decoding data:", error);
-          throw new Error("Failed to decode panel data: " + error.message);
+          console.error('Error decoding data:', error);
+          throw new Error('Failed to decode panel data: ' + error.message);
         }
       }
 
       function formatApiData(apiData, appsConfig) {
         if (!apiData.response || !apiData.response.isFound) {
-          throw new Error("Subscription not found");
+          throw new Error('Subscription not found');
         }
 
         const response = apiData.response;
@@ -846,25 +879,22 @@
       function displayData(data) {
         // Username
         if (data.username) {
-          const usernameLabel = document.getElementById("usernameLabel");
-          usernameLabel.textContent = data.username ? data.username : "empty";
+          const usernameLabel = document.getElementById('usernameLabel');
+          usernameLabel.textContent = data.username ? data.username : 'empty';
         }
         // User status
         if (data.user_status) {
-          const userStatusLabel = document.getElementById("userStatusLabel");
-          userStatusLabel.textContent = data.user_status
-            ? data.user_status
-            : "empty";
+          const userStatusLabel = document.getElementById('userStatusLabel');
+          userStatusLabel.textContent = data.user_status ? data.user_status : 'empty';
         }
 
         // Expiration Date
-        const isPermanent =
-          data.expires_at && new Date(data.expires_at).getFullYear() >= 2099;
+        const isPermanent = data.expires_at && new Date(data.expires_at).getFullYear() >= 2099;
         if (data.expires_at) {
-          const expiresAtLabel = document.getElementById("expiresAtLabel");
+          const expiresAtLabel = document.getElementById('expiresAtLabel');
           if (expiresAtLabel) {
             if (isPermanent) {
-              expiresAtLabel.textContent = "never";
+              expiresAtLabel.textContent = 'never';
             } else {
               expiresAtLabel.textContent = data.expires_at;
             }
@@ -872,13 +902,13 @@
         }
 
         // Days left
-        const daysLeftContainer = document.getElementById("daysLeftContainer");
+        const daysLeftContainer = document.getElementById('daysLeftContainer');
         if (daysLeftContainer) {
           if (isPermanent) {
-            daysLeftContainer.style.display = "none";
+            daysLeftContainer.style.display = 'none';
           } else {
-            daysLeftContainer.style.display = "flex";
-            const daysLeftLabel = document.getElementById("daysLeftLabel");
+            daysLeftContainer.style.display = 'flex';
+            const daysLeftLabel = document.getElementById('daysLeftLabel');
             if (daysLeftLabel && data.days_left !== undefined) {
               daysLeftLabel.textContent = data.days_left;
             }
