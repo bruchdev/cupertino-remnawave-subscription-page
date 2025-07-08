@@ -62,10 +62,6 @@
     @apply stone-border border;
   }
 
-  .modal {
-    @apply pointer-events-none fixed inset-0 z-50 flex w-full justify-center bg-stone-800/75 opacity-0 backdrop-blur-xs transition-opacity duration-300 ease-out;
-  }
-
   .modal-body {
     @apply stone-bg mx-4 mt-18 mb-auto flex w-full max-w-xs flex-col rounded-lg;
     @apply stone-border border;
