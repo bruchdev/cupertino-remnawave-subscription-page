@@ -578,8 +578,13 @@
 
       function selectDefaultAppForPlatform(platform) {
         let apps = data[platform];
-        //console.log('First app:' + apps[0].name);
-        selectApp(apps[0], platform);
+        let featuredApps = apps.filter((app) => app.isFeatured);
+
+        if (featuredApps[0]) {
+          selectApp(featuredApps[0], platform);
+        } else {
+          selectApp(apps[0], platform);
+        }
       }
 
       function detectPlatform() {
