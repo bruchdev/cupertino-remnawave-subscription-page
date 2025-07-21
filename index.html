@@ -165,23 +165,23 @@
 
       <section id="page-profile" class="tab-page section">
         <div class="card">
-          <div class="mb-4" id="usernameContainer">
-            <p class="text-muted mb-1 text-sm" data-i18n="username_label"></p>
+          <div class="pb-4 flex justify-between items-center" id="usernameContainer">
+            <p class="text-muted" data-i18n="username_label"></p>
             <p id="usernameLabel" class="text-lg font-semibold">username</p>
           </div>
-
-          <div class="mb-4" id="userStatusContainer">
-            <p class="text-muted mb-1 text-sm">Статус:</p>
+          <hr class="stone-border" />
+          <div class="py-4 flex justify-between items-center" id="userStatusContainer">
+            <p class="text-muted">Статус</p>
             <p id="userStatusLabel" class="status-active text-lg font-semibold">user-status</p>
           </div>
-
-          <div class="mb-4" id="expiresAtContainer">
-            <p class="text-muted mb-1 text-sm">Дата окончания подписки:</p>
+          <hr class="stone-border" />
+          <div class="py-4 flex justify-between items-center" id="expiresAtContainer">
+            <p class="text-muted">Дата окончания подписки</p>
             <p id="expiresAtLabel" class="text-lg font-semibold">year</p>
           </div>
-
-          <div class="mb-4" id="daysLeftContainer">
-            <p class="text-muted mb-1 text-sm">Осталось дней:</p>
+          <hr class="stone-border" />
+          <div class="pt-4 flex justify-between items-center" id="daysLeftContainer">
+            <p class="text-muted">Осталось дней</p>
             <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
           </div>
         </div>
@@ -189,8 +189,7 @@
     </main>
 
     <footer
-      class="fixed bottom-0 z-40 flex h-18 w-full justify-center border-t border-stone-400 bg-stone-200/30 backdrop-blur-md dark:border-stone-700 dark:bg-stone-700/30"
-    >
+      class="fixed bottom-0 z-40 flex h-18 w-full justify-center border-t border-stone-400 bg-stone-200/30 backdrop-blur-md dark:border-stone-700 dark:bg-stone-700/30">
       <nav class="relative flex h-full max-w-3xl items-center justify-between px-4">
         <ul class="flex">
           <button class="footer-button" data-tab="profile" aria-current="false">
@@ -913,7 +912,12 @@
             if (isPermanent) {
               expiresAtLabel.textContent = 'never';
             } else {
-              expiresAtLabel.textContent = data.expires_at;
+              const formatted = new Intl.DateTimeFormat('ru-RU', {
+                day: 'numeric',
+                month: 'long',
+                year: 'numeric'
+              }).format(data.expires_at);
+              expiresAtLabel.textContent = formatted;
             }
           }
         }
