@@ -676,13 +676,14 @@
       }
 
       function populateAppListForPlatform(data, platform, showingAllApps) {
-        let allApps = data[platform] || [];
+        let allApps = data[platform].sort((a,b) => b.isFeatured - a.isFeatured) || [];
+        
         const appList = document.getElementById('appList');
 
         console.log('Rendering all apps:' + showingAllApps);
 
         const appsToRender = showingAllApps ? allApps : allApps.filter((app) => app.isFeatured);
-
+  
         appList.innerHTML = ''; // Clear previous list items
 
         appsToRender.forEach((app) => {
@@ -790,7 +791,6 @@
           butonContainer.classList = 'flex flex-col items-center px-6 mt-4';
           const subscriptionButton = document.createElement('a');
           subscriptionButton.className = 'btn';
-          // Разобраться где брать subscriptionUrl
           const fullURL = window.location.href;
 
           let url = '#';
