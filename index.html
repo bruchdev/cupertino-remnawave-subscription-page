@@ -171,17 +171,17 @@
           </div>
           <hr class="stone-border" />
           <div class="py-4 flex justify-between items-center" id="userStatusContainer">
-            <p class="text-muted">Статус</p>
+            <p class="text-muted" data-i18n="status_label"></p>
             <p id="userStatusLabel" class="status-active text-lg font-semibold">user-status</p>
           </div>
           <hr class="stone-border" />
           <div class="py-4 flex justify-between items-center" id="expiresAtContainer">
-            <p class="text-muted">Дата окончания подписки</p>
+            <p class="text-muted" data-i18n="expires_at_label"></p>
             <p id="expiresAtLabel" class="text-lg font-semibold">year</p>
           </div>
           <hr class="stone-border" />
           <div class="pt-4 flex justify-between items-center" id="daysLeftContainer">
-            <p class="text-muted">Осталось дней</p>
+            <p class="text-muted" data-i18n="days_left_label"></p>
             <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
           </div>
         </div>
@@ -218,6 +218,7 @@
       let selectedApp = null;
       let showingAllApps = false;
       let currentLanguage = null;
+      let formattedData = null;
 
       const translations = {
         en: {
@@ -232,6 +233,9 @@
           app: 'App',
           profile: 'Profile',
           username_label: 'Username',
+          status_label: 'Status',
+          expires_at_label: 'Expires at',
+          days_left_label: 'Days left',
           subscribe: 'Add subscription',
           select_an_app: 'Select an App',
           select_an_os: 'Select a system',
@@ -256,6 +260,9 @@
           app: 'Приложение',
           profile: 'Профиль',
           username_label: 'Имя пользователя',
+          status_label: 'Статус',
+          expires_at_label: 'Дата окончания подписки',
+          days_left_label: 'Осталось дней',
           subscribe: 'Добавить подписку',
           select_an_app: 'Выберите приложение',
           select_an_os: 'Выберите систему',
@@ -331,6 +338,8 @@
         android:
           '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M32 25.333H0a18.1 18.1 0 0 1 2.948-8.094a14.95 14.95 0 0 1 4.88-4.708l.547-.302l-2.693-4.547a.683.683 0 0 1 .224-.938a.673.673 0 0 1 .922.24l2.771 4.667a16.9 16.9 0 0 1 6.453-1.198c2.172-.026 4.323.38 6.333 1.198l2.76-4.667a.67.67 0 0 1 .932-.224a.676.676 0 0 1 .214.932l-2.693 4.562l.667.37a15.2 15.2 0 0 1 4.839 4.828A19.3 19.3 0 0 1 32 25.332zm-10-5.974a1.332 1.332 0 1 0 2.664.002A1.332 1.332 0 0 0 22 19.36m-14.667 0a1.332 1.332 0 1 0 2.664.002a1.332 1.332 0 0 0-2.664-.002"/></svg>',
 
+        pc: '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><path fill="currentColor" fill-rule="evenodd" d="M8 2a1 1 0 0 0-1 1v.469h.5a2.75 2.75 0 0 1 2.75 2.75v.156H14V3a1 1 0 0 0-1-1zm-.109 11.871a2 2 0 0 0 .088-.944a2.75 2.75 0 0 0 2.271-2.708V7.625H14V13a1 1 0 0 1-1 1H8.5a1.5 1.5 0 0 1-.609-.129m4.78-9.683a.766.766 0 1 1-1.53 0a.766.766 0 0 1 1.53 0M0 6.217a1.5 1.5 0 0 1 1.5-1.5h6a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5H5.25v.75H6a.75.75 0 1 1 0 1.5H3a.75.75 0 0 1 0-1.5h.75v-.75H1.5a1.5 1.5 0 0 1-1.5-1.5z" clip-rule="evenodd"/></svg>',
+
         default: `<svg class="w-6 h-6" viewBox="0 0 22 22" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M11.007 22C6.01025 22 0.413848 19.6085 0.0141045 14.2017C-0.0891418 12.8053 0.393020 11.8257 0.853709 10.8897C0.907577 10.7802 0.961152 10.6714 1.01346 10.5625C0.347223 7.78979 -0.385635 1.82844 2.01282 0.164802C3.51185 -0.874970 7.00960 3.28412 8.00897 4.84377C9.00832 4.32389 10.5074 4.32389 11.0070 4.32389C12.0064 4.32389 12.5061 4.32389 14.0051 4.84377C15.1710 3.11082 18.0026 -0.251107 20.0013 0.164802C22.0654 0.594314 21.4010 6.70141 21.1077 9.39799C21.0459 9.96537 21.0006 10.3818 21.0006 10.5625C21.0864 10.7409 21.1721 10.9040 21.2553 11.0623C21.6571 11.8266 22.0000 12.4790 22.0000 14.2017C22.0000 16.2813 19.0019 22.0000 11.0070 22.0000ZM8.86995 16.1663C8.39444 16.9904 6.84049 16.9834 5.39910 16.1507C3.95771 15.3180 3.17471 13.9749 3.65022 13.1507C4.12573 12.3266 5.67969 12.3336 7.12107 13.1663C8.56246 13.9990 9.34546 15.3421 8.86995 16.1663ZM18.0871 13.1507C18.5626 13.9749 17.7796 15.3180 16.3382 16.1507C14.8968 16.9834 13.3429 16.9904 12.8674 16.1663C12.3919 15.3421 13.1749 13.9990 14.6163 13.1663C16.0576 12.3336 17.6116 12.3266 18.0871 13.1507ZM11.0070 19.1585C10.0077 19.1585 8.14148 17.6696 9.50800 17.6585H12.5061C14.0051 17.6585 12.0064 19.1585 11.0070 19.1585Z"/>
             </svg>`,
@@ -396,6 +405,7 @@
         });
         console.log('changing language to: ' + currentLanguage);
         applyTranslations();
+        displayData(formattedData);
       }
 
       // Load saved language
@@ -823,7 +833,7 @@
 
           const loadedAppsConfig = await appsConfigPromise;
 
-          const formattedData = formatApiData(decodedData, loadedAppsConfig);
+          formattedData = formatApiData(decodedData, loadedAppsConfig);
 
           displayData(formattedData);
         } catch (error) {
