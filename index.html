@@ -171,17 +171,17 @@
           </div>
           <hr class="stone-border" />
           <div class="py-4 flex justify-between items-center" id="userStatusContainer">
-            <p class="text-muted">Статус</p>
+            <p class="text-muted" data-i18n="status_label"></p>
             <p id="userStatusLabel" class="status-active text-lg font-semibold">user-status</p>
           </div>
           <hr class="stone-border" />
           <div class="py-4 flex justify-between items-center" id="expiresAtContainer">
-            <p class="text-muted">Дата окончания подписки</p>
+            <p class="text-muted" data-i18n="expires_at_label"></p>
             <p id="expiresAtLabel" class="text-lg font-semibold">year</p>
           </div>
           <hr class="stone-border" />
           <div class="pt-4 flex justify-between items-center" id="daysLeftContainer">
-            <p class="text-muted">Осталось дней</p>
+            <p class="text-muted" data-i18n="days_left_label"></p>
             <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
           </div>
         </div>
@@ -218,6 +218,7 @@
       let selectedApp = null;
       let showingAllApps = false;
       let currentLanguage = null;
+      let formattedData = null;
 
       const translations = {
         en: {
@@ -232,6 +233,9 @@
           app: 'App',
           profile: 'Profile',
           username_label: 'Username',
+          status_label: 'Status',
+          expires_at_label: 'Expires at',
+          days_left_label: 'Days left',
           subscribe: 'Add subscription',
           select_an_app: 'Select an App',
           select_an_os: 'Select a system',
@@ -256,6 +260,9 @@
           app: 'Приложение',
           profile: 'Профиль',
           username_label: 'Имя пользователя',
+          status_label: 'Статус',
+          expires_at_label: 'Дата окончания подписки',
+          days_left_label: 'Осталось дней',
           subscribe: 'Добавить подписку',
           select_an_app: 'Выберите приложение',
           select_an_os: 'Выберите систему',
@@ -398,6 +405,7 @@
         });
         console.log('changing language to: ' + currentLanguage);
         applyTranslations();
+        displayData(formattedData);
       }
 
       // Load saved language
@@ -825,7 +833,7 @@
 
           const loadedAppsConfig = await appsConfigPromise;
 
-          const formattedData = formatApiData(decodedData, loadedAppsConfig);
+          formattedData = formatApiData(decodedData, loadedAppsConfig);
 
           displayData(formattedData);
         } catch (error) {
@@ -882,8 +890,8 @@
           user_status: user.userStatus,
           expires_at: user.expiresAt,
           days_left: user.daysLeft,
-          traffic_used: parseTraffic(user.trafficUsed),
-          traffic_limit: parseTraffic(user.trafficLimit),
+          traffic_used: parseTraffic(user.trafficUsedBytes),
+          traffic_limit: parseTraffic(user.trafficLimitBytes),
           traffic_reset_strategy: user.trafficLimitStrategy,
           subscription_url: response.subscriptionUrl,
           cryptoLink: response.happ?.cryptoLink,
@@ -904,25 +912,48 @@
           userStatusLabel.textContent = data.user_status ? data.user_status : 'empty';
         }
 
-        // Expiration Date
-        const isPermanent = data.expires_at && new Date(data.expires_at).getFullYear() >= 2099;
-        if (data.expires_at) {
-          const expiresAtLabel = document.getElementById('expiresAtLabel');
-          if (expiresAtLabel) {
+        // Expiration Date + Days left (normalized parsing + locale-aware formatting)
+        const expiresAtRaw = data.expires_at;
+        const expiresAtLabel = document.getElementById('expiresAtLabel');
+        let isPermanent = false;
+
+        if (expiresAtRaw && expiresAtLabel) {
+          // Determine locale to use for formatting.
+          // Prefer currentLanguage (e.g. 'ru' or 'en'), fall back to navigator.locale and then to 'ru-RU'.
+          const localeMap = {
+            ru: 'ru-RU',
+            en: 'en-US',
+          };
+          const resolvedLocale =
+            (typeof currentLanguage === 'string' && localeMap[currentLanguage]) ||
+            navigator.language ||
+            'ru-RU';
+
+          // API returns RFC3339 e.g. 2017-07-21T17:32:28Z — parse to a Date object
+          const parsed = new Date(expiresAtRaw);
+
+          if (isNaN(parsed.getTime())) {
+            console.warn('Invalid expires_at value:', expiresAtRaw);
+            expiresAtLabel.textContent = String(expiresAtRaw);
+          } else {
+            isPermanent = parsed.getFullYear() >= 2099;
             if (isPermanent) {
               expiresAtLabel.textContent = 'never';
             } else {
-              const formatted = new Intl.DateTimeFormat('ru-RU', {
+              const options = {
                 day: 'numeric',
                 month: 'long',
-                year: 'numeric'
-              }).format(data.expires_at);
+                year: 'numeric',
+              };
+              // Use locale-aware formatter
+              const formatted = new Intl.DateTimeFormat(resolvedLocale, options).format(parsed);
+              console.log('Formatted date (%s):', resolvedLocale, formatted);
               expiresAtLabel.textContent = formatted;
             }
           }
         }
 
-        // Days left
+        // Days left (use same isPermanent above)
         const daysLeftContainer = document.getElementById('daysLeftContainer');
         if (daysLeftContainer) {
           if (isPermanent) {
