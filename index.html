@@ -184,8 +184,34 @@
             <p class="text-muted" data-i18n="days_left_label"></p>
             <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
           </div>
+          
+          
+       </div>
+        <div class="card items-center">
+        <!-- Traffic usage chart (half-circle) -->
+            <div class="flex flex-col items-center mt-4">
+              <div class="w-full max-w-sm">
+                
+                  <!-- allow SVG stroke to render outside the viewBox so the top of the arc isn't clipped -->
+                  <svg id="trafficChart" viewBox="0 0 120 60" width="240" height="120" class="mb-2" aria-hidden="true" overflow="visible" style="overflow: visible;">
+                     <!-- background arc -->
+                     <path id="trafficArcBg" d="M10,50 A50,50 0 0 1 110,50" fill="none" stroke="#E5E7EB" stroke-width="12" stroke-linecap="round"/>
+                     <!-- progress arc (will be painted dynamically) -->
+                     <path id="trafficArc" d="M10,50 A50,50 0 0 1 110,50" fill="none" stroke="#10B981" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 999"/>
+                     <!-- center percentage -->
+                     <text id="trafficPercent" x="60" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="#111827"></text>
+                   </svg>
+
+                  <div class="w-full text-center">
+                    <div id="trafficUsedLabel" class="text-sm text-stone-600 dark:text-stone-300"></div>
+                    <div id="trafficTotalLabel" class="text-xs text-stone-500 dark:text-stone-400 mt-1"></div>
+                  </div>
+               
+              </div>
+          </div>
+         </div>
         </div>
-      </section>
+     </section>
     </main>
 
     <footer
@@ -900,6 +926,59 @@
         };
       }
 
+      // Helper: human-readable bytes
+      function formatBytes(bytes, locale) {
+        if (bytes === null || bytes === undefined) return '-';
+        if (bytes === 0) return '0 B';
+        const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        const i = Math.floor(Math.log(Math.abs(bytes)) / Math.log(1024));
+        const value = bytes / Math.pow(1024, i);
+        return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(value) + ' ' + units[i];
+      }
+
+      // Resolve locale from currentLanguage / navigator
+      function resolvedLocale() {
+        const map = { ru: 'ru-RU', en: 'en-US' };
+        return (currentLanguage && map[currentLanguage]) || navigator.language || 'ru-RU';
+      }
+
+      // Update semicircle traffic chart
+      function updateTrafficChart(data) {
+        const used = Number(data.traffic_used || 0);
+        const total = Number(data.traffic_limit || 0);
+        const percent = total > 0 ? Math.min(100, Math.max(0, Math.round((used / total) * 100))) : used > 0 ? 100 : 0;
+
+        const arc = document.getElementById('trafficArc');
+        const arcBg = document.getElementById('trafficArcBg');
+        const percentText = document.getElementById('trafficPercent');
+        const usedLabel = document.getElementById('trafficUsedLabel');
+        const totalLabel = document.getElementById('trafficTotalLabel');
+
+        if (!arc || !arcBg || !percentText || !usedLabel || !totalLabel) return;
+
+        // compute path length and set dash to percent
+        // getTotalLength can only be used after SVG is in DOM
+        try {
+          const totalLength = arc.getTotalLength();
+          const visible = (percent / 100) * totalLength;
+          arc.style.strokeDasharray = `${visible} ${Math.max(0, totalLength - visible)}`;
+        } catch (e) {
+          // fallback: set dasharray proportionally to a fixed large value
+          const fallbackTotal = 999;
+          const visible = Math.round((percent / 100) * fallbackTotal);
+          arc.style.strokeDasharray = `${visible} ${fallbackTotal - visible}`;
+        }
+
+        arc.style.transition = 'stroke-dasharray 600ms ease';
+
+        // percentage text
+        percentText.textContent = percent + '%';
+
+        const locale = resolvedLocale();
+        usedLabel.textContent = `${formatBytes(used, locale)} used`;
+        totalLabel.textContent = `of ${formatBytes(total, locale)}`;
+      }
+ 
       function displayData(data) {
         // Username
         if (data.username) {
@@ -966,6 +1045,9 @@
             }
           }
         }
++
++        // Update traffic chart (uses data.traffic_used and data.traffic_limit)
++        updateTrafficChart(data);
       }
     </script>
   </body>
