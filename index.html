@@ -882,8 +882,8 @@
           user_status: user.userStatus,
           expires_at: user.expiresAt,
           days_left: user.daysLeft,
-          traffic_used: parseTraffic(user.trafficUsed),
-          traffic_limit: parseTraffic(user.trafficLimit),
+          traffic_used: parseTraffic(user.trafficUsedBytes),
+          traffic_limit: parseTraffic(user.trafficLimitBytes),
           traffic_reset_strategy: user.trafficLimitStrategy,
           subscription_url: response.subscriptionUrl,
           cryptoLink: response.happ?.cryptoLink,
@@ -904,25 +904,35 @@
           userStatusLabel.textContent = data.user_status ? data.user_status : 'empty';
         }
 
-        // Expiration Date
-        const isPermanent = data.expires_at && new Date(data.expires_at).getFullYear() >= 2099;
-        if (data.expires_at) {
-          const expiresAtLabel = document.getElementById('expiresAtLabel');
-          if (expiresAtLabel) {
+        // Expiration Date + Days left (normalized parsing)
+        const expiresAtRaw = data.expires_at;
+        const expiresAtLabel = document.getElementById('expiresAtLabel');
+        let isPermanent = false;
+
+        if (expiresAtRaw && expiresAtLabel) {
+          // API returns RFC3339 e.g. 2017-07-21T17:32:28Z — parse to a Date object
+          const parsed = new Date(expiresAtRaw);
+
+          if (isNaN(parsed.getTime())) {
+            console.warn('Invalid expires_at value:', expiresAtRaw);
+            expiresAtLabel.textContent = String(expiresAtRaw);
+          } else {
+            isPermanent = parsed.getFullYear() >= 2099;
             if (isPermanent) {
               expiresAtLabel.textContent = 'never';
             } else {
               const formatted = new Intl.DateTimeFormat('ru-RU', {
                 day: 'numeric',
                 month: 'long',
-                year: 'numeric'
-              }).format(data.expires_at);
+                year: 'numeric',
+              }).format(parsed);
+              console.log('Formatted date:', formatted);
               expiresAtLabel.textContent = formatted;
             }
           }
         }
 
-        // Days left
+        // Days left (use same isPermanent above)
         const daysLeftContainer = document.getElementById('daysLeftContainer');
         if (daysLeftContainer) {
           if (isPermanent) {
