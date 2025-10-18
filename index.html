@@ -180,37 +180,28 @@
             <p id="expiresAtLabel" class="text-lg font-semibold">year</p>
           </div>
           <hr class="stone-border" />
-          <div class="pt-4 flex justify-between items-center" id="daysLeftContainer">
+          <div class="py-4 flex justify-between items-center" id="daysLeftContainer">
             <p class="text-muted" data-i18n="days_left_label"></p>
             <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
           </div>
           
-          
        </div>
-        <div class="card items-center">
-        <!-- Traffic usage chart (half-circle) -->
-            <div class="flex flex-col items-center mt-4">
-              <div class="w-full max-w-sm">
-                
-                  <!-- allow SVG stroke to render outside the viewBox so the top of the arc isn't clipped -->
-                  <svg id="trafficChart" viewBox="0 0 120 60" width="240" height="120" class="mb-2" aria-hidden="true" overflow="visible" style="overflow: visible;">
-                     <!-- background arc -->
-                     <path id="trafficArcBg" d="M10,50 A50,50 0 0 1 110,50" fill="none" stroke="#E5E7EB" stroke-width="12" stroke-linecap="round"/>
-                     <!-- progress arc (will be painted dynamically) -->
-                     <path id="trafficArc" d="M10,50 A50,50 0 0 1 110,50" fill="none" stroke="#10B981" stroke-width="12" stroke-linecap="round" stroke-dasharray="0 999"/>
-                     <!-- center percentage -->
-                     <text id="trafficPercent" x="60" y="38" text-anchor="middle" font-size="18" font-weight="700" fill="#111827"></text>
-                   </svg>
-
-                  <div class="w-full text-center">
-                    <div id="trafficUsedLabel" class="text-sm text-stone-600 dark:text-stone-300"></div>
-                    <div id="trafficTotalLabel" class="text-xs text-stone-500 dark:text-stone-400 mt-1"></div>
-                  </div>
-               
-              </div>
+       <div class="card">
+          <div class="py-4 flex justify-between items-center" id="trafficUsedContainer">
+            <p class="text-muted" data-i18n="traffic_used_label"></p>
+            <p id="trafficUsedLabel" class="text-lg font-semibold">0 GB</p>
           </div>
-         </div>
-        </div>
+          <hr class="stone-border" />
+          <div class="py-4 flex justify-between items-center" id="trafficTotalContainer">
+            <p class="text-muted" data-i18n="traffic_total_label"></p>
+            <p id="trafficTotalLabel" class="text-lg font-semibold">0 GB</p>
+          </div>
+          <hr class="stone-border" />
+          <div class="py-4 flex justify-between items-center" id="trafficRemainContainer">
+            <p class="text-muted" data-i18n="traffic_remaining_label"></p>
+            <p id="trafficRemainLabel" class="text-lg font-semibold">0 GB</p>
+          </div>
+       </div>
      </section>
     </main>
 
@@ -249,6 +240,9 @@
       const translations = {
         en: {
           subscription_page_title: 'My subscription',
+          traffic_used_label: 'Used traffic',
+          traffic_total_label: 'Total traffic',
+          traffic_remaining_label: 'Remaining traffic',
           download_apk: 'Download APK',
           show_all_apps: 'Show all apps',
           show_only_featured_apps: 'Show only featured apps',
@@ -276,6 +270,9 @@
         },
         ru: {
           subscription_page_title: 'Моя подписка',
+          traffic_used_label: 'Использовано трафика',
+          traffic_total_label: 'Всего трафика',
+          traffic_remaining_label: 'Осталось трафика',
           download_apk: 'Скачать APK',
           show_all_apps: 'Показать все приложения',
           show_only_featured_apps: 'Показать только рекомендованные',
@@ -912,26 +909,28 @@
         };
 
         return {
-          username: user.username,
-          user_status: user.userStatus,
-          expires_at: user.expiresAt,
-          days_left: user.daysLeft,
-          traffic_used: parseTraffic(user.trafficUsedBytes),
-          traffic_limit: parseTraffic(user.trafficLimitBytes),
-          traffic_reset_strategy: user.trafficLimitStrategy,
-          subscription_url: response.subscriptionUrl,
-          cryptoLink: response.happ?.cryptoLink,
-          // servers: servers,
-          apps: appsConfig,
-        };
-      }
+           username: user.username,
+           user_status: user.userStatus,
+           expires_at: user.expiresAt,
+           days_left: user.daysLeft,
+           traffic_used: parseTraffic(user.trafficUsedBytes),
+           traffic_limit: parseTraffic(user.trafficLimitBytes),
+           traffic_reset_strategy: user.trafficLimitStrategy,
+           subscription_url: response.subscriptionUrl,
+           cryptoLink: response.happ?.cryptoLink,
+           // servers: servers,
+           apps: appsConfig,
+           // computed remaining traffic (non-negative)
+           traffic_remaining: Math.max(0, (parseTraffic(user.trafficLimitBytes) || 0) - (parseTraffic(user.trafficUsedBytes) || 0)),
+         };
+       }
 
-      // Helper: human-readable bytes
+      // Helper: human-readable bytes (locale-aware)
       function formatBytes(bytes, locale) {
         if (bytes === null || bytes === undefined) return '-';
         if (bytes === 0) return '0 B';
         const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        const i = Math.floor(Math.log(Math.abs(bytes)) / Math.log(1024));
+        const i = Math.min(units.length - 1, Math.floor(Math.log(Math.abs(bytes || 1)) / Math.log(1024)));
         const value = bytes / Math.pow(1024, i);
         return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(value) + ' ' + units[i];
       }
@@ -942,43 +941,13 @@
         return (currentLanguage && map[currentLanguage]) || navigator.language || 'ru-RU';
       }
 
-      // Update semicircle traffic chart
-      function updateTrafficChart(data) {
-        const used = Number(data.traffic_used || 0);
-        const total = Number(data.traffic_limit || 0);
-        const percent = total > 0 ? Math.min(100, Math.max(0, Math.round((used / total) * 100))) : used > 0 ? 100 : 0;
-
-        const arc = document.getElementById('trafficArc');
-        const arcBg = document.getElementById('trafficArcBg');
-        const percentText = document.getElementById('trafficPercent');
-        const usedLabel = document.getElementById('trafficUsedLabel');
-        const totalLabel = document.getElementById('trafficTotalLabel');
-
-        if (!arc || !arcBg || !percentText || !usedLabel || !totalLabel) return;
-
-        // compute path length and set dash to percent
-        // getTotalLength can only be used after SVG is in DOM
-        try {
-          const totalLength = arc.getTotalLength();
-          const visible = (percent / 100) * totalLength;
-          arc.style.strokeDasharray = `${visible} ${Math.max(0, totalLength - visible)}`;
-        } catch (e) {
-          // fallback: set dasharray proportionally to a fixed large value
-          const fallbackTotal = 999;
-          const visible = Math.round((percent / 100) * fallbackTotal);
-          arc.style.strokeDasharray = `${visible} ${fallbackTotal - visible}`;
-        }
-
-        arc.style.transition = 'stroke-dasharray 600ms ease';
-
-        // percentage text
-        percentText.textContent = percent + '%';
-
-        const locale = resolvedLocale();
-        usedLabel.textContent = `${formatBytes(used, locale)} used`;
-        totalLabel.textContent = `of ${formatBytes(total, locale)}`;
+      // Format bytes as gigabytes (GB) with locale-aware number formatting
+      function formatBytesGb(bytes, locale) {
+        if (bytes === null || bytes === undefined) return '-';
+        const gb = Number(bytes) / 1024 / 1024 / 1024;
+        return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(gb) + ' GB';
       }
- 
+
       function displayData(data) {
         // Username
         if (data.username) {
@@ -1045,9 +1014,21 @@
             }
           }
         }
-+
-+        // Update traffic chart (uses data.traffic_used and data.traffic_limit)
-+        updateTrafficChart(data);
+
+        // Display traffic used/total using same locale logic as dates
+        const usedEl = document.getElementById('trafficUsedLabel');
+        const totalEl = document.getElementById('trafficTotalLabel');
+        if (usedEl && totalEl) {
+          const locale = resolvedLocale();
+          usedEl.textContent = formatBytesGb(Number(data.traffic_used || 0), locale);
+          totalEl.textContent = formatBytesGb(Number(data.traffic_limit || 0), locale);
+          const remainEl = document.getElementById('trafficRemainLabel');
+          if (remainEl) {
+            // prefer explicit traffic_remaining if provided, otherwise compute
+            const remaining = Number(data.traffic_remaining ?? Math.max(0, (data.traffic_limit || 0) - (data.traffic_used || 0)));
+            remainEl.textContent = formatBytesGb(remaining, locale);
+          }
+        }
       }
     </script>
   </body>
