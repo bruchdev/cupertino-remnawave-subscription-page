@@ -6,6 +6,12 @@
     <title id="page-title">Subscription</title>
     <link href="output.css" rel="stylesheet" />
     <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+     /* Firefox */
+     html { scrollbar-width: none; -ms-overflow-style: none; }
+     /* WebKit */
+     html::-webkit-scrollbar { display: none; }
+   </style>
   </head>
 
   <body class="stone-bg-dark stone-text">
@@ -164,40 +170,39 @@
       </section>
 
       <section id="page-profile" class="tab-page section">
-        <div class="card">
-          <div class="pb-4 flex justify-between items-center" id="usernameContainer">
+        <div class="card px-2">
+          <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center" id="usernameContainer">
             <p class="text-muted" data-i18n="username_label"></p>
             <p id="usernameLabel" class="text-lg font-semibold">username</p>
           </div>
           <hr class="stone-border" />
-          <div class="py-4 flex justify-between items-center" id="userStatusContainer">
+          <div class="p-2 md:p-4 flex justify-between items-center" id="userStatusContainer">
             <p class="text-muted" data-i18n="status_label"></p>
             <p id="userStatusLabel" class="status-active text-lg font-semibold">user-status</p>
           </div>
           <hr class="stone-border" />
-          <div class="py-4 flex justify-between items-center" id="expiresAtContainer">
+          <div class="p-2 md:p-4 flex justify-between items-center" id="expiresAtContainer">
             <p class="text-muted" data-i18n="expires_at_label"></p>
             <p id="expiresAtLabel" class="text-lg font-semibold">year</p>
           </div>
           <hr class="stone-border" />
-          <div class="py-4 flex justify-between items-center" id="daysLeftContainer">
+          <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center" id="daysLeftContainer">
             <p class="text-muted" data-i18n="days_left_label"></p>
             <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
           </div>
-          
        </div>
-       <div class="card">
-          <div class="py-4 flex justify-between items-center" id="trafficUsedContainer">
+       <div class="card px-2">
+          <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center" id="trafficUsedContainer">
             <p class="text-muted" data-i18n="traffic_used_label"></p>
             <p id="trafficUsedLabel" class="text-lg font-semibold">0 GB</p>
           </div>
           <hr class="stone-border" />
-          <div class="py-4 flex justify-between items-center" id="trafficTotalContainer">
+          <div class="p-2 md:p-4 flex justify-between items-center" id="trafficTotalContainer">
             <p class="text-muted" data-i18n="traffic_total_label"></p>
             <p id="trafficTotalLabel" class="text-lg font-semibold">0 GB</p>
           </div>
           <hr class="stone-border" />
-          <div class="py-4 flex justify-between items-center" id="trafficRemainContainer">
+          <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center" id="trafficRemainContainer">
             <p class="text-muted" data-i18n="traffic_remaining_label"></p>
             <p id="trafficRemainLabel" class="text-lg font-semibold">0 GB</p>
           </div>
