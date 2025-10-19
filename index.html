@@ -6,6 +6,12 @@
     <title id="page-title">Subscription</title>
     <link href="output.css" rel="stylesheet" />
     <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+    <style>
+     /* Firefox */
+     html { scrollbar-width: none; -ms-overflow-style: none; }
+     /* WebKit */
+     html::-webkit-scrollbar { display: none; }
+   </style>
   </head>
 
   <body class="stone-bg-dark stone-text">
@@ -164,28 +170,44 @@
       </section>
 
       <section id="page-profile" class="tab-page section">
-        <div class="card">
-          <div class="pb-4 flex justify-between items-center" id="usernameContainer">
+        <div class="card px-2">
+          <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center" id="usernameContainer">
             <p class="text-muted" data-i18n="username_label"></p>
             <p id="usernameLabel" class="text-lg font-semibold">username</p>
           </div>
           <hr class="stone-border" />
-          <div class="py-4 flex justify-between items-center" id="userStatusContainer">
+          <div class="p-2 md:p-4 flex justify-between items-center" id="userStatusContainer">
             <p class="text-muted" data-i18n="status_label"></p>
             <p id="userStatusLabel" class="status-active text-lg font-semibold">user-status</p>
           </div>
           <hr class="stone-border" />
-          <div class="py-4 flex justify-between items-center" id="expiresAtContainer">
+          <div class="p-2 md:p-4 flex justify-between items-center" id="expiresAtContainer">
             <p class="text-muted" data-i18n="expires_at_label"></p>
             <p id="expiresAtLabel" class="text-lg font-semibold">year</p>
           </div>
           <hr class="stone-border" />
-          <div class="pt-4 flex justify-between items-center" id="daysLeftContainer">
+          <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center" id="daysLeftContainer">
             <p class="text-muted" data-i18n="days_left_label"></p>
             <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
           </div>
-        </div>
-      </section>
+       </div>
+       <div class="card px-2">
+          <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center" id="trafficUsedContainer">
+            <p class="text-muted" data-i18n="traffic_used_label"></p>
+            <p id="trafficUsedLabel" class="text-lg font-semibold">0 GB</p>
+          </div>
+          <hr class="stone-border" />
+          <div class="p-2 md:p-4 flex justify-between items-center" id="trafficTotalContainer">
+            <p class="text-muted" data-i18n="traffic_total_label"></p>
+            <p id="trafficTotalLabel" class="text-lg font-semibold">0 GB</p>
+          </div>
+          <hr class="stone-border" />
+          <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center" id="trafficRemainContainer">
+            <p class="text-muted" data-i18n="traffic_remaining_label"></p>
+            <p id="trafficRemainLabel" class="text-lg font-semibold">0 GB</p>
+          </div>
+       </div>
+     </section>
     </main>
 
     <footer
@@ -223,6 +245,9 @@
       const translations = {
         en: {
           subscription_page_title: 'My subscription',
+          traffic_used_label: 'Used traffic',
+          traffic_total_label: 'Total traffic',
+          traffic_remaining_label: 'Remaining traffic',
           download_apk: 'Download APK',
           show_all_apps: 'Show all apps',
           show_only_featured_apps: 'Show only featured apps',
@@ -250,6 +275,9 @@
         },
         ru: {
           subscription_page_title: 'Моя подписка',
+          traffic_used_label: 'Использовано трафика',
+          traffic_total_label: 'Всего трафика',
+          traffic_remaining_label: 'Осталось трафика',
           download_apk: 'Скачать APK',
           show_all_apps: 'Показать все приложения',
           show_only_featured_apps: 'Показать только рекомендованные',
@@ -886,18 +914,43 @@
         };
 
         return {
-          username: user.username,
-          user_status: user.userStatus,
-          expires_at: user.expiresAt,
-          days_left: user.daysLeft,
-          traffic_used: parseTraffic(user.trafficUsedBytes),
-          traffic_limit: parseTraffic(user.trafficLimitBytes),
-          traffic_reset_strategy: user.trafficLimitStrategy,
-          subscription_url: response.subscriptionUrl,
-          cryptoLink: response.happ?.cryptoLink,
-          // servers: servers,
-          apps: appsConfig,
-        };
+           username: user.username,
+           user_status: user.userStatus,
+           expires_at: user.expiresAt,
+           days_left: user.daysLeft,
+           traffic_used: parseTraffic(user.trafficUsedBytes),
+           traffic_limit: parseTraffic(user.trafficLimitBytes),
+           traffic_reset_strategy: user.trafficLimitStrategy,
+           subscription_url: response.subscriptionUrl,
+           cryptoLink: response.happ?.cryptoLink,
+           // servers: servers,
+           apps: appsConfig,
+           // computed remaining traffic (non-negative)
+           traffic_remaining: Math.max(0, (parseTraffic(user.trafficLimitBytes) || 0) - (parseTraffic(user.trafficUsedBytes) || 0)),
+         };
+       }
+
+      // Helper: human-readable bytes (locale-aware)
+      function formatBytes(bytes, locale) {
+        if (bytes === null || bytes === undefined) return '-';
+        if (bytes === 0) return '0 B';
+        const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+        const i = Math.min(units.length - 1, Math.floor(Math.log(Math.abs(bytes || 1)) / Math.log(1024)));
+        const value = bytes / Math.pow(1024, i);
+        return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(value) + ' ' + units[i];
+      }
+
+      // Resolve locale from currentLanguage / navigator
+      function resolvedLocale() {
+        const map = { ru: 'ru-RU', en: 'en-US' };
+        return (currentLanguage && map[currentLanguage]) || navigator.language || 'ru-RU';
+      }
+
+      // Format bytes as gigabytes (GB) with locale-aware number formatting
+      function formatBytesGb(bytes, locale) {
+        if (bytes === null || bytes === undefined) return '-';
+        const gb = Number(bytes) / 1024 / 1024 / 1024;
+        return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(gb) + ' GB';
       }
 
       function displayData(data) {
@@ -964,6 +1017,21 @@
             if (daysLeftLabel && data.days_left !== undefined) {
               daysLeftLabel.textContent = data.days_left;
             }
+          }
+        }
+
+        // Display traffic used/total using same locale logic as dates
+        const usedEl = document.getElementById('trafficUsedLabel');
+        const totalEl = document.getElementById('trafficTotalLabel');
+        if (usedEl && totalEl) {
+          const locale = resolvedLocale();
+          usedEl.textContent = formatBytesGb(Number(data.traffic_used || 0), locale);
+          totalEl.textContent = formatBytesGb(Number(data.traffic_limit || 0), locale);
+          const remainEl = document.getElementById('trafficRemainLabel');
+          if (remainEl) {
+            // prefer explicit traffic_remaining if provided, otherwise compute
+            const remaining = Number(data.traffic_remaining ?? Math.max(0, (data.traffic_limit || 0) - (data.traffic_used || 0)));
+            remainEl.textContent = formatBytesGb(remaining, locale);
           }
         }
       }
