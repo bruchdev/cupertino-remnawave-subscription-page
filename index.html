@@ -923,7 +923,7 @@
     function formatBytesGb(bytes, locale) {
       if (bytes === null || bytes === undefined) return '-';
       const gb = Number(bytes) / 1024 / 1024 / 1024;
-      return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(gb) + ' GB';
+      return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(gb * 10) + ' GB';
     }
 
     function displayData(data) {
