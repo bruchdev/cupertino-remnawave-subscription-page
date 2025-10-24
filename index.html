@@ -493,7 +493,7 @@
         }
 
         appsConfig = JSON.parse(text);
-        console.log('Apps config loaded successfully:', appsConfig);
+        console.log('Apps config loaded successfully');
         return appsConfig;
       } catch (error) {
         console.error('Failed to load apps config:', error);
@@ -828,7 +828,7 @@
         const appsConfigPromise = loadAppsConfig();
 
         const encodedPanelData = '<%= panelData %>';
-        console.log('Encoded panel data:', encodedPanelData);
+        console.log('Panel data encoded');
 
         const decodedData = decodeAndParseData(encodedPanelData);
 
@@ -845,10 +845,10 @@
     function decodeAndParseData(encodedData) {
       try {
         const decodedString = atob(encodedData);
-        console.log('Decoded string:', decodedString);
+        console.log('Decoded string');
 
         const parsedData = JSON.parse(decodedString);
-        console.log('Parsed data:', parsedData);
+        console.log('Parsed data');
 
         return parsedData;
       } catch (error) {
@@ -972,7 +972,6 @@
             };
             // Use locale-aware formatter
             const formatted = new Intl.DateTimeFormat(resolvedLocale, options).format(parsed);
-            console.log('Formatted date (%s):', resolvedLocale, formatted);
             expiresAtLabel.textContent = formatted;
           }
         }
