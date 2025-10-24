@@ -221,6 +221,7 @@
         traffic_used_label: 'Used traffic',
         traffic_total_label: 'Total traffic',
         traffic_remaining_label: 'Remaining traffic',
+        unlimited: 'Unlimited',
         download_apk: 'Download APK',
         show_all_apps: 'Show all apps',
         show_only_featured_apps: 'Show only featured apps',
@@ -252,6 +253,7 @@
         traffic_used_label: 'Использовано трафика',
         traffic_total_label: 'Всего трафика',
         traffic_remaining_label: 'Осталось трафика',
+        unlimited: 'Безлимит',
         download_apk: 'Скачать APK',
         show_all_apps: 'Показать все приложения',
         show_only_featured_apps: 'Показать только рекомендованные',
@@ -979,12 +981,15 @@
       // Display traffic used/total using same locale logic as dates
       const usedEl = document.getElementById('trafficUsedLabel');
       const totalEl = document.getElementById('trafficTotalLabel');
+      const remainEl = document.getElementById('trafficRemainLabel');
       if (usedEl && totalEl) {
         const locale = resolvedLocale();
         usedEl.textContent = formatBytesGb(Number(data.traffic_used || 0), locale);
-        totalEl.textContent = formatBytesGb(Number(data.traffic_limit || 0), locale);
-        const remainEl = document.getElementById('trafficRemainLabel');
-        if (remainEl) {
+        if (Number(trafficLimitBytes) === 0) {
+          totalEl.textContent = getTranslation('unlimited');
+          remainEl.textContent = getTranslation('unlimited');
+        } else {
+          totalEl.textContent = formatBytesGb(Number(data.traffic_limit), locale);
           // prefer explicit traffic_remaining if provided, otherwise compute
           const remaining = Number(data.traffic_remaining ?? Math.max(0, (data.traffic_limit || 0) - (data.traffic_used || 0)));
           remainEl.textContent = formatBytesGb(remaining, locale);
