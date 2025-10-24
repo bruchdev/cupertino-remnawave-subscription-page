@@ -1,312 +1,289 @@
 <!doctype html>
 <html lang="ru" class="scroll-smooth">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title id="page-title">Subscription</title>
-    <link href="output.css" rel="stylesheet" />
-    <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
-    <style>
-     /* Firefox */
-     html { scrollbar-width: none; -ms-overflow-style: none; }
-     /* WebKit */
-     html::-webkit-scrollbar { display: none; }
-   </style>
-  </head>
 
-  <body class="stone-bg-dark stone-text">
-    <header
-      class="stone-border flex h-18 w-full justify-center border-b bg-stone-200 backdrop-blur-md dark:bg-stone-900"
-    >
-      <div class="relative flex w-full max-w-2xl items-center justify-between px-4">
-        <h1 class="text-center text-2xl font-bold" data-i18n="subscription_page_title">Подписка</h1>
-        <button
-          id="toggleDark"
-          aria-label="Toggle dark mode"
-          class="cursor-pointer rounded-lg p-2"
-          onclick="toggleDarkMode()"
-        >
-          <span class="iconify h-7 w-7" data-icon="mdi:theme-light-dark"></span>
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title id="page-title">Subscription</title>
+  <link href="output.css" rel="stylesheet" />
+  <script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+  <style>
+    /* Firefox */
+    html {
+      scrollbar-width: none;
+      -ms-overflow-style: none;
+    }
+
+    /* WebKit */
+    html::-webkit-scrollbar {
+      display: none;
+    }
+  </style>
+</head>
+
+<body class="stone-bg-dark stone-text">
+  <header class="stone-border flex h-18 w-full justify-center border-b bg-stone-200 backdrop-blur-md dark:bg-stone-900">
+    <div class="relative flex w-full max-w-2xl items-center justify-between px-4">
+      <h1 class="text-center text-2xl font-bold" data-i18n="subscription_page_title">Подписка</h1>
+      <button id="toggleDark" aria-label="Toggle dark mode" class="cursor-pointer rounded-lg p-2"
+        onclick="toggleDarkMode()">
+        <span class="iconify h-7 w-7" data-icon="mdi:theme-light-dark"></span>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex justify-center pb-18">
+    <section id="page-apps" class="tab-page section">
+      <!-- Контейнер систем -->
+      <nav class="stone-border stone-bg flex w-full flex-col gap-1 rounded-lg border p-2">
+        <!-- Select os -->
+        <div class="hover:bg-primary-light cursor-pointer rounded-lg py-4 md:px-4" data-toggle="modal"
+          data-target="#selectOSModal">
+          <div class="pointer-events-none flex justify-between">
+            <span class="font-semibold" data-i18n="os">Система</span>
+            <!-- Right: selected app name + icon -->
+            <div id="selected-os" class="flex items-center gap-1 md:gap-3">
+              <span id="selected-os-icon"></span>
+              <span id="selected-os-name"></span>
+
+              <!-- Chevron icon -->
+              <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+        <hr class="stone-border" />
+        <!-- Select app -->
+        <div class="hover:bg-primary-light cursor-pointer rounded-lg py-4 md:px-4" data-toggle="modal"
+          data-target="#selectAppModal">
+          <div class="pointer-events-none flex justify-between">
+            <span class="font-semibold" data-i18n="app">Приложение</span>
+            <!-- Right: selected app name + icon -->
+            <div id="selected-app" class="flex items-center gap-0.5 md:gap-3">
+              <div id="selected-app-icon"></div>
+
+              <!-- App name -->
+              <span id="selected-app-name"></span>
+
+              <!-- Chevron icon -->
+              <svg class="h-5 w-5 text-gray-400 dark:text-gray-500" fill="none" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+        </div>
+      </nav>
+
+      <!-- app modal -->
+      <div
+        class="modal pointer-events-none fixed inset-0 z-50 flex w-full justify-center bg-stone-800/75 opacity-0 backdrop-blur-xs transition-opacity duration-300 ease-out"
+        id="selectAppModal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div id="app-list-modal" class="modal-body">
+          <div class="mb-2 flex items-center justify-center p-4">
+            <h3 class="text-lg font-semibold" data-i18n="select_an_app">Приложения</h3>
+          </div>
+
+          <div class="flex flex-col items-center justify-center px-4">
+            <div id="appList" class="app-list flex w-full flex-col gap-2 px-2">
+              <!-- Adding apps inside with JS -->
+            </div>
+
+            <div
+              class="show-all-apps mt-4 flex cursor-pointer flex-col items-center justify-center p-2 text-center text-xs text-neutral-500"
+              onclick="toggleShowAllApps()">
+              <span id="showAllAppsLabel" data-i18n="show_all_apps"> Показать все приложения </span>
+              <svg id="showAllAppsIcon" class="flex h-5 w-5 rotate-90" stroke="currentColor" stroke-width="2"
+                viewBox="0 0 24 24" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M9 5l7 7-7 7" />
+              </svg>
+            </div>
+          </div>
+        </div>
       </div>
-    </header>
 
-    <main class="flex justify-center pb-18">
-      <section id="page-apps" class="tab-page section">
-        <!-- Контейнер систем -->
-        <nav class="stone-border stone-bg flex w-full flex-col gap-1 rounded-lg border p-2">
-          <!-- Select os -->
-          <div
-            class="hover:bg-primary-light cursor-pointer rounded-lg py-4 md:px-4"
-            data-toggle="modal"
-            data-target="#selectOSModal"
-          >
-            <div class="pointer-events-none flex justify-between">
-              <span class="font-semibold" data-i18n="os">Система</span>
-              <!-- Right: selected app name + icon -->
-              <div id="selected-os" class="flex items-center gap-1 md:gap-3">
-                <span id="selected-os-icon"></span>
-                <span id="selected-os-name"></span>
-
-                <!-- Chevron icon -->
-                <svg
-                  class="h-5 w-5 text-gray-400 dark:text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
+      <!-- OS modal -->
+      <div
+        class="modal pointer-events-none fixed inset-0 z-50 flex w-full justify-center bg-stone-800/75 opacity-0 backdrop-blur-xs transition-opacity duration-300 ease-out"
+        id="selectOSModal" role="dialog" aria-modal="true" aria-hidden="true">
+        <div id="os-modal" class="modal-body">
+          <div class="flex items-center justify-center p-4">
+            <h3 class="text-lg font-semibold" data-i18n="select_an_os">Системы</h3>
           </div>
-          <hr class="stone-border" />
-          <!-- Select app -->
-          <div
-            class="hover:bg-primary-light cursor-pointer rounded-lg py-4 md:px-4"
-            data-toggle="modal"
-            data-target="#selectAppModal"
-          >
-            <div class="pointer-events-none flex justify-between">
-              <span class="font-semibold" data-i18n="app">Приложение</span>
-              <!-- Right: selected app name + icon -->
-              <div id="selected-app" class="flex items-center gap-0.5 md:gap-3">
-                <div id="selected-app-icon"></div>
 
-                <!-- App name -->
-                <span id="selected-app-name"></span>
-
-                <!-- Chevron icon -->
-                <svg
-                  class="h-5 w-5 text-gray-400 dark:text-gray-500"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
-            </div>
-          </div>
-        </nav>
-
-        <!-- app modal -->
-        <div
-          class="modal pointer-events-none fixed inset-0 z-50 flex w-full justify-center bg-stone-800/75 opacity-0 backdrop-blur-xs transition-opacity duration-300 ease-out"
-          id="selectAppModal"
-          role="dialog"
-          aria-modal="true"
-          aria-hidden="true"
-        >
-          <div id="app-list-modal" class="modal-body">
-            <div class="mb-2 flex items-center justify-center p-4">
-              <h3 class="text-lg font-semibold" data-i18n="select_an_app">Приложения</h3>
-            </div>
-
-            <div class="flex flex-col items-center justify-center px-4">
-              <div id="appList" class="app-list flex w-full flex-col gap-2 px-2">
-                <!-- Adding apps inside with JS -->
-              </div>
-
-              <div
-                class="show-all-apps mt-4 flex cursor-pointer flex-col items-center justify-center p-2 text-center text-xs text-neutral-500"
-                onclick="toggleShowAllApps()"
-              >
-                <span id="showAllAppsLabel" data-i18n="show_all_apps"> Показать все приложения </span>
-                <svg
-                  id="showAllAppsIcon"
-                  class="flex h-5 w-5 rotate-90"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                  viewBox="0 0 24 24"
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                >
-                  <path d="M9 5l7 7-7 7" />
-                </svg>
-              </div>
+          <div class="flex flex-col items-center justify-center">
+            <div id="osList" class="app-list flex w-full flex-col gap-2 p-4 pt-0">
+              <!-- OS list -->
             </div>
           </div>
         </div>
+      </div>
 
-        <!-- OS modal -->
-        <div
-          class="modal pointer-events-none fixed inset-0 z-50 flex w-full justify-center bg-stone-800/75 opacity-0 backdrop-blur-xs transition-opacity duration-300 ease-out"
-          id="selectOSModal"
-          role="dialog"
-          aria-modal="true"
-          aria-hidden="true"
-        >
-          <div id="app-list-modal" class="modal-body">
-            <div class="flex items-center justify-center p-4">
-              <h3 class="text-lg font-semibold" data-i18n="select_an_os">Системы</h3>
-            </div>
+      <ul id="setupStepsContainer" class="mt-4 w-full">
+        <!-- Steps for each app -->
+      </ul>
+    </section>
 
-            <div class="flex flex-col items-center justify-center">
-              <div id="osList" class="app-list flex w-full flex-col gap-2 p-4 pt-0">
-                <!-- OS list -->
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <ul id="setupStepsContainer" class="mt-4 w-full">
-          <!-- Steps for each app -->
-        </ul>
-      </section>
-
-      <section id="page-settings" class="tab-page section">
-        <ul id="languages" class="flex gap-2">
+    <section id="page-settings" class="tab-page section">
+      <ul id="languages" class="flex gap-2">
+        <li class="flex-1">
           <button class="tab-item" id="button-ru" onclick="changeLanguage('ru')">Русский</button>
+        </li>
+        <li class="flex-1">
           <button class="tab-item" id="button-en" onclick="changeLanguage('en')">English</button>
-        </ul>
-      </section>
+        </li>
+      </ul>
+    </section>
 
-      <section id="page-profile" class="tab-page section">
-        <div class="card px-2">
-          <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center" id="usernameContainer">
-            <p class="text-muted" data-i18n="username_label"></p>
-            <p id="usernameLabel" class="text-lg font-semibold">username</p>
-          </div>
-          <hr class="stone-border" />
-          <div class="p-2 md:p-4 flex justify-between items-center" id="userStatusContainer">
-            <p class="text-muted" data-i18n="status_label"></p>
-            <p id="userStatusLabel" class="status-active text-lg font-semibold">user-status</p>
-          </div>
-          <hr class="stone-border" />
-          <div class="p-2 md:p-4 flex justify-between items-center" id="expiresAtContainer">
-            <p class="text-muted" data-i18n="expires_at_label"></p>
-            <p id="expiresAtLabel" class="text-lg font-semibold">year</p>
-          </div>
-          <hr class="stone-border" />
-          <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center" id="daysLeftContainer">
-            <p class="text-muted" data-i18n="days_left_label"></p>
-            <p id="daysLeftLabel" class="text-lg font-semibold">year</p>
-          </div>
-       </div>
-       <div class="card px-2">
-          <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center" id="trafficUsedContainer">
-            <p class="text-muted" data-i18n="traffic_used_label"></p>
-            <p id="trafficUsedLabel" class="text-lg font-semibold">0 GB</p>
-          </div>
-          <hr class="stone-border" />
-          <div class="p-2 md:p-4 flex justify-between items-center" id="trafficTotalContainer">
-            <p class="text-muted" data-i18n="traffic_total_label"></p>
-            <p id="trafficTotalLabel" class="text-lg font-semibold">0 GB</p>
-          </div>
-          <hr class="stone-border" />
-          <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center" id="trafficRemainContainer">
-            <p class="text-muted" data-i18n="traffic_remaining_label"></p>
-            <p id="trafficRemainLabel" class="text-lg font-semibold">0 GB</p>
-          </div>
-       </div>
-     </section>
-    </main>
+    <!-- Profile page -->
+    <section id="page-profile" class="tab-page section">
+      <!-- Info section -->
+      <div class="card px-2">
+        <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center" id="usernameContainer">
+          <p class="text-muted" data-i18n="username_label"></p>
+          <p id="usernameLabel" class="text-lg font-semibold">username</p>
+        </div>
+        <hr class="stone-border" />
+        <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center" id="userStatusContainer">
+          <p class="text-muted" data-i18n="status_label"></p>
+          <p id="userStatusLabel" class="status-active text-lg font-semibold">user-status</p>
+        </div>
+      </div>
+      <!-- Expiration dates section -->
+      <div class="card px-4 md:px-6 gap-2 md:gap-4">
+        <div class="flex justify-between items-center">
+          <p class="text-muted" data-i18n="expires_at_label"></p>
+          <p id="expiresAtLabel" class="text-lg font-semibold">15 Июля 2030 г.</p>
+        </div>
+      </div>
+      <!-- Traffic section -->
+      <div class="card px-2">
+        <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center" id="trafficUsedContainer">
+          <p class="text-muted" data-i18n="traffic_used_label"></p>
+          <p id="trafficUsedLabel" class="text-lg font-semibold">0 GB</p>
+        </div>
+        <hr class="stone-border" />
+        <div class="p-2 md:p-4 flex justify-between items-center" id="trafficTotalContainer">
+          <p class="text-muted" data-i18n="traffic_total_label"></p>
+          <p id="trafficTotalLabel" class="text-lg font-semibold">0 GB</p>
+        </div>
+        <hr class="stone-border" />
+        <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center"
+          id="trafficRemainContainer">
+          <p class="text-muted" data-i18n="traffic_remaining_label"></p>
+          <p id="trafficRemainLabel" class="text-lg font-semibold">0 GB</p>
+        </div>
+      </div>
+    </section>
+  </main>
 
-    <footer
-      class="fixed bottom-0 z-40 flex h-18 w-full justify-center border-t border-stone-400 bg-stone-200/30 backdrop-blur-md dark:border-stone-700 dark:bg-stone-700/30">
-      <nav class="relative flex h-full max-w-3xl items-center justify-between px-4">
-        <ul class="flex">
+  <footer
+    class="fixed bottom-0 z-40 flex h-18 w-full justify-center border-t border-stone-400 bg-stone-200/30 backdrop-blur-md dark:border-stone-700 dark:bg-stone-700/30">
+    <nav class="relative flex h-full max-w-3xl items-center justify-between px-4">
+      <ul class="flex">
+        <li>
           <button class="footer-button" data-tab="profile" aria-current="false">
             <span class="iconify" data-icon="heroicons-outline:user" style="font-size: 24px"></span>
             <span class="tab-label" data-i18n="profile">Профиль</span>
           </button>
-
+        </li>
+        <li>
           <button class="footer-button" data-tab="apps" aria-current="true">
             <span class="iconify" data-icon="heroicons-outline:device-phone-mobile" style="font-size: 24px"></span>
             <span class="tab-label" data-i18n="apps">Приложения</span>
           </button>
-
+        </li>
+        <li>
           <button class="footer-button" data-tab="settings" aria-current="false">
             <span class="iconify" data-icon="heroicons-outline:cog" style="font-size: 24px"></span>
             <span class="tab-label" data-i18n="settings">Настройки</span>
           </button>
-        </ul>
-      </nav>
-    </footer>
+        </li>
+      </ul>
+    </nav>
+  </footer>
 
-    <script>
-      // === GLOBAL VARIABLES ===
-      let appsConfig = null;
-      let data = null;
-      let selectedPlatform = null;
-      let selectedApp = null;
-      let showingAllApps = false;
-      let currentLanguage = null;
-      let formattedData = null;
+  <script>
+    // === GLOBAL VARIABLES ===
+    let appsConfig = null;
+    let data = null;
+    let selectedPlatform = null;
+    let selectedApp = null;
+    let showingAllApps = false;
+    let currentLanguage = null;
+    let formattedData = null;
 
-      const translations = {
-        en: {
-          subscription_page_title: 'My subscription',
-          traffic_used_label: 'Used traffic',
-          traffic_total_label: 'Total traffic',
-          traffic_remaining_label: 'Remaining traffic',
-          download_apk: 'Download APK',
-          show_all_apps: 'Show all apps',
-          show_only_featured_apps: 'Show only featured apps',
-          open_in_app_store: 'Open in App Store',
-          open_in_google_play: 'Open in Google Play',
-          settings: 'Settings',
-          apps: 'Apps',
-          app: 'App',
-          profile: 'Profile',
-          username_label: 'Username',
-          status_label: 'Status',
-          expires_at_label: 'Expires at',
-          days_left_label: 'Days left',
-          subscribe: 'Add subscription',
-          select_an_app: 'Select an App',
-          select_an_os: 'Select a system',
-          os: 'System',
-          pc: 'Computer',
-          ios: 'iPhone, iPad',
-          android: 'Android',
-          // Steps
-          installationStep: 'Install the App',
-          addSubscriptionStep: 'Add subscription',
-          connectAndUseStep: 'Connect and use',
-        },
-        ru: {
-          subscription_page_title: 'Моя подписка',
-          traffic_used_label: 'Использовано трафика',
-          traffic_total_label: 'Всего трафика',
-          traffic_remaining_label: 'Осталось трафика',
-          download_apk: 'Скачать APK',
-          show_all_apps: 'Показать все приложения',
-          show_only_featured_apps: 'Показать только рекомендованные',
-          open_in_app_store: 'Открыть в App Store',
-          open_in_google_play: 'Открыть в Google Play',
-          settings: 'Настройки',
-          apps: 'Приложения',
-          app: 'Приложение',
-          profile: 'Профиль',
-          username_label: 'Имя пользователя',
-          status_label: 'Статус',
-          expires_at_label: 'Дата окончания подписки',
-          days_left_label: 'Осталось дней',
-          subscribe: 'Добавить подписку',
-          select_an_app: 'Выберите приложение',
-          select_an_os: 'Выберите систему',
-          os: 'Система',
-          pc: 'Компьютер',
-          ios: 'Айфон, Айпад',
-          android: 'Андроид',
-          // Steps
-          installationStep: 'Установите приложение',
-          addSubscriptionStep: 'Добавьте подписку',
-          connectAndUseStep: 'Подключитесь и используйте',
-        },
-      };
+    const translations = {
+      en: {
+        subscription_page_title: 'My subscription',
+        traffic_used_label: 'Used traffic',
+        traffic_total_label: 'Total traffic',
+        traffic_remaining_label: 'Remaining traffic',
+        unlimited: 'Unlimited',
+        download_apk: 'Download APK',
+        show_all_apps: 'Show all apps',
+        show_only_featured_apps: 'Show only featured apps',
+        open_in_app_store: 'Open in App Store',
+        open_in_google_play: 'Open in Google Play',
+        settings: 'Settings',
+        apps: 'Apps',
+        app: 'App',
+        profile: 'Profile',
+        username_label: 'Username',
+        status_label: 'Status',
+        expires_at_label: 'Expires at',
+        days_left_label: 'Days left',
+        never: 'Never',
+        subscribe: 'Add subscription',
+        select_an_app: 'Select an App',
+        select_an_os: 'Select a system',
+        os: 'System',
+        pc: 'Computer',
+        ios: 'iPhone, iPad',
+        android: 'Android',
+        // Steps
+        installationStep: 'Install the App',
+        addSubscriptionStep: 'Add subscription',
+        connectAndUseStep: 'Connect and use'
+      },
+      ru: {
+        subscription_page_title: 'Моя подписка',
+        traffic_used_label: 'Использовано трафика',
+        traffic_total_label: 'Всего трафика',
+        traffic_remaining_label: 'Осталось трафика',
+        unlimited: 'Безлимит',
+        download_apk: 'Скачать APK',
+        show_all_apps: 'Показать все приложения',
+        show_only_featured_apps: 'Показать только рекомендованные',
+        open_in_app_store: 'Открыть в App Store',
+        open_in_google_play: 'Открыть в Google Play',
+        settings: 'Настройки',
+        apps: 'Приложения',
+        app: 'Приложение',
+        profile: 'Профиль',
+        username_label: 'Имя пользователя',
+        status_label: 'Статус',
+        expires_at_label: 'Дата окончания подписки',
+        days_left_label: 'Осталось дней',
+        never: 'Никогда',
+        subscribe: 'Добавить подписку',
+        select_an_app: 'Выберите приложение',
+        select_an_os: 'Выберите систему',
+        os: 'Система',
+        pc: 'Компьютер',
+        ios: 'Айфон, Айпад',
+        android: 'Андроид',
+        // Steps
+        installationStep: 'Установите приложение',
+        addSubscriptionStep: 'Добавьте подписку',
+        connectAndUseStep: 'Подключитесь и используйте'
+      }
+    };
 
-      const appIcons = {
-        happ: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+    const appIcons = {
+      happ: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M13.4,19.6l-7.9,7.9L5,30.4h6.6L13.4,19.6z" />
             <path d="M13.2,13.5L14.6,5l-7.9,7.9L4.2,27.4l7.9-7.9l0.2-1.2h1l4.9-4.9H13.2z" />
             <path d="M25.4,19.6L27.8,5l-7.9,7.9l-0.1,0.7h-0.6l-4.9,4.9h4.7l-1.5,9L25.4,19.6z" />
@@ -315,45 +292,45 @@
             <path d="M18.8,12.8l7.9-7.9l0.6-3.3h-6.6L18.8,12.8z" />
             </svg>`,
 
-        'sing-box': `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+      'sing-box': `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M27 20.5C27.6076 20.1302 27.9978 19.2655 28 18.6463V9C28 9 28.0078 8.59766 27.5822 8.32719L14.9796 0.450533C14.9796 0.450533 13.5 -0.5 12.0584 0.450533L0.561526 8.12545C0.0257112 8.49456 0.00389706 9.16105 0.00389706 9.16105L-6.01943e-06 18.5C-6.01943e-06 18.5 -0.0137371 19.6716 0.499994 20L13 28L13.0471 17.0006L0.88928 9.30661C0.88928 9.30661 0.3336 8.95514 1.04756 8.54689L12.5 1C13.5318 0.372263 14.5593 0.970586 14.5593 0.970586L27.1156 8.65768C27.7201 8.91105 27.2738 9.10085 27.2738 9.10085L24.425 10.9058C24.425 10.9058 24.0203 11.2628 23.537 11.0184L10.5108 2.93515L10.0302 3.25102L23.5 11.5V15C23.5 15.5 23.1385 15.7448 23.1385 15.7448L19.3613 18.2599C19.3613 18.2599 19.014 18.5106 19 18V14.5L5.58401 6.16018L5.04136 6.52891L18.0774 14.6876C18.0774 14.6876 18.4613 14.8944 18.0216 15.133L14.7019 17.1149V27C14.7019 27 14.6993 27.637 14 28C14 28 14.5208 28.1278 15.4667 27.5678L27 20.5Z"/>
             </svg>`,
 
-        streisand: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+      streisand: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M18.4091 4.40211C19.8954 3.36294 21.3589 2.33315 22.8308 1.31461C23.3975 0.92258 23.9623 0.519918 24.5701 0.193536C24.8231 0.0578559 25.1956 0.0522285 25.495 0.0991225C25.68 0.127884 25.9192 0.345472 25.9663 0.519917C26.0074 0.671229 25.8617 0.936336 25.7146 1.05576C25.1819 1.48843 24.6178 1.88735 24.057 2.28813C22.6504 3.29229 21.2386 4.29082 19.7483 5.34812C20.3673 5.74203 20.9353 6.11718 21.5177 6.47045C22.1713 6.86686 22.1811 6.86373 22.8151 6.4073C24.4106 5.25746 25.9944 4.09324 27.601 2.95715C27.8768 2.76207 28.2298 2.61639 28.5657 2.56825C28.7586 2.54073 29.1069 2.7108 29.1723 2.87087C29.2455 3.05094 29.1566 3.40546 29.0017 3.53614C28.2441 4.17577 27.452 4.77851 26.6519 5.37063C25.6048 6.14594 24.5394 6.89875 23.4224 7.70407C23.6577 7.87227 23.8747 8.00732 24.0662 8.16989C24.5976 8.62069 25.1852 9.03023 25.6264 9.55294C26.2885 10.337 26.3205 11.3374 26.3101 12.2897C26.2963 13.5689 26.2022 14.8501 26.0865 16.1256C26.0264 16.7877 25.5133 17.2348 25.0329 17.6618C24.7734 17.8919 24.4721 18.0814 24.178 18.2727C23.8786 18.4678 23.9047 18.626 24.1819 18.8217C25.4623 19.7277 26.7382 20.6399 28.0102 21.5565C28.3553 21.8048 28.688 22.0705 29.0148 22.3406C29.237 22.5244 29.4194 22.7439 29.2520 23.0459C29.0867 23.3441 28.7834 23.5023 28.4683 23.4092C28.1115 23.3035 27.767 23.1128 27.4618 22.9002C26.0303 21.9011 24.6159 20.8800 23.1897 19.8734C23.0112 19.7477 22.8099 19.6439 22.6047 19.5632C22.3027 19.4444 22.0491 19.3975 21.7458 19.6864C21.3432 20.0697 20.834 20.3529 20.3569 20.6599C20.0667 20.8463 20.1372 20.9832 20.3693 21.1439C21.7667 22.1149 23.1766 23.0703 24.5512 24.0707C25.0937 24.4658 25.8002 24.7147 26.0539 25.4131C26.0728 25.4650 26.0905 25.5169 26.1133 25.5819C25.8650 25.7063 25.6336 25.8352 25.3917 25.9408C25.0414 26.0940 24.7544 25.9221 24.4819 25.7401C23.2609 24.9248 22.0445 24.1032 20.8229 23.2885C20.1778 22.8590 19.5215 22.4450 18.8784 22.0124C18.6457 21.8554 18.4868 21.8923 18.2568 22.0505C17.4142 22.6295 16.6109 23.2716 15.5913 23.5767C14.5814 23.8794 13.6448 23.7093 12.7702 23.1972C12.1885 22.8564 11.6284 22.4775 11.0832 22.0849C10.7858 21.8704 10.5538 21.8629 10.2538 22.0730C8.76157 23.1141 7.25889 24.1413 5.75882 25.1718C5.45619 25.3793 5.17317 25.6388 4.83656 25.7683C4.52674 25.8870 4.15417 25.9039 3.81494 25.8827C3.65742 25.8727 3.39139 25.6682 3.38943 25.5482C3.38486 25.3231 3.46656 25.0111 3.63519 24.8816C4.41301 24.2845 5.23331 23.7381 6.03792 23.1735C6.98698 22.5082 7.93735 21.8435 8.88511 21.1758C9.01191 21.0864 9.12564 20.9801 9.27597 20.8563C8.77856 20.4999 8.32560 20.1741 7.87133 19.8502C7.68832 19.7196 7.51838 19.5557 7.31314 19.4713C6.88371 19.2944 6.54709 19.5514 6.23204 19.7733C4.68361 20.8631 3.15151 21.9742 1.59262 23.0497C1.33313 23.2285 0.971023 23.3341 0.651401 23.3454C0.466425 23.3516 0.186020 23.1353 0.108239 22.9559C0.0454907 22.8114 0.159222 22.4963 0.303019 22.3863C1.44555 21.5084 2.61293 20.6606 3.77442 19.8052C4.24699 19.4576 4.71956 19.1093 5.19801 18.7698C5.42547 18.6085 5.42482 18.4559 5.22023 18.2846C4.97447 18.0783 4.75028 17.8400 4.48033 17.6694C3.55676 17.0854 3.24694 16.2125 3.22603 15.2265C3.19661 13.8559 3.19335 12.4841 3.22603 11.1142C3.24825 10.1794 3.68879 9.42102 4.47445 8.84954C4.88885 8.54816 5.29083 8.23054 5.69738 7.91916C5.92027 7.74847 5.95099 7.64217 5.66797 7.44522C4.02933 6.30538 2.41030 5.13929 0.789315 3.97632C0.599111 3.84001 0.427861 3.67744 0.261841 3.51488C-0.163669 3.09846 -0.0682397 2.68892 0.531134 2.59388C0.831147 2.54636 1.23117 2.63640 1.48020 2.80647C2.87568 3.75685 4.23784 4.75225 5.61306 5.72952C6.05557 6.04403 6.51049 6.34290 6.94580 6.66553C7.25104 6.89187 7.49811 6.68303 7.71446 6.56174C8.19880 6.28975 8.64784 5.96149 9.11387 5.65887C9.48121 5.42002 9.49559 5.32311 9.14459 5.06863C7.39876 3.80312 5.64836 2.54324 3.89991 1.28148C3.87638 1.26459 3.84958 1.25084 3.82540 1.23396C3.51689 1.01387 3.22080 0.768143 3.38682 0.354851C3.50382 0.0634829 4.18163 -0.109712 4.54765 0.078489C5.03003 0.326714 5.49280 0.616207 5.93530 0.925707C7.46151 1.99364 8.97792 3.07408 10.4917 4.15826C10.7394 4.33521 10.9584 4.37022 11.2192 4.19640C11.5970 3.94505 12.0107 3.73747 12.3657 3.46048C13.6932 2.42381 15.6207 2.44445 17.2495 3.60679C17.6293 3.87815 18.0202 4.13638 18.4091 4.40211ZM14.9226 17.6537C15.8449 17.7162 16.6868 17.4880 17.4404 16.9616C19.6516 15.4172 21.8445 13.8484 24.0819 12.3397C25.4368 11.4256 25.4100 9.63110 24.2061 8.72323C23.5642 8.23929 22.8681 7.82099 22.2014 7.36581C20.9020 6.47983 19.5902 5.61010 18.3143 4.69348C17.1090 3.82688 15.8521 3.11909 14.2749 3.35544C13.6677 3.44673 12.9931 3.56302 12.5081 3.88628C10.1656 5.44566 7.89094 7.09820 5.56273 8.67884C4.17117 9.62360 4.27052 11.4043 5.46992 12.2884C6.32617 12.9199 7.23797 13.4814 8.12102 14.0798C9.37532 14.9289 10.6427 15.7617 11.8735 16.6414C12.7859 17.2936 13.7494 17.7338 14.9226 17.6537ZM11.2767 21.1833C11.4081 21.3152 12.1238 21.8035 12.4454 22.0105C12.9480 22.3331 13.4337 22.1887 13.5049 21.6228C13.5820 21.0088 13.6030 20.3623 13.4807 19.7608C13.4043 19.3832 13.0938 18.9624 12.7598 18.7335C10.2969 17.0460 7.80270 15.4003 5.31501 13.7459C4.79342 13.3989 4.30516 13.5496 4.23130 14.1392C4.15548 14.7394 4.15025 15.3672 4.25026 15.9618C4.30843 16.3082 4.58034 16.6671 4.85551 16.9222C5.21566 17.2554 5.66535 17.5049 6.09544 17.7606C6.20067 17.8232 6.30852 17.6825 6.37388 17.6200C5.97713 17.2304 5.74117 17.0891 5.32089 16.8471C4.77904 16.5351 4.55288 16.0556 4.49863 15.4978C4.46334 15.1315 4.48948 14.7544 4.53785 14.3880C4.60909 13.8509 4.76139 13.7953 5.21435 14.0979C7.55302 15.6567 9.89169 17.2167 12.2297 18.7767C13.1846 19.4138 13.5468 20.4967 13.1650 21.5628C13.0631 21.8473 12.9069 21.9217 12.6363 21.7241C12.3755 21.5334 11.9532 21.2114 11.6676 21.0595C11.5604 21.0007 11.5231 21.1833 11.2767 21.1833ZM17.7116 21.3771C17.7077 21.3258 17.3888 21.2070 17.2705 21.2664C17.0345 21.3852 16.8279 21.5553 16.6051 21.6979C16.2580 21.9204 16.0933 21.8729 16.0377 21.4709C15.9776 21.0357 15.9063 20.5737 15.9992 20.1554C16.0861 19.7627 16.2815 19.2825 16.5979 19.0643C19.0771 17.3542 21.5987 15.7004 24.1021 14.0216C24.4113 13.8140 24.6022 13.9072 24.6348 14.2136C24.6878 14.7063 24.7172 15.2090 24.6721 15.7004C24.6263 16.2044 24.3322 16.5939 23.8622 16.8665C23.4714 17.0935 23.1086 17.3649 22.7341 17.6168C22.7419 17.6637 23.0589 17.7894 23.1635 17.7306C23.4838 17.5499 23.7694 17.3136 24.0884 17.1310C24.7590 16.7490 25.0231 16.1494 25.0760 15.4516C25.1041 15.0846 25.0806 14.7082 25.0296 14.3424C24.9165 13.5271 24.4838 13.3526 23.7832 13.8197C21.4099 15.4022 19.0372 16.9853 16.6645 18.5691C15.6599 19.2394 15.2481 20.6887 15.7501 21.7791C15.9449 22.2031 16.2789 22.3100 16.6855 22.0586C17.0351 21.8429 17.3705 21.6053 17.7116 21.3771ZM10.2139 20.1041C9.47075 19.6076 8.73281 19.1043 7.97787 18.6247C7.89094 18.5697 7.75172 18.7304 7.61642 18.7454C8.34783 19.3363 9.04394 19.8409 9.77338 20.3085C9.88188 20.3779 10.2035 20.1597 10.2139 20.1041ZM19.0006 20.1028C19.0032 20.1504 19.3111 20.2960 19.4039 20.2366C20.1444 19.7646 20.8700 19.2719 21.6007 18.7854C21.5935 18.7448 21.2621 18.6097 21.1654 18.6716C20.4346 19.1356 19.7196 19.6226 19.0006 20.1028Z"/>
             </svg>`,
 
-        shadowrocket: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+      shadowrocket: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M21.9297 23.7404C19.7230 23.3556 17.5164 22.9708 15.2717 22.5791C14.4346 24.2077 12.9509 24.8880 11.0333 24.8811C9.12343 24.8743 7.61681 24.2352 6.73414 22.5379C4.55030 22.9227 2.34363 23.3075 0 23.7198C0.0608736 22.9021 0.0837012 22.1324 0.190230 21.3697C0.448943 19.5349 1.27074 17.9269 2.70127 16.5800C2.95237 16.3464 3.05890 16.0990 3.03607 15.7348C2.84584 12.6219 3.21869 9.57770 4.55791 6.68468C5.56993 4.49945 7.05373 2.60971 9.07016 1.08418C9.57998 0.699357 10.1278 0.355768 10.6985 0.067153C10.9040 -0.0359237 11.2997 -0.0153082 11.5051 0.0946402C12.8063 0.836792 13.9781 1.74387 14.9292 2.82274C16.0478 4.08714 16.9609 5.48899 17.6077 7.01452C18.7719 9.77698 19.1980 12.6288 19.0078 15.5630C18.9773 15.9959 19.0915 16.3258 19.4415 16.6625C21.2525 18.3736 21.9601 20.4832 21.9830 22.8059C21.9830 23.0739 21.9906 23.3487 21.9982 23.6167C22.0058 23.6305 21.9906 23.6442 21.9297 23.7404ZM20.1035 21.9263C20.1415 21.8232 20.1568 21.7957 20.1568 21.7682C20.1644 21.7064 20.1644 21.6377 20.1568 21.5758C20.0426 19.6723 19.3121 18.0162 17.7827 16.6694C17.6229 16.5319 17.4555 16.3052 17.4631 16.1265C17.5772 14.2986 17.6533 12.4707 17.0826 10.6841C16.7631 9.68077 16.5348 8.64313 16.0935 7.68796C15.1347 5.61268 13.7803 3.77791 11.6953 2.45853C11.0714 2.05997 11.0105 2.05997 10.4018 2.48602C7.82226 4.27268 6.21671 6.64345 5.33405 9.43339C4.67966 11.5224 4.51986 13.6527 4.69488 15.8104C4.72531 16.1815 4.60356 16.4357 4.30681 16.6831C3.43936 17.3909 2.84584 18.2705 2.45016 19.2600C2.12297 20.0778 1.94795 20.9230 1.93274 21.8576C3.89591 21.5071 5.77538 21.1704 7.66246 20.8337C7.78421 21.0604 7.88313 21.2666 7.99727 21.4590C8.62883 22.5035 9.59520 23.1014 10.9268 23.1426C12.3041 23.1838 13.3237 22.6203 14.0314 21.5621C14.4651 20.9093 14.4651 20.9093 15.3097 21.0604C15.3478 21.0673 15.3782 21.0742 15.4162 21.0811C16.9837 21.3628 18.5360 21.6445 20.1035 21.9263Z"/>
             <path d="M10.9725 34C9.84633 32.4538 8.75060 30.9695 8.42341 29.1760C8.17991 27.8497 9.03975 26.5716 10.3638 26.1181C11.2616 25.8088 12.2813 26.1387 12.9509 26.9289C13.5748 27.6711 13.7727 28.5232 13.5824 29.4096C13.2096 31.1276 12.1671 32.5569 10.9725 34ZM10.8736 31.7598C10.9801 31.7598 11.0866 31.7598 11.1855 31.7529C11.5280 30.9970 11.9008 30.2549 12.2128 29.4852C12.4411 28.9217 12.2356 28.3857 11.8856 27.9047C11.5127 27.3825 10.8355 27.3344 10.3409 27.7673C9.89198 28.1590 9.64088 28.6675 9.81589 29.1966C10.1126 30.0625 10.5159 30.9008 10.8736 31.7598Z"/>
             <path d="M10.9421 7.64677C12.8976 7.59867 14.4195 9.02113 14.4271 10.6429C14.4347 12.3814 12.9357 13.7627 11.0410 13.7695C9.14628 13.7764 7.70814 12.4433 7.64727 10.7116C7.59400 9.21354 9.22237 7.56431 10.9421 7.64677ZM12.8824 10.7528C12.8976 9.79077 12.0986 9.01425 11.0714 9.00051C10.0061 8.98677 9.06258 9.74266 9.07780 10.7253C9.09302 11.6736 9.89959 12.4227 10.9421 12.4364C12.0454 12.4433 12.8672 11.7355 12.8824 10.7528Z"/>
             </svg>`,
 
-        'clash-meta': `<svg class="w-6 h-6" viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2">
+      'clash-meta': `<svg class="w-6 h-6" viewBox="0 0 48 48" stroke="currentColor" stroke-width="2">
             <path stroke-linecap="round" stroke-linejoin="round" d="M15.1 35.17H5.686m9.282 2.993l-8.846 3.163M24 16.874c.801 0 2.551.256 2.551.256L37.746 6.674s3.295.341 4.754.852V31.63c-1.42.653-4.574 1.108-6.45 1.108V17.11l-7.756 7.302S25.708 23.560 24 23.560s-4.294.853-4.294.853L11.95 17.11v15.627c-1.876 0-5.03-.455-6.45-1.108V7.526c1.458-.511 4.754-.852 4.754-.852L21.45 17.13s1.75-.256 2.551-.256m.625 17.245L24 35.265l-.626-1.146M32.9 35.17h9.414m-9.282 2.993l8.846 3.163"/>
             </svg>`,
 
-        v2rayng: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+      v2rayng: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M0 1.86298V3.72596H1.87780H3.75560L3.80567 17.3630L3.88078 31L18.4024 15.6987C26.3893 7.30288 32.9741 0.322916 32.9992 0.198717C33.0492 0.0993585 30.8460 -4.76837e-07 28.1169 -4.76837e-07H23.1595L16.2742 6.38381L9.38899 12.7428L9.26380 6.43349L9.13862 0.124198L4.58183 0.049679L0 -4.76837e-07V1.86298Z"/>
             </svg>`,
 
-        'clash-verge': `<svg class="w-6 h-6" viewBox="0 0 22 22" fill="currentColor">
+      'clash-verge': `<svg class="w-6 h-6" viewBox="0 0 22 22" fill="currentColor">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M11.007 22C6.01025 22 0.413848 19.6085 0.0141045 14.2017C-0.0891418 12.8053 0.393020 11.8257 0.853709 10.8897C0.907577 10.7802 0.961152 10.6714 1.01346 10.5625C0.347223 7.78979 -0.385635 1.82844 2.01282 0.164802C3.51185 -0.874970 7.00960 3.28412 8.00897 4.84377C9.00832 4.32389 10.5074 4.32389 11.0070 4.32389C12.0064 4.32389 12.5061 4.32389 14.0051 4.84377C15.1710 3.11082 18.0026 -0.251107 20.0013 0.164802C22.0654 0.594314 21.4010 6.70141 21.1077 9.39799C21.0459 9.96537 21.0006 10.3818 21.0006 10.5625C21.0864 10.7409 21.1721 10.9040 21.2553 11.0623C21.6571 11.8266 22.0000 12.4790 22.0000 14.2017C22.0000 16.2813 19.0019 22.0000 11.0070 22.0000ZM8.86995 16.1663C8.39444 16.9904 6.84049 16.9834 5.39910 16.1507C3.95771 15.3180 3.17471 13.9749 3.65022 13.1507C4.12573 12.3266 5.67969 12.3336 7.12107 13.1663C8.56246 13.9990 9.34546 15.3421 8.86995 16.1663ZM18.0871 13.1507C18.5626 13.9749 17.7796 15.3180 16.3382 16.1507C14.8968 16.9834 13.3429 16.9904 12.8674 16.1663C12.3919 15.3421 13.1749 13.9990 14.6163 13.1663C16.0576 12.3336 17.6116 12.3266 18.0871 13.1507ZM11.0070 19.1585C10.0077 19.1585 8.14148 17.6696 9.50800 17.6585H12.5061C14.0051 17.6585 12.0064 19.1585 11.0070 19.1585Z"/>
             </svg>`,
 
-        flclash: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+      flclash: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M15.215 31.645a3.15 3.15 0 0 1-2.527-1.747c-.293-.585-.376-.988-.34-1.68.047-.866.355-1.542.984-2.144a3.168 3.168 0 0 1 2.23-.883c.954 0 1.653.286 2.301.934.64.64.946 1.379.95 2.297.003.91-.305 1.652-.958 2.308-.695.696-1.628 1.02-2.64.915Z"/>
             <path d="M6.254 16.5a3.232 3.232 0 0 1-2.645-3.215c0-1.316.637-2.246 2.098-3.078l8.719-5.031C18.824 2.636 22.594.496 22.8.422c.777-.281 1.691-.223 2.504.164.515.242 1.199.934 1.453 1.465.336.707.422 1.379.27 2.094-.137.652-.4 1.12-.9 1.617-.421.418-.644.55-5.183 3.168-2.918 1.68-5.84 3.363-8.758 5.047-2.554 1.476-4.14 2.359-4.363 2.425a3.465 3.465 0 0 1-1.57.098Z"/>
             <path d="M10.363 23.996c-.511-.137-.996-.43-1.437-.867-1.285-1.27-1.281-3.27.004-4.54.386-.378.718-.581 4.851-2.96 2.442-1.406 4.59-2.617 4.778-2.691 2.054-.833 4.367.734 4.386 2.968.008.938-.28 1.64-.949 2.305-.422.418-.617.539-4.746 2.918-4.68 2.695-4.738 2.726-5.203 2.863-.395.117-1.254.117-1.684.004Z"/>
             </svg>`,
 
-        hiddify: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+      hiddify: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M26.8191 2.1691C25.0243 3.36662 23.3928 4.49636 23.2092 4.67711C22.6993 5.17420 22.6789 8.38265 23.1684 8.90233C23.6375 9.44461 30.2046 9.44461 30.6737 8.90233C30.9388 8.60860 31.0000 7.88557 31.0000 4.63192C31.0000 1.37828 30.9388 0.655248 30.6737 0.361516C30.5105 0.158163 30.3066 0 30.2250 0C30.1434 0 28.6138 0.971575 26.8191 2.1691Z" />
             <path d="M15.3980 9.39942C13.6033 10.5969 11.9717 11.7267 11.7882 11.9074C11.4618 12.2464 11.4211 12.8338 11.4211 18.1888C11.4211 22.4818 11.3599 24.1538 11.1763 24.3571C10.8500 24.7187 8.72895 24.7187 8.40263 24.3571C8.23947 24.1764 8.15789 22.8885 8.15789 20.0867C8.15789 16.6749 8.11711 16.0197 7.83158 15.7034C7.64803 15.5000 7.36250 15.3870 7.17895 15.4774C6.70987 15.6808 1.40724 19.2055 0.673026 19.8156L0 20.3579V25.3061C0 29.4862 0.0407895 30.2996 0.326316 30.5933C0.591447 30.8870 1.22368 30.9548 4.07895 30.9548C8.21908 30.9548 8.15789 31.0000 8.15789 28.6050C8.15789 27.6334 8.25987 26.8652 8.40263 26.7070C8.72895 26.3455 10.8500 26.3455 11.1763 26.7070C11.3191 26.8652 11.4211 27.6334 11.4211 28.6050C11.4211 31.0000 11.3599 30.9548 15.5000 30.9548C18.3553 30.9548 18.9875 30.8870 19.2526 30.5933C19.5382 30.2770 19.5789 28.9213 19.5789 19.0926C19.5789 9.26385 19.5382 7.90817 19.2526 7.59184C19.0895 7.38849 18.8855 7.23032 18.8039 7.23032C18.7224 7.23032 17.1928 8.20190 15.3980 9.39942Z" />
             <path d="M23.1684 11.4329C22.8829 11.7267 22.8421 12.9242 22.8421 21.0131C22.8421 29.1020 22.8829 30.2996 23.1684 30.5933C23.6375 31.1356 30.2046 31.1356 30.6737 30.5933C30.9592 30.2996 31.0000 29.1020 31.0000 21.0131C31.0000 12.9242 30.9592 11.7267 30.6737 11.4329C30.4086 11.1392 29.7763 11.0714 26.9211 11.0714C24.0658 11.0714 23.4336 11.1392 23.1684 11.4329Z" />
             </svg>`,
 
-        exclave: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
+      exclave: `<svg class="w-6 h-6" viewBox="0 0 32 32" fill="currentColor">
             <path d="M10.238 28.828c-1.39-.144-3.39-.8-3.718-1.215-.16-.207-.176-.363-.176-1.593 0-.754.035-1.391.078-1.418.047-.028.387.152.754.398 1.414.945 2.539 1.285 4.258 1.29 1.02.003 1.308-.028 1.875-.204a7.706 7.706 0 0 0 3.914-2.766c.734-.996 1.082-1.8 1.32-3.078.117-.613.117-.77 0-1.344-.492-2.375-1.898-4.054-3.93-4.691-.66-.207-1.836-.18-2.504.059-1.234.441-2.207 1.25-2.668 2.222-.242.512-.285.703-.285 1.278 0 .578.04.754.293 1.265.317.64.926 1.266 1.512 1.551.52.254 1.434.277 1.875.055.61-.313 1.191-1.11 1.32-1.817.172-.91-.64-1.953-1.523-1.953-.27 0-.395.07-.695.383-.204.21-.512.582-.684.828-.262.367-.367.45-.625.469-.504.043-.672-.145-.664-.754.012-.996.601-1.863 1.547-2.293.636-.285 1.851-.266 2.523.043 1.406.652 2.043 2.008 2.043 4.355 0 2.004-.578 2.848-2.277 3.32-.918.259-2.399.278-3.262.048-1.812-.489-3-1.625-3.637-3.485-.226-.664-.246-.832-.246-2.02.004-1.179.028-1.363.258-2.054.379-1.133.746-1.762 1.406-2.418.684-.68 1.72-1.242 2.7-1.469 1.472-.34 3.464-.336 4.835.008 1.715.43 3.344 1.738 4.274 3.434 1.512 2.758 1.344 6.918-.383 9.457-.973 1.437-2.305 2.511-4.043 3.265-1.16.5-2.02.73-3.21.852-.997.102-1.235.102-2.255-.008Z"/>
             <path d="M22.02 28.418c-.31-.074-.774-.484-.903-.793-.172-.41-.16-1.41.02-1.79.078-.167.265-.39.41-.495.25-.176.363-.188 2.015-.172.961.008 1.782.039 1.82.062.044.024.075.727.075 1.563v1.516l-.227.086c-.23.085-2.87.105-3.21.023Z"/>
             <path d="M27.621 26.48l.027-1.91.293-.367c.743-.922.954-1.785.887-3.629-.058-1.62-.215-2.41-.762-3.828l-.418-1.082-.054-6.969.277.313c1.188 1.344 2.82 4.656 3.48 7.058.708 2.57.82 6.164.27 8.375-.379 1.497-1.305 2.868-2.293 3.391-.496.262-1.351.559-1.613.559-.102 0-.117-.336-.094-1.91Z"/>
@@ -361,680 +338,664 @@
             <path d="M24.934 10.875c-.168-.242-.633-.754-1.036-1.133-2.89-2.726-6.75-4.035-11.066-3.762-2.043.13-3.496.567-4.95 1.485-1.241.785-1.35.848-1.448.785-.055-.035-.09-.586-.09-1.441 0-1.63.05-1.79.687-2.09 1.328-.625 3.844-1.399 5.387-1.653 1.836-.304 4.367-.265 6.133.094 1.789.363 4.277 1.414 5.742 2.422 1.215.836 1.18.73 1.148 3.352-.015 1.32-.062 2.246-.117 2.296-.058.06-.191-.062-.39-.355Z"/>
             </svg>`,
 
-        ios: '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M9.438 31.401a7 7 0 0 1-1.656-1.536a20 20 0 0 1-1.422-1.938a18.9 18.9 0 0 1-2.375-4.849c-.667-2-.99-3.917-.99-5.792c0-2.094.453-3.922 1.339-5.458a7.7 7.7 0 0 1 2.797-2.906a7.45 7.45 0 0 1 3.786-1.12q.705.002 1.51.198c.385.109.854.281 1.427.495c.729.281 1.13.453 1.266.495c.427.156.786.224 1.068.224c.214 0 .516-.068.859-.172c.193-.068.557-.188 1.078-.411c.516-.188.922-.349 1.245-.469c.495-.146.974-.281 1.401-.349a6.7 6.7 0 0 1 1.531-.063a9 9 0 0 1 2.589.557c1.359.547 2.458 1.401 3.276 2.615a6.4 6.4 0 0 0-.969.734a8.2 8.2 0 0 0-1.641 2.005a6.8 6.8 0 0 0-.859 3.359c.021 1.443.391 2.714 1.12 3.813a7.2 7.2 0 0 0 2.047 2.047c.417.281.776.474 1.12.604c-.161.5-.333.984-.536 1.464a19 19 0 0 1-1.667 3.083c-.578.839-1.031 1.464-1.375 1.88c-.536.635-1.052 1.12-1.573 1.458c-.573.38-1.25.583-1.938.583a4.4 4.4 0 0 1-1.38-.167c-.385-.13-.766-.271-1.141-.432a9 9 0 0 0-1.203-.453a6.3 6.3 0 0 0-3.099-.005c-.417.12-.818.26-1.214.432c-.557.234-.927.391-1.141.458c-.427.125-.87.203-1.318.229c-.693 0-1.339-.198-1.979-.599zm9.14-24.615c-.906.453-1.771.646-2.63.583c-.135-.865 0-1.75.359-2.719a7.3 7.3 0 0 1 1.333-2.24A7.1 7.1 0 0 1 19.812.733q1.319-.68 2.521-.734c.104.906 0 1.797-.333 2.76a8 8 0 0 1-1.333 2.344a6.8 6.8 0 0 1-2.115 1.682z"/></svg>',
+      ios: '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M9.438 31.401a7 7 0 0 1-1.656-1.536a20 20 0 0 1-1.422-1.938a18.9 18.9 0 0 1-2.375-4.849c-.667-2-.99-3.917-.99-5.792c0-2.094.453-3.922 1.339-5.458a7.7 7.7 0 0 1 2.797-2.906a7.45 7.45 0 0 1 3.786-1.12q.705.002 1.51.198c.385.109.854.281 1.427.495c.729.281 1.13.453 1.266.495c.427.156.786.224 1.068.224c.214 0 .516-.068.859-.172c.193-.068.557-.188 1.078-.411c.516-.188.922-.349 1.245-.469c.495-.146.974-.281 1.401-.349a6.7 6.7 0 0 1 1.531-.063a9 9 0 0 1 2.589.557c1.359.547 2.458 1.401 3.276 2.615a6.4 6.4 0 0 0-.969.734a8.2 8.2 0 0 0-1.641 2.005a6.8 6.8 0 0 0-.859 3.359c.021 1.443.391 2.714 1.12 3.813a7.2 7.2 0 0 0 2.047 2.047c.417.281.776.474 1.12.604c-.161.5-.333.984-.536 1.464a19 19 0 0 1-1.667 3.083c-.578.839-1.031 1.464-1.375 1.88c-.536.635-1.052 1.12-1.573 1.458c-.573.38-1.25.583-1.938.583a4.4 4.4 0 0 1-1.38-.167c-.385-.13-.766-.271-1.141-.432a9 9 0 0 0-1.203-.453a6.3 6.3 0 0 0-3.099-.005c-.417.12-.818.26-1.214.432c-.557.234-.927.391-1.141.458c-.427.125-.87.203-1.318.229c-.693 0-1.339-.198-1.979-.599zm9.14-24.615c-.906.453-1.771.646-2.63.583c-.135-.865 0-1.75.359-2.719a7.3 7.3 0 0 1 1.333-2.24A7.1 7.1 0 0 1 19.812.733q1.319-.68 2.521-.734c.104.906 0 1.797-.333 2.76a8 8 0 0 1-1.333 2.344a6.8 6.8 0 0 1-2.115 1.682z"/></svg>',
 
-        android:
-          '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M32 25.333H0a18.1 18.1 0 0 1 2.948-8.094a14.95 14.95 0 0 1 4.88-4.708l.547-.302l-2.693-4.547a.683.683 0 0 1 .224-.938a.673.673 0 0 1 .922.24l2.771 4.667a16.9 16.9 0 0 1 6.453-1.198c2.172-.026 4.323.38 6.333 1.198l2.76-4.667a.67.67 0 0 1 .932-.224a.676.676 0 0 1 .214.932l-2.693 4.562l.667.37a15.2 15.2 0 0 1 4.839 4.828A19.3 19.3 0 0 1 32 25.332zm-10-5.974a1.332 1.332 0 1 0 2.664.002A1.332 1.332 0 0 0 22 19.36m-14.667 0a1.332 1.332 0 1 0 2.664.002a1.332 1.332 0 0 0-2.664-.002"/></svg>',
+      android:
+        '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><path fill="currentColor" d="M32 25.333H0a18.1 18.1 0 0 1 2.948-8.094a14.95 14.95 0 0 1 4.88-4.708l.547-.302l-2.693-4.547a.683.683 0 0 1 .224-.938a.673.673 0 0 1 .922.24l2.771 4.667a16.9 16.9 0 0 1 6.453-1.198c2.172-.026 4.323.38 6.333 1.198l2.76-4.667a.67.67 0 0 1 .932-.224a.676.676 0 0 1 .214.932l-2.693 4.562l.667.37a15.2 15.2 0 0 1 4.839 4.828A19.3 19.3 0 0 1 32 25.332zm-10-5.974a1.332 1.332 0 1 0 2.664.002A1.332 1.332 0 0 0 22 19.36m-14.667 0a1.332 1.332 0 1 0 2.664.002a1.332 1.332 0 0 0-2.664-.002"/></svg>',
 
-        pc: '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><path fill="currentColor" fill-rule="evenodd" d="M8 2a1 1 0 0 0-1 1v.469h.5a2.75 2.75 0 0 1 2.75 2.75v.156H14V3a1 1 0 0 0-1-1zm-.109 11.871a2 2 0 0 0 .088-.944a2.75 2.75 0 0 0 2.271-2.708V7.625H14V13a1 1 0 0 1-1 1H8.5a1.5 1.5 0 0 1-.609-.129m4.78-9.683a.766.766 0 1 1-1.53 0a.766.766 0 0 1 1.53 0M0 6.217a1.5 1.5 0 0 1 1.5-1.5h6a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5H5.25v.75H6a.75.75 0 1 1 0 1.5H3a.75.75 0 0 1 0-1.5h.75v-.75H1.5a1.5 1.5 0 0 1-1.5-1.5z" clip-rule="evenodd"/></svg>',
+      pc: '<svg class="w-6 h-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 14 14"><path fill="currentColor" fill-rule="evenodd" d="M8 2a1 1 0 0 0-1 1v.469h.5a2.75 2.75 0 0 1 2.75 2.75v.156H14V3a1 1 0 0 0-1-1zm-.109 11.871a2 2 0 0 0 .088-.944a2.75 2.75 0 0 0 2.271-2.708V7.625H14V13a1 1 0 0 1-1 1H8.5a1.5 1.5 0 0 1-.609-.129m4.78-9.683a.766.766 0 1 1-1.53 0a.766.766 0 0 1 1.53 0M0 6.217a1.5 1.5 0 0 1 1.5-1.5h6a1.5 1.5 0 0 1 1.5 1.5v4a1.5 1.5 0 0 1-1.5 1.5H5.25v.75H6a.75.75 0 1 1 0 1.5H3a.75.75 0 0 1 0-1.5h.75v-.75H1.5a1.5 1.5 0 0 1-1.5-1.5z" clip-rule="evenodd"/></svg>',
 
-        default: `<svg class="w-6 h-6" viewBox="0 0 22 22" fill="currentColor">
+      default: `<svg class="w-6 h-6" viewBox="0 0 22 22">
             <path fill-rule="evenodd" clip-rule="evenodd" d="M11.007 22C6.01025 22 0.413848 19.6085 0.0141045 14.2017C-0.0891418 12.8053 0.393020 11.8257 0.853709 10.8897C0.907577 10.7802 0.961152 10.6714 1.01346 10.5625C0.347223 7.78979 -0.385635 1.82844 2.01282 0.164802C3.51185 -0.874970 7.00960 3.28412 8.00897 4.84377C9.00832 4.32389 10.5074 4.32389 11.0070 4.32389C12.0064 4.32389 12.5061 4.32389 14.0051 4.84377C15.1710 3.11082 18.0026 -0.251107 20.0013 0.164802C22.0654 0.594314 21.4010 6.70141 21.1077 9.39799C21.0459 9.96537 21.0006 10.3818 21.0006 10.5625C21.0864 10.7409 21.1721 10.9040 21.2553 11.0623C21.6571 11.8266 22.0000 12.4790 22.0000 14.2017C22.0000 16.2813 19.0019 22.0000 11.0070 22.0000ZM8.86995 16.1663C8.39444 16.9904 6.84049 16.9834 5.39910 16.1507C3.95771 15.3180 3.17471 13.9749 3.65022 13.1507C4.12573 12.3266 5.67969 12.3336 7.12107 13.1663C8.56246 13.9990 9.34546 15.3421 8.86995 16.1663ZM18.0871 13.1507C18.5626 13.9749 17.7796 15.3180 16.3382 16.1507C14.8968 16.9834 13.3429 16.9904 12.8674 16.1663C12.3919 15.3421 13.1749 13.9990 14.6163 13.1663C16.0576 12.3336 17.6116 12.3266 18.0871 13.1507ZM11.0070 19.1585C10.0077 19.1585 8.14148 17.6696 9.50800 17.6585H12.5061C14.0051 17.6585 12.0064 19.1585 11.0070 19.1585Z"/>
-            </svg>`,
-      };
+            </svg>`
+    };
 
-      // === Theme Switching Control ===
-      function applyThemeAndSaveToLocalStorage(theme) {
-        if (theme === 'dark') {
-          if (document.documentElement.classList.contains('dark')) {
-            return;
-          }
-          document.documentElement.classList.add('dark');
-          console.log('Applying theme: ' + theme);
-        } else if (theme === 'light') {
-          if (!document.documentElement.classList.contains('dark')) {
-            return;
-          }
-          document.documentElement.classList.remove('dark');
+    // === Theme Switching Control ===
+    function applyThemeAndSaveToLocalStorage(theme) {
+      if (theme === 'dark') {
+        if (document.documentElement.classList.contains('dark')) {
+          return;
         }
-        localStorage.setItem('theme', theme);
+        document.documentElement.classList.add('dark');
+        console.log('Applying theme: ' + theme);
+      } else if (theme === 'light') {
+        if (!document.documentElement.classList.contains('dark')) {
+          return;
+        }
+        document.documentElement.classList.remove('dark');
+      }
+      localStorage.setItem('theme', theme);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedTheme = localStorage.getItem('theme');
+
+      let themeToApply;
+      if (storedTheme) {
+        console.log('Theme in local storage: ' + localStorage.getItem('theme'));
+        themeToApply = storedTheme;
+      } else {
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        themeToApply = prefersDark ? 'dark' : 'light';
       }
 
-      document.addEventListener('DOMContentLoaded', () => {
-        const storedTheme = localStorage.getItem('theme');
+      applyThemeAndSaveToLocalStorage(themeToApply);
+    });
 
-        let themeToApply;
-        if (storedTheme) {
-          console.log('Theme in local storage: ' + localStorage.getItem('theme'));
-          themeToApply = storedTheme;
+    function toggleDarkMode() {
+      const isDarkTheme = document.documentElement.classList.contains('dark');
+      let newTheme;
+
+      if (isDarkTheme) {
+        newTheme = 'light';
+      } else {
+        newTheme = 'dark';
+      }
+
+      applyThemeAndSaveToLocalStorage(newTheme);
+    }
+
+    // === Localization ===
+    function getTranslation(key) {
+      return translations[currentLanguage][key] ? translations[currentLanguage][key] : key;
+    }
+
+    function changeLanguage(key) {
+      localStorage.setItem('language', key);
+      currentLanguage = key;
+      const buttons = document.getElementById('languages').querySelectorAll('button');
+      buttons.forEach((button) => {
+        const isSelected = button.id === 'button-' + key;
+        button.classList.toggle('active-tab', isSelected);
+      });
+      console.log('changing language to: ' + currentLanguage);
+      applyTranslations();
+      displayData(formattedData);
+    }
+
+    // Load saved language
+    document.addEventListener('DOMContentLoaded', () => {
+      const storedLanguage = localStorage.getItem('language');
+      if (storedLanguage) {
+        console.log('Language in local storage: ' + localStorage.getItem('language'));
+        currentLanguage = storedLanguage;
+      } else {
+        currentLanguage = 'ru';
+      }
+    });
+
+    function applyTranslations() {
+      document.querySelectorAll('[data-i18n]').forEach((element) => {
+        const key = element.getAttribute('data-i18n');
+        const translation = getTranslation(key);
+        if (element.tagName === 'INPUT' && element.type === 'text') {
+          element.placeholder = translation;
         } else {
-          const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
-          themeToApply = prefersDark ? 'dark' : 'light';
+          element.textContent = translation;
         }
+      });
+      // Trigger steps refresh
+      selectApp(selectedApp, selectedPlatform);
+    }
 
-        applyThemeAndSaveToLocalStorage(themeToApply);
+    // === Footer navigation ===
+    document.addEventListener('DOMContentLoaded', () => {
+      const buttons = document.querySelectorAll('.footer-button');
+      const pages = document.querySelectorAll('.tab-page');
+
+      buttons.forEach((tab) => {
+        tab.addEventListener('click', () => {
+          // Hide all labels
+          deactivateAllFooterTabs(buttons);
+
+          // Hide all pages
+          pages.forEach((p) => p.classList.add('hidden'));
+
+          // Activate current tab
+          tab.classList.add('active');
+
+          // Show page
+          const selectedPage = tab.dataset.tab;
+          document.getElementById(`page-${selectedPage}`).classList.remove('hidden');
+        });
       });
 
-      function toggleDarkMode() {
-        const isDarkTheme = document.documentElement.classList.contains('dark');
-        let newTheme;
+      setTimeout(() => {
+        document.querySelector('.footer-button[data-tab="apps"]')?.click();
+      }, 0);
+    });
 
-        if (isDarkTheme) {
-          newTheme = 'light';
-        } else {
-          newTheme = 'dark';
-        }
-
-        applyThemeAndSaveToLocalStorage(newTheme);
-      }
-
-      // === Localization ===
-      function getTranslation(key) {
-        return translations[currentLanguage][key] ? translations[currentLanguage][key] : key;
-      }
-
-      function changeLanguage(key) {
-        localStorage.setItem('language', key);
-        currentLanguage = key;
-        const buttons = document.getElementById('languages').querySelectorAll('button');
-        buttons.forEach((button) => {
-          const isSelected = button.id === 'button-' + key;
-          button.classList.toggle('active-tab', isSelected);
-        });
-        console.log('changing language to: ' + currentLanguage);
-        applyTranslations();
-        displayData(formattedData);
-      }
-
-      // Load saved language
-      document.addEventListener('DOMContentLoaded', () => {
-        const storedLanguage = localStorage.getItem('language');
-
-        let newLanguage;
-        if (storedLanguage) {
-          console.log('Language in local storage: ' + localStorage.getItem('language'));
-          currentLanguage = storedLanguage;
-        } else {
-          currentLanguage = 'ru'; // TODO: detect system language
-        }
+    function deactivateAllFooterTabs(tabs) {
+      tabs.forEach((tab) => {
+        tab.classList.remove('active');
       });
+    }
 
-      function applyTranslations() {
-        document.querySelectorAll('[data-i18n]').forEach((element) => {
-          const key = element.getAttribute('data-i18n');
-          const translation = getTranslation(key);
-          if (element.tagName === 'INPUT' && element.type === 'text') {
-            element.placeholder = translation;
-          } else {
-            element.textContent = translation;
-          }
-        });
-        // Trigger steps refresh
-        selectApp(selectedApp, selectedPlatform);
+    async function loadAppsConfig() {
+      if (appsConfig !== null) {
+        console.log('already loaded');
+        return appsConfig;
       }
 
-      // === Footer navigation ===
-      document.addEventListener('DOMContentLoaded', () => {
-        const buttons = document.querySelectorAll('.footer-button');
-        const pages = document.querySelectorAll('.tab-page');
-
-        buttons.forEach((tab) => {
-          tab.addEventListener('click', () => {
-            // Hide all labels
-            deactivateAllFooterTabs(buttons);
-
-            // Hide all pages
-            pages.forEach((p) => p.classList.add('hidden'));
-
-            // Activate current tab
-            tab.classList.add('active');
-
-            // Show page
-            const selectedPage = tab.dataset.tab;
-            document.getElementById(`page-${selectedPage}`).classList.remove('hidden');
-          });
-        });
-
-        setTimeout(() => {
-          document.querySelector('.footer-button[data-tab="apps"]')?.click();
-        }, 0);
-      });
-
-      function deactivateAllFooterTabs(tabs) {
-        tabs.forEach((tab) => {
-          tab.classList.remove('active');
-        });
-      }
-
-      async function loadAppsConfig() {
-        if (appsConfig !== null) {
-          console.log('already loaded');
-          return appsConfig;
-        }
-
-        try {
-          const response = await fetch('/assets/app-config.json');
-          if (!response.ok) {
-            console.warn('App config not found, using empty config');
-            appsConfig = { ios: [], android: [], pc: [] };
-            return appsConfig;
-          }
-          const text = await response.text();
-
-          if (text.trim().startsWith('<')) {
-            console.warn('Received HTML instead of JSON - config file not found');
-            appsConfig = { ios: [], android: [], pc: [] };
-            return appsConfig;
-          }
-
-          appsConfig = JSON.parse(text);
-          console.log('Apps config loaded successfully:', appsConfig);
-          return appsConfig;
-        } catch (error) {
-          console.error('Failed to load apps config:', error);
+      try {
+        const response = await fetch('/assets/app-config.json');
+        if (!response.ok) {
+          console.warn('App config not found, using empty config');
           appsConfig = { ios: [], android: [], pc: [] };
           return appsConfig;
         }
-      }
+        const text = await response.text();
 
-      (async () => {
-        data = await loadAppsConfig();
-
-        if (!data) {
-          console.warn('Invalid config structure:', data);
-          return;
-        }
-        loadSubscriptionData();
-        loadDefaults(data);
-        changeLanguage(currentLanguage);
-      })();
-
-      function loadDefaults(data) {
-        renderPlatforms();
-        let platform = detectPlatform();
-        selectPlatform(platform);
-      }
-
-      const platformNames = {
-        ios: 'iOS',
-        android: 'Android',
-        windows: 'Windows',
-        mac: 'Mac',
-        linux: 'Linux',
-        pc: 'PC',
-      };
-
-      function renderPlatforms() {
-        const availablePlatforms = [];
-        const container = document.getElementById('osList');
-
-        Object.keys(data).forEach((platform) => {
-          if (Array.isArray(data[platform]) && data[platform].length > 0) {
-            availablePlatforms.push(platform);
-          }
-        });
-
-        availablePlatforms.forEach((platform) => {
-          const apps = data[platform];
-          if (Array.isArray(apps) && apps.length > 0) {
-            const button = document.createElement('button');
-            button.classList = 'modal-btn';
-            // button.textContent = getTranslation(platform) || platform.charAt(0).toUpperCase() + platform.slice(1);
-
-            const iconToDisplay = getIcon(platform);
-            const iconSpan = document.createElement('span');
-            iconSpan.className = 'inline-flex';
-            if (iconToDisplay) {
-              iconSpan.innerHTML = iconToDisplay;
-            }
-            button.appendChild(iconSpan);
-
-            const nameSpan = document.createElement('span');
-            nameSpan.textContent = getTranslation(platform) || platform.charAt(0).toUpperCase() + platform.slice(1);
-            button.appendChild(nameSpan);
-
-            button.onclick = () => {
-              selectPlatform(platform);
-              var modal = button.closest('.modal');
-              hideModal(modal);
-            };
-            container.appendChild(button);
-          }
-        });
-      }
-
-      function selectPlatform(platform) {
-        selectedPlatform = platform;
-        // Name
-        const selectedOSName = document.getElementById('selected-os-name');
-
-        const translation = getTranslation(platform);
-        selectedOSName.setAttribute('data-i18n', platform);
-        selectedOSName.textContent = translation;
-
-        // Icon
-        const selectedOsIcon = document.getElementById('selected-os-icon');
-        const iconToDisplay = getIcon(platform);
-        selectedOsIcon.innerHTML = `<span>${iconToDisplay ? iconToDisplay : ''}</span>`;
-
-        populateAppListForPlatform(data, selectedPlatform, showingAllApps);
-        selectDefaultAppForPlatform(platform);
-      }
-
-      function selectDefaultAppForPlatform(platform) {
-        let apps = data[platform];
-        let featuredApps = apps.filter((app) => app.isFeatured);
-
-        if (featuredApps[0]) {
-          selectApp(featuredApps[0], platform);
-        } else {
-          selectApp(apps[0], platform);
-        }
-      }
-
-      function detectPlatform() {
-        const userAgent = navigator.userAgent || navigator.vendor || window.opera;
-        console.log(userAgent);
-        if (/android/i.test(userAgent)) {
-          console.log('Detected platform: Android');
-          return 'android';
+        if (text.trim().startsWith('<')) {
+          console.warn('Received HTML instead of JSON - config file not found');
+          appsConfig = { ios: [], android: [], pc: [] };
+          return appsConfig;
         }
 
-        if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
-          console.log('Detected platform: iOS');
-          return 'ios';
-        }
-
-        if (/Win/.test(userAgent) || /Linux/.test(userAgent) || /Mac/.test(userAgent)) {
-          console.log('Detected platform: PC');
-          return 'pc'; // Windows
-        }
-
-        return 'android'; // Default fallback
+        appsConfig = JSON.parse(text);
+        console.log('Apps config loaded successfully');
+        return appsConfig;
+      } catch (error) {
+        console.error('Failed to load apps config:', error);
+        appsConfig = { ios: [], android: [], pc: [] };
+        return appsConfig;
       }
+    }
 
-      // === Modals ===
+    (async () => {
+      data = await loadAppsConfig();
 
-      // Open modal when click on button
-      document.addEventListener('click', function (e) {
-        var target = e.target.getAttribute('data-target');
-        if (target) {
-          e.preventDefault();
-          var myModal = document.querySelector(target);
-          if (myModal) {
-            showModal(myModal);
-          }
+      if (!data) {
+        console.warn('Invalid config structure:', data);
+        return;
+      }
+      await loadSubscriptionData();
+      loadDefaults(data);
+      changeLanguage(currentLanguage);
+    })();
+
+    function loadDefaults(data) {
+      renderPlatforms();
+      let platform = detectPlatform();
+      selectPlatform(platform);
+    }
+
+    const platformNames = {
+      ios: 'iOS',
+      android: 'Android',
+      windows: 'Windows',
+      mac: 'Mac',
+      linux: 'Linux',
+      pc: 'PC'
+    };
+
+    function renderPlatforms() {
+      const availablePlatforms = [];
+      const container = document.getElementById('osList');
+
+      Object.keys(data).forEach((platform) => {
+        if (Array.isArray(data[platform]) && data[platform].length > 0) {
+          availablePlatforms.push(platform);
         }
       });
 
-      // Close modal when click outside
-      document.addEventListener('DOMContentLoaded', () => {
-        const modals = document.querySelectorAll('.modal');
-        modals.forEach((modal) => {
-          modal.addEventListener('click', (event) => {
-            if (event.target === modal) {
-              hideModal(modal);
-            }
-          });
-        });
-      });
+      availablePlatforms.forEach((platform) => {
+        const apps = data[platform];
+        if (Array.isArray(apps) && apps.length > 0) {
+          const button = document.createElement('button');
+          button.classList = 'modal-btn';
 
-      function showModal(modal) {
-        document.body.style.overflow = 'hidden';
-        modal.classList.remove('opacity-0', 'pointer-events-none');
-        modal.classList.add('opacity-100', 'pointer-events-auto');
-      }
-
-      function hideModal(modal) {
-        document.body.style.overflow = '';
-        modal.classList.remove('opacity-100');
-        modal.classList.add('opacity-0', 'pointer-events-none');
-        if (showingAllApps) {
-          toggleShowAllApps();
-        }
-      }
-
-      function toggleShowAllApps() {
-        showingAllApps = !showingAllApps;
-        const container = document.querySelector('.show-all-apps');
-        const label = document.getElementById('showAllAppsLabel');
-        const icon = document.getElementById('showAllAppsIcon');
-
-        container.classList.toggle('flex-col-reverse');
-        if (container.classList.contains('flex-col-reverse')) {
-          label.textContent = getTranslation('show_only_featured_apps');
-          icon.classList.toggle('rotate-270');
-        } else {
-          label.textContent = getTranslation('show_all_apps');
-          icon.classList.toggle('rotate-270');
-        }
-
-        populateAppListForPlatform(data, selectedPlatform, showingAllApps);
-      }
-
-      function getIcon(appId) {
-        if (appId.startsWith('v2ray')) {
-          return appIcons['v2rayng'];
-        }
-
-        return appIcons[appId];
-      }
-
-      function populateAppListForPlatform(data, platform, showingAllApps) {
-        let allApps = data[platform].sort((a,b) => b.isFeatured - a.isFeatured) || [];
-        
-        const appList = document.getElementById('appList');
-
-        console.log('Rendering all apps:' + showingAllApps);
-
-        const appsToRender = showingAllApps ? allApps : allApps.filter((app) => app.isFeatured);
-  
-        appList.innerHTML = ''; // Clear previous list items
-
-        appsToRender.forEach((app) => {
-          const item = document.createElement('button');
-          item.className = 'modal-btn';
-          const iconToDisplay = getIcon(app.id);
-
+          const iconToDisplay = getIcon(platform);
           const iconSpan = document.createElement('span');
           iconSpan.className = 'inline-flex';
           if (iconToDisplay) {
             iconSpan.innerHTML = iconToDisplay;
           }
+          button.appendChild(iconSpan);
 
           const nameSpan = document.createElement('span');
-          nameSpan.textContent = app.name;
+          nameSpan.textContent = getTranslation(platform) || platform.charAt(0).toUpperCase() + platform.slice(1);
+          button.appendChild(nameSpan);
 
-          item.appendChild(iconSpan);
-          item.appendChild(nameSpan);
-
-          item.onclick = () => {
-            selectApp(app, platform);
-            var modal = appList.closest('.modal');
+          button.onclick = () => {
+            selectPlatform(platform);
+            let modal = button.closest('.modal');
             hideModal(modal);
           };
+          container.appendChild(button);
+        }
+      });
+    }
 
-          appList.appendChild(item);
-        });
+    function selectPlatform(platform) {
+      selectedPlatform = platform;
+      // Name
+      const selectedOSName = document.getElementById('selected-os-name');
+
+      const translation = getTranslation(platform);
+      selectedOSName.setAttribute('data-i18n', platform);
+      selectedOSName.textContent = translation;
+
+      // Icon
+      const selectedOsIcon = document.getElementById('selected-os-icon');
+      const iconToDisplay = getIcon(platform);
+      selectedOsIcon.innerHTML = `<span>${iconToDisplay ? iconToDisplay : ''}</span>`;
+
+      populateAppListForPlatform(data, selectedPlatform, showingAllApps);
+      selectDefaultAppForPlatform(platform);
+    }
+
+    function selectDefaultAppForPlatform(platform) {
+      let apps = data[platform];
+      let featuredApps = apps.filter((app) => app.isFeatured);
+
+      if (featuredApps[0]) {
+        selectApp(featuredApps[0], platform);
+      } else {
+        selectApp(apps[0], platform);
+      }
+    }
+
+    function detectPlatform() {
+      const userAgent = navigator.userAgent || navigator.vendor || window.opera;
+      console.log(userAgent);
+      if (/android/i.test(userAgent)) {
+        console.log('Detected platform: Android');
+        return 'android';
       }
 
-      // Set selected app
-      function selectApp(app, platform) {
-        const selectedAppIcon = document.getElementById('selected-app-icon');
-        const selectedAppName = document.getElementById('selected-app-name');
-
-        const iconToDisplay = getIcon(app.id);
-        if (iconToDisplay) {
-          selectedAppIcon.innerHTML = iconToDisplay;
-        }
-
-        selectedAppName.textContent = app.name;
-        selectedApp = app;
-
-        renderAppSteps(app, platform);
+      if (/iPad|iPhone|iPod/.test(userAgent) && !window.MSStream) {
+        console.log('Detected platform: iOS');
+        return 'ios';
       }
 
-      function renderAppSteps(app, platform) {
-        // Removing old steps
-        document.getElementById('setupStepsContainer').innerHTML = '';
-
-        const steps = Object.keys(app).filter((key) => key.endsWith('Step'));
-
-        steps.forEach((stepKey) => {
-          renderStep(app, platform, stepKey);
-        });
+      if (/Win/.test(userAgent) || /Linux/.test(userAgent) || /Mac/.test(userAgent)) {
+        console.log('Detected platform: PC');
+        return 'pc'; // Windows
       }
 
-      function renderStep(app, platform, stepKey) {
-        const stepData = app[stepKey];
-        if (!stepData) return;
+      return 'android'; // Default fallback
+    }
 
-        const container = document.getElementById('setupStepsContainer');
+    // === Modals ===
 
-        const stepCard = document.createElement('div');
-        stepCard.className = 'card';
-
-        // Step title
-        let title = null;
-        if (stepKey.startsWith('additional')) {
-          title = stepData.title?.[currentLanguage];
-        } else {
-          title = getTranslation(stepKey);
+    // Open modal when click on button
+    document.addEventListener('click', function (e) {
+      let target = e.target.getAttribute('data-target');
+      if (target) {
+        e.preventDefault();
+        let myModal = document.querySelector(target);
+        if (myModal) {
+          showModal(myModal);
         }
+      }
+    });
 
-        const cardTitle = document.createElement('div');
-        cardTitle.textContent = title;
-        cardTitle.classList = 'title text-xl lg:text-3xl font-semibold mb-2 text-center';
-        stepCard.appendChild(cardTitle);
-
-        // Step description
-        const cardDescription = document.createElement('p');
-        cardDescription.classList = 'text-stone-700 dark:text-stone-300';
-        cardDescription.textContent = stepData.description?.[currentLanguage] || '';
-        stepCard.appendChild(cardDescription);
-
-        // Step buttons
-        if (Array.isArray(stepData.buttons) && stepData.buttons && stepData.buttons.length > 0) {
-          var butonContainer = document.createElement('ul');
-          butonContainer.classList = 'flex flex-col items-center px-6 mt-4';
-          stepData.buttons.forEach((buttonInfo) => {
-            const button = document.createElement('a');
-            button.className = 'btn';
-            button.href = buttonInfo.buttonLink;
-            button.target = '_blank';
-            button.rel = 'noopener noreferrer';
-
-            const btnText = buttonInfo.buttonText?.[currentLanguage] || 'Открыть';
-            button.textContent = btnText;
-            butonContainer.appendChild(button);
-          });
-          stepCard.appendChild(butonContainer);
-        }
-
-        if (stepKey === 'addSubscriptionStep') {
-          var butonContainer = document.createElement('ul');
-          butonContainer.classList = 'flex flex-col items-center px-6 mt-4';
-          const subscriptionButton = document.createElement('a');
-          subscriptionButton.className = 'btn';
-          const fullURL = window.location.href;
-
-          let url = '#';
-          if (app.urlScheme && fullURL) {
-            let subscriptionUrl = data.subscription_url;
-
-            if (app.isNeedBase64Encoding) {
-              subscriptionUrl = btoa(subscriptionUrl);
-            } else {
-              subscriptionUrl = encodeURIComponent(subscriptionUrl);
-            }
-            url = app.urlScheme.concat(fullURL);
+    // Close modal when click outside
+    document.addEventListener('DOMContentLoaded', () => {
+      const modals = document.querySelectorAll('.modal');
+      modals.forEach((modal) => {
+        modal.addEventListener('click', (event) => {
+          if (event.target === modal) {
+            hideModal(modal);
           }
+        });
+      });
+    });
 
-          subscriptionButton.href = url;
-          subscriptionButton.textContent = getTranslation('subscribe');
+    function showModal(modal) {
+      document.body.style.overflow = 'hidden';
+      modal.classList.remove('opacity-0', 'pointer-events-none');
+      modal.classList.add('opacity-100', 'pointer-events-auto');
+    }
 
-          butonContainer.appendChild(subscriptionButton);
-          stepCard.appendChild(butonContainer);
-        }
+    function hideModal(modal) {
+      document.body.style.overflow = '';
+      modal.classList.remove('opacity-100');
+      modal.classList.add('opacity-0', 'pointer-events-none');
+      if (showingAllApps) {
+        toggleShowAllApps();
+      }
+    }
 
-        container.appendChild(stepCard);
+    function toggleShowAllApps() {
+      showingAllApps = !showingAllApps;
+      const container = document.querySelector('.show-all-apps');
+      const label = document.getElementById('showAllAppsLabel');
+      const icon = document.getElementById('showAllAppsIcon');
+
+      container.classList.toggle('flex-col-reverse');
+      if (container.classList.contains('flex-col-reverse')) {
+        label.textContent = getTranslation('show_only_featured_apps');
+        icon.classList.toggle('rotate-270');
+      } else {
+        label.textContent = getTranslation('show_all_apps');
+        icon.classList.toggle('rotate-270');
       }
 
-      async function loadSubscriptionData() {
-        try {
-          const appsConfigPromise = loadAppsConfig();
+      populateAppListForPlatform(data, selectedPlatform, showingAllApps);
+    }
 
-          const encodedPanelData = '<%= panelData %>';
-          console.log('Encoded panel data:', encodedPanelData);
-
-          const decodedData = decodeAndParseData(encodedPanelData);
-
-          const loadedAppsConfig = await appsConfigPromise;
-
-          formattedData = formatApiData(decodedData, loadedAppsConfig);
-
-          displayData(formattedData);
-        } catch (error) {
-          console.error('Ошибка загрузки данных:', error);
-        }
+    function getIcon(appId) {
+      if (appId.startsWith('v2ray')) {
+        return appIcons['v2rayng'];
       }
 
-      function decodeAndParseData(encodedData) {
-        try {
-          const decodedString = atob(encodedData);
-          console.log('Decoded string:', decodedString);
+      return appIcons[appId];
+    }
 
-          const parsedData = JSON.parse(decodedString);
-          console.log('Parsed data:', parsedData);
+    function populateAppListForPlatform(data, platform, showingAllApps) {
+      let allApps = data[platform].sort((a, b) => b.isFeatured - a.isFeatured) || [];
 
-          return parsedData;
-        } catch (error) {
-          console.error('Error decoding data:', error);
-          throw new Error('Failed to decode panel data: ' + error.message);
+      const appList = document.getElementById('appList');
+
+      console.log('Rendering all apps:' + showingAllApps);
+
+      const appsToRender = showingAllApps ? allApps : allApps.filter((app) => app.isFeatured);
+
+      appList.innerHTML = ''; // Clear previous list items
+
+      appsToRender.forEach((app) => {
+        const item = document.createElement('button');
+        item.className = 'modal-btn';
+        const iconToDisplay = getIcon(app.id);
+
+        const iconSpan = document.createElement('span');
+        iconSpan.className = 'inline-flex';
+        if (iconToDisplay) {
+          iconSpan.innerHTML = iconToDisplay;
         }
-      }
 
-      function formatApiData(apiData, appsConfig) {
-        if (!apiData.response || !apiData.response.isFound) {
-          throw new Error('Subscription not found');
-        }
+        const nameSpan = document.createElement('span');
+        nameSpan.textContent = app.name;
 
-        const response = apiData.response;
-        const user = response.user;
+        item.appendChild(iconSpan);
+        item.appendChild(nameSpan);
 
-        const parseTraffic = (trafficStr) => {
-          if (!trafficStr) return 0;
-          const match = trafficStr.match(/^([\d.]+)\s*(\w+)$/);
-          if (!match) return 0;
-
-          const value = parseFloat(match[1]);
-          const unit = match[2].toLowerCase();
-
-          const units = {
-            b: 1,
-            kb: 1024,
-            mb: 1024 * 1024,
-            gb: 1024 * 1024 * 1024,
-            gib: 1024 * 1024 * 1024,
-            tb: 1024 * 1024 * 1024 * 1024,
-            tib: 1024 * 1024 * 1024 * 1024,
-          };
-
-          return value * (units[unit] || 1);
+        item.onclick = () => {
+          selectApp(app, platform);
+          let modal = appList.closest('.modal');
+          hideModal(modal);
         };
 
-        return {
-           username: user.username,
-           user_status: user.userStatus,
-           expires_at: user.expiresAt,
-           days_left: user.daysLeft,
-           traffic_used: parseTraffic(user.trafficUsedBytes),
-           traffic_limit: parseTraffic(user.trafficLimitBytes),
-           traffic_reset_strategy: user.trafficLimitStrategy,
-           subscription_url: response.subscriptionUrl,
-           cryptoLink: response.happ?.cryptoLink,
-           // servers: servers,
-           apps: appsConfig,
-           // computed remaining traffic (non-negative)
-           traffic_remaining: Math.max(0, (parseTraffic(user.trafficLimitBytes) || 0) - (parseTraffic(user.trafficUsedBytes) || 0)),
-         };
-       }
+        appList.appendChild(item);
+      });
+    }
 
-      // Helper: human-readable bytes (locale-aware)
-      function formatBytes(bytes, locale) {
-        if (bytes === null || bytes === undefined) return '-';
-        if (bytes === 0) return '0 B';
-        const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
-        const i = Math.min(units.length - 1, Math.floor(Math.log(Math.abs(bytes || 1)) / Math.log(1024)));
-        const value = bytes / Math.pow(1024, i);
-        return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(value) + ' ' + units[i];
+    // Set selected app
+    function selectApp(app, platform) {
+      const selectedAppIcon = document.getElementById('selected-app-icon');
+      const selectedAppName = document.getElementById('selected-app-name');
+
+      const iconToDisplay = getIcon(app.id);
+      if (iconToDisplay) {
+        selectedAppIcon.innerHTML = iconToDisplay;
       }
 
-      // Resolve locale from currentLanguage / navigator
-      function resolvedLocale() {
-        const map = { ru: 'ru-RU', en: 'en-US' };
-        return (currentLanguage && map[currentLanguage]) || navigator.language || 'ru-RU';
+      selectedAppName.textContent = app.name;
+      selectedApp = app;
+
+      renderAppSteps(app, platform);
+    }
+
+    function renderAppSteps(app, platform) {
+      // Removing old steps
+      document.getElementById('setupStepsContainer').innerHTML = '';
+
+      const steps = Object.keys(app).filter((key) => key.endsWith('Step'));
+
+      steps.forEach((stepKey) => {
+        renderStep(app, platform, stepKey);
+      });
+    }
+
+    function renderStep(app, platform, stepKey) {
+      const stepData = app[stepKey];
+      if (!stepData) return;
+
+      const container = document.getElementById('setupStepsContainer');
+
+      const stepCard = document.createElement('div');
+      stepCard.className = 'card';
+
+      // Step title
+      let title = null;
+      if (stepKey.startsWith('additional')) {
+        title = stepData.title?.[currentLanguage];
+      } else {
+        title = getTranslation(stepKey);
       }
 
-      // Format bytes as gigabytes (GB) with locale-aware number formatting
-      function formatBytesGb(bytes, locale) {
-        if (bytes === null || bytes === undefined) return '-';
-        const gb = Number(bytes) / 1024 / 1024 / 1024;
-        return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(gb) + ' GB';
+      const cardTitle = document.createElement('div');
+      cardTitle.textContent = title;
+      cardTitle.classList = 'title text-xl lg:text-3xl font-semibold mb-2 text-center';
+      stepCard.appendChild(cardTitle);
+
+      // Step description
+      const cardDescription = document.createElement('p');
+      cardDescription.classList = 'text-stone-700 dark:text-stone-300';
+      cardDescription.textContent = stepData.description?.[currentLanguage] || '';
+      stepCard.appendChild(cardDescription);
+
+      // Step buttons
+      if (Array.isArray(stepData.buttons) && stepData.buttons && stepData.buttons.length > 0) {
+        let butonContainer = document.createElement('ul');
+        butonContainer.classList = 'flex flex-col items-center px-6 mt-4';
+        stepData.buttons.forEach((buttonInfo) => {
+          const button = document.createElement('a');
+          button.className = 'btn';
+          button.href = buttonInfo.buttonLink;
+          button.target = '_blank';
+          button.rel = 'noopener noreferrer';
+
+          button.textContent = buttonInfo.buttonText?.[currentLanguage] || 'Открыть';
+          butonContainer.appendChild(button);
+        });
+        stepCard.appendChild(butonContainer);
       }
 
-      function displayData(data) {
-        // Username
-        if (data.username) {
-          const usernameLabel = document.getElementById('usernameLabel');
-          usernameLabel.textContent = data.username ? data.username : 'empty';
-        }
-        // User status
-        if (data.user_status) {
-          const userStatusLabel = document.getElementById('userStatusLabel');
-          userStatusLabel.textContent = data.user_status ? data.user_status : 'empty';
-        }
+      if (stepKey === 'addSubscriptionStep') {
+        let butonContainer = document.createElement('ul');
+        butonContainer.classList = 'flex flex-col items-center px-6 mt-4';
+        const subscriptionButton = document.createElement('a');
+        subscriptionButton.className = 'btn';
+        const fullURL = window.location.href;
 
-        // Expiration Date + Days left (normalized parsing + locale-aware formatting)
-        const expiresAtRaw = data.expires_at;
-        const expiresAtLabel = document.getElementById('expiresAtLabel');
-        let isPermanent = false;
+        let url = '#';
+        if (app.urlScheme && fullURL) {
+          let subscriptionUrl = data.subscription_url;
 
-        if (expiresAtRaw && expiresAtLabel) {
-          // Determine locale to use for formatting.
-          // Prefer currentLanguage (e.g. 'ru' or 'en'), fall back to navigator.locale and then to 'ru-RU'.
-          const localeMap = {
-            ru: 'ru-RU',
-            en: 'en-US',
-          };
-          const resolvedLocale =
-            (typeof currentLanguage === 'string' && localeMap[currentLanguage]) ||
-            navigator.language ||
-            'ru-RU';
-
-          // API returns RFC3339 e.g. 2017-07-21T17:32:28Z — parse to a Date object
-          const parsed = new Date(expiresAtRaw);
-
-          if (isNaN(parsed.getTime())) {
-            console.warn('Invalid expires_at value:', expiresAtRaw);
-            expiresAtLabel.textContent = String(expiresAtRaw);
+          if (app.isNeedBase64Encoding) {
+            subscriptionUrl = btoa(subscriptionUrl);
           } else {
-            isPermanent = parsed.getFullYear() >= 2099;
-            if (isPermanent) {
-              expiresAtLabel.textContent = 'never';
-            } else {
-              const options = {
-                day: 'numeric',
-                month: 'long',
-                year: 'numeric',
-              };
-              // Use locale-aware formatter
-              const formatted = new Intl.DateTimeFormat(resolvedLocale, options).format(parsed);
-              console.log('Formatted date (%s):', resolvedLocale, formatted);
-              expiresAtLabel.textContent = formatted;
-            }
+            subscriptionUrl = encodeURIComponent(subscriptionUrl);
           }
+          url = app.urlScheme.concat(fullURL);
         }
 
-        // Days left (use same isPermanent above)
-        const daysLeftContainer = document.getElementById('daysLeftContainer');
-        if (daysLeftContainer) {
+        subscriptionButton.href = url;
+        subscriptionButton.textContent = getTranslation('subscribe');
+
+        butonContainer.appendChild(subscriptionButton);
+        stepCard.appendChild(butonContainer);
+      }
+
+      container.appendChild(stepCard);
+    }
+
+    async function loadSubscriptionData() {
+      try {
+        const appsConfigPromise = loadAppsConfig();
+
+        const encodedPanelData = '<%= panelData %>';
+        console.log('Panel data encoded');
+
+        const decodedData = decodeAndParseData(encodedPanelData);
+
+        const loadedAppsConfig = await appsConfigPromise;
+
+        formattedData = formatApiData(decodedData, loadedAppsConfig);
+
+        displayData(formattedData);
+      } catch (error) {
+        console.error('Ошибка загрузки данных:', error);
+      }
+    }
+
+    function decodeAndParseData(encodedData) {
+      try {
+        const decodedString = atob(encodedData);
+        console.log('Decoded string');
+
+        const parsedData = JSON.parse(decodedString);
+        console.log('Parsed data');
+
+        return parsedData;
+      } catch (error) {
+        console.error('Error decoding data:', error);
+        throw new Error('Failed to decode panel data: ' + error.message);
+      }
+    }
+
+    function formatApiData(apiData, appsConfig) {
+      if (!apiData.response || !apiData.response.isFound) {
+        throw new Error('Subscription not found');
+      }
+
+      const response = apiData.response;
+      const user = response.user;
+
+      const parseTraffic = (trafficStr) => {
+        if (!trafficStr) return 0;
+        const match = trafficStr.match(/^([\d.]+)\s*(\w+)$/);
+        if (!match) return 0;
+
+        const value = parseFloat(match[1]);
+        const unit = match[2].toLowerCase();
+
+        const units = {
+          b: 1,
+          kb: 1024,
+          mb: 1024 * 1024,
+          gb: 1024 * 1024 * 1024,
+          gib: 1024 * 1024 * 1024,
+          tb: 1024 * 1024 * 1024 * 1024,
+          tib: 1024 * 1024 * 1024 * 1024
+        };
+
+        return value * (units[unit] || 1);
+      };
+
+      return {
+        username: user.username,
+        user_status: user.userStatus,
+        expires_at: user.expiresAt,
+        days_left: user.daysLeft,
+        traffic_used: parseTraffic(user.trafficUsedBytes),
+        traffic_limit: parseTraffic(user.trafficLimitBytes),
+        traffic_reset_strategy: user.trafficLimitStrategy,
+        subscription_url: response.subscriptionUrl,
+        cryptoLink: response.happ?.cryptoLink,
+        // servers: servers,
+        apps: appsConfig,
+        // computed remaining traffic (non-negative)
+        traffic_remaining: Math.max(0, (parseTraffic(user.trafficLimitBytes) || 0) - (parseTraffic(user.trafficUsedBytes) || 0))
+      };
+    }
+
+    // Helper: human-readable bytes (locale-aware)
+    function formatBytes(bytes, locale) {
+      if (bytes === null || bytes === undefined) return '-';
+      if (bytes === 0) return '0 B';
+      const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+      const i = Math.min(units.length - 1, Math.floor(Math.log(Math.abs(bytes || 1)) / Math.log(1024)));
+      const value = bytes / Math.pow(1024, i);
+      return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(value) + ' ' + units[i];
+    }
+
+    // Resolve locale from currentLanguage / navigator
+    function resolvedLocale() {
+      const map = { ru: 'ru-RU', en: 'en-US' };
+      return (currentLanguage && map[currentLanguage]) || navigator.language || 'ru-RU';
+    }
+
+    // Format bytes as gigabytes (GB) with locale-aware number formatting
+    function formatBytesGb(bytes, locale) {
+      if (bytes === null || bytes === undefined) return '-';
+      const gb = Number(bytes) / 1024 / 1024 / 1024;
+      return new Intl.NumberFormat(locale, { maximumFractionDigits: 2 }).format(gb) + ' GB';
+    }
+
+    function displayData(data) {
+      // Username
+      if (data.username) {
+        const usernameLabel = document.getElementById('usernameLabel');
+        usernameLabel.textContent = data.username ? data.username : 'empty';
+      }
+      // User status
+      if (data.user_status) {
+        const userStatusLabel = document.getElementById('userStatusLabel');
+        userStatusLabel.textContent = data.user_status ? data.user_status : 'empty';
+      }
+
+      // Expiration Date + Days left (normalized parsing + locale-aware formatting)
+      const expiresAtRaw = data.expires_at;
+      const expiresAtLabel = document.getElementById('expiresAtLabel');
+      let isPermanent = false;
+
+      if (expiresAtRaw && expiresAtLabel) {
+        const localeMap = {
+          ru: 'ru-RU',
+          en: 'en-US'
+        };
+        const resolvedLocale =
+          (typeof currentLanguage === 'string' && localeMap[currentLanguage]) ||
+          navigator.language ||
+          'ru-RU';
+
+        // API returns RFC3339 e.g. 2017-07-21T17:32:28Z
+        const parsed = new Date(expiresAtRaw);
+
+
+        if (isNaN(parsed.getTime())) {
+          console.warn('Invalid expires_at value:', expiresAtRaw);
+          expiresAtLabel.textContent = String(expiresAtRaw);
+        } else {
+          isPermanent = parsed.getFullYear() >= 2099;
           if (isPermanent) {
-            daysLeftContainer.style.display = 'none';
+            expiresAtLabel.textContent = getTranslation('never');
           } else {
-            daysLeftContainer.style.display = 'flex';
-            const daysLeftLabel = document.getElementById('daysLeftLabel');
-            if (daysLeftLabel && data.days_left !== undefined) {
-              daysLeftLabel.textContent = data.days_left;
-            }
-          }
-        }
-
-        // Display traffic used/total using same locale logic as dates
-        const usedEl = document.getElementById('trafficUsedLabel');
-        const totalEl = document.getElementById('trafficTotalLabel');
-        if (usedEl && totalEl) {
-          const locale = resolvedLocale();
-          usedEl.textContent = formatBytesGb(Number(data.traffic_used || 0), locale);
-          totalEl.textContent = formatBytesGb(Number(data.traffic_limit || 0), locale);
-          const remainEl = document.getElementById('trafficRemainLabel');
-          if (remainEl) {
-            // prefer explicit traffic_remaining if provided, otherwise compute
-            const remaining = Number(data.traffic_remaining ?? Math.max(0, (data.traffic_limit || 0) - (data.traffic_used || 0)));
-            remainEl.textContent = formatBytesGb(remaining, locale);
+            const options = {
+              day: 'numeric',
+              month: 'long',
+              year: 'numeric'
+            };
+            // Use locale-aware formatter
+            const formatted = new Intl.DateTimeFormat(resolvedLocale, options).format(parsed);
+            expiresAtLabel.textContent = formatted;
           }
         }
       }
-    </script>
-  </body>
+
+      // Display traffic used/total using same locale logic as dates
+      const usedEl = document.getElementById('trafficUsedLabel');
+      const totalEl = document.getElementById('trafficTotalLabel');
+      const remainEl = document.getElementById('trafficRemainLabel');
+      if (usedEl && totalEl) {
+        const locale = resolvedLocale();
+        usedEl.textContent = formatBytesGb(Number(data.traffic_used || 0), locale);
+        if (!data.traffic_limit || Number(data.traffic_limit) === 0) {
+          totalEl.textContent = getTranslation('unlimited');
+          remainEl.textContent = getTranslation('unlimited');
+        } else {
+          totalEl.textContent = formatBytesGb(Number(data.traffic_limit), locale);
+          // prefer explicit traffic_remaining if provided, otherwise compute
+          const remaining = Number(data.traffic_remaining ?? Math.max(0, (data.traffic_limit || 0) - (data.traffic_used || 0)));
+          remainEl.textContent = formatBytesGb(remaining, locale);
+        }
+      }
+    }
+  </script>
+</body>
+
 </html>

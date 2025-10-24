@@ -98,7 +98,7 @@
   }
 
   .tab-item {
-    @apply flex-1 cursor-pointer rounded-lg py-4 text-center;
+    @apply flex-1 cursor-pointer rounded-lg py-4 text-center w-full;
     @apply stone-bg-light;
     @apply stone-border border;
     @apply hover:bg-primary-light;
