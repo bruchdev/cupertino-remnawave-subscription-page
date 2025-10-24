@@ -287,6 +287,9 @@
   .max-w-3xl {
     max-width: var(--container-3xl);
   }
+  .flex-1 {
+    flex: 1;
+  }
   .rotate-90 {
     rotate: 90deg;
   }
@@ -755,6 +758,7 @@
     opacity: 100%;
   }
   .tab-item {
+    width: 100%;
     flex: 1;
     cursor: pointer;
     border-radius: var(--radius-lg);
