@@ -152,17 +152,10 @@
         </div>
       </div>
       <!-- Expiration dates section -->
-      <div class="card px-2">
-        <div class="pt-1 pb-2 px-2 md:pt-2 md:pb-4 md:px-4 flex justify-between items-center">
+      <div class="card px-4 md:px-6 gap-2 md:gap-4">
+        <div class="flex justify-between items-center">
           <p class="text-muted" data-i18n="expires_at_label"></p>
           <p id="expiresAtLabel" class="text-lg font-semibold">15 Июля 2030 г.</p>
-        </div>
-        <div class="flex-1" id="daysLeftContainer">
-          <hr class="stone-border" />
-          <div class="px-2 pt-2 pb-1 md:pt-4 md:pb-2 md:px-4 flex justify-between items-center">
-            <p class="text-muted" data-i18n="days_left_label"></p>
-            <p id="daysLeftLabel" class="text-lg font-semibold">69</p>
-          </div>
         </div>
       </div>
       <!-- Traffic section -->
@@ -241,6 +234,7 @@
         status_label: 'Status',
         expires_at_label: 'Expires at',
         days_left_label: 'Days left',
+        never: 'Never',
         subscribe: 'Add subscription',
         select_an_app: 'Select an App',
         select_an_os: 'Select a system',
@@ -271,6 +265,7 @@
         status_label: 'Статус',
         expires_at_label: 'Дата окончания подписки',
         days_left_label: 'Осталось дней',
+        never: 'Никогда',
         subscribe: 'Добавить подписку',
         select_an_app: 'Выберите приложение',
         select_an_os: 'Выберите систему',
@@ -547,7 +542,6 @@
         if (Array.isArray(apps) && apps.length > 0) {
           const button = document.createElement('button');
           button.classList = 'modal-btn';
-          // button.textContent = getTranslation(platform) || platform.charAt(0).toUpperCase() + platform.slice(1);
 
           const iconToDisplay = getIcon(platform);
           const iconSpan = document.createElement('span');
@@ -968,8 +962,6 @@
           isPermanent = parsed.getFullYear() >= 2099;
           if (isPermanent) {
             expiresAtLabel.textContent = getTranslation('never');
-            const daysLeftContainer = document.getElementById('daysLeftContainer');
-            daysLeftContainer.style.display = 'none';
           } else {
             const options = {
               day: 'numeric',
@@ -980,21 +972,9 @@
             const formatted = new Intl.DateTimeFormat(resolvedLocale, options).format(parsed);
             console.log('Formatted date (%s):', resolvedLocale, formatted);
             expiresAtLabel.textContent = formatted;
-
-            // Days left (use same isPermanent above)
-            const daysLeftContainer = document.getElementById('daysLeftContainer');
-            if (daysLeftContainer) {
-              daysLeftContainer.style.display = 'flex';
-              const daysLeftLabel = document.getElementById('daysLeftLabel');
-              if (daysLeftLabel && data.days_left !== undefined) {
-                daysLeftLabel.textContent = data.days_left;
-              }
-            }
           }
         }
       }
-
-
 
       // Display traffic used/total using same locale logic as dates
       const usedEl = document.getElementById('trafficUsedLabel');
