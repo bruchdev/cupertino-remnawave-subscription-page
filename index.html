@@ -985,7 +985,7 @@
       if (usedEl && totalEl) {
         const locale = resolvedLocale();
         usedEl.textContent = formatBytesGb(Number(data.traffic_used || 0), locale);
-        if (Number(trafficLimitBytes) === 0) {
+        if (!data.traffic_limit || Number(data.traffic_limit) === 0) {
           totalEl.textContent = getTranslation('unlimited');
           remainEl.textContent = getTranslation('unlimited');
         } else {
